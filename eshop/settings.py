@@ -37,6 +37,51 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
+    ### allauth ###
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    ### providers: ###
+    'allauth.socialaccount.providers.amazon',
+    'allauth.socialaccount.providers.amazon_cognito',
+    'allauth.socialaccount.providers.angellist',
+    'allauth.socialaccount.providers.apple',
+    'allauth.socialaccount.providers.auth0',
+    'allauth.socialaccount.providers.authentiq',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.foursquare',
+    'allauth.socialaccount.providers.globus',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.instagram',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.microsoft',
+    'allauth.socialaccount.providers.odnoklassniki',
+    'allauth.socialaccount.providers.openid',
+    'allauth.socialaccount.providers.openstreetmap',
+    'allauth.socialaccount.providers.orcid',
+    'allauth.socialaccount.providers.paypal',
+    'allauth.socialaccount.providers.persona',
+    'allauth.socialaccount.providers.pinterest',
+    'allauth.socialaccount.providers.reddit',
+    'allauth.socialaccount.providers.shopify',
+    'allauth.socialaccount.providers.spotify',
+    'allauth.socialaccount.providers.telegram',
+    'allauth.socialaccount.providers.tumblr',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.untappd',
+    'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.weibo',
+    'allauth.socialaccount.providers.weixin',
+    'allauth.socialaccount.providers.windowslive',
+    'allauth.socialaccount.providers.xing',
+    'allauth.socialaccount.providers.yahoo',
+    'allauth.socialaccount.providers.yandex',
+    'allauth.socialaccount.providers.ynab',
+    'allauth.socialaccount.providers.zoho',
+    'allauth.socialaccount.providers.okta',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +107,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request', # allauth
             ],
         },
     },
@@ -123,3 +169,26 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# allauth
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1
+
+### allauth Provide specific settings: ###
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}
