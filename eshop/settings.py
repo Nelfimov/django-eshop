@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     ### allauth ###
     'django.contrib.sites',
     'core',
+    'crispy_forms',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -172,6 +173,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
 
 ### allauth Provide specific settings: ###
 SOCIALACCOUNT_PROVIDERS = {
@@ -183,3 +186,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# Crispy Forms
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
