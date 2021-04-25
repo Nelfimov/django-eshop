@@ -3,14 +3,18 @@ from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
+# from payment.models import Payment
+import os
+from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
+import sys
 
 
-CATEGORY_CHOICES = (
-    ('BO', 'Book'),
-    ('DO', 'Doll'),
-    ('AC', 'Accessories'),
-    ('OT', 'Other')
-)
+# CATEGORY_CHOICES = (
+#     ('BO', 'Books'),
+#     ('DO', 'Dolls'),
+#     ('AC', 'Accessories'),
+#     ('OT', 'Others')
+# )
 
 LABEL_CHOICES = (
     ('p', 'primary'),
@@ -18,12 +22,20 @@ LABEL_CHOICES = (
     ('d', 'danger')
 )
 
+CURRENCY_CHOICES = (
+    ('EUR', 'Euro'),
+    ('USD', 'US Dollars'),
+)
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
-    price = models.FloatField()
-    discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+    price = models.DecimalField(decimal_places=2, max_digits=100000)
+    currency = models.CharField(choices=CURRENCY_CHOICES, max_length=3)
+    discount_price = models.DecimalField(decimal_places=2, max_digits=100000, blank=True, null=True)
+    image = models.ImageField(null=True, blank=True)
+    category = models.CharField(max_length=20)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
     description = models.TextField()
     
@@ -82,7 +94,7 @@ class Order(models.Model):
     billing_address = models.ForeignKey(
         'BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(
-        'Payment', on_delete=models.SET_NULL, blank=True, null=True)
+        'payment.Payment', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -101,18 +113,6 @@ class BillingAddress(models.Model):
     apartment_address = models.CharField(max_length=100)
     country = CountryField(multiple=False)
     zip = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.user.username
-
-
-class Payment(models.Model):
-    stripe_charge_id = models.CharField(max_length=50)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.SET_NULL,
-                             blank=True, null=True)
-    amount = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username

@@ -29,7 +29,7 @@
                 <div class="row">
                   <div class="col-lg-4 col-md-12 mb-4">
                     <label for="country">Country</label>
-                    {{ form.shipping_country }}
+                    {{ form.country }}
                     <div class="invalid-feedback">
                       Please select a valid country.
                     </div>
@@ -79,7 +79,7 @@
                 <div class="row">
                   <div class="col-lg-4 col-md-12 mb-4">
                     <label for="country">Country</label>
-                    {{ form.billing_country }}
+                    {{ form.country }}
                     <div class="invalid-feedback">
                       Please select a valid country.
                     </div>
@@ -111,6 +111,14 @@
               <hr>
 
               <h3>Payment option</h3>
+              
+              <!-- <div id='paypal-button-container'></div>
+
+              <script src='https://www.paypal.com/sdk/js?client-id=test&currency=USD'></script>
+
+              <script>
+                paypal.Buttons().render('#paypal-button-container');
+              </script> -->
 
               <div class="d-block my-3">
                 {% for value, name in form.fields.payment_option.choices %}
