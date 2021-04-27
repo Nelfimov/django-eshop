@@ -30,7 +30,7 @@
 
 {% block extra_scripts %}
 
-    <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}"></script> 
+    <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency={{ currency }}"></script> 
     <script src="{% static  'payment/js/main.js' %}"></script>
 
 {% endblock extra_scripts %}

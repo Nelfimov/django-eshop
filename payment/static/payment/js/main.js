@@ -22,20 +22,22 @@ const csrftoken = getCookie('csrftoken');
             createOrder: function(data, actions) {
                 return fetch('/payment/paypal/', {
                     method: 'post',
-                    headers: {"X-CSRFToken": csrftoken}
+                    headers: {
+                        "X-CSRFToken": csrftoken,
+                        'content-type': 'application/json'
+                    }
                 }).then(function(res) {
                     return res.json();
                 }).then(function(orderData) {
-                    console.log(orderData)
                     return orderData.id;
                 });
             },
 
             // Call your server to finalize the transaction
             onApprove: function(data, actions) {
-                return fetch('/payment/paypal/' + data.orderID + '/capture/', {
+                return fetch('/payment/paypal/capture/' + data.orderID + '/', {
                     method: 'post',
-                    headers: {"X-CSRFToken": csrftoken}
+                    headers: {"X-CSRFToken": csrftoken},
                 }).then(function(res) {
                     return res.json();
                 }).then(function(orderData) {
@@ -60,9 +62,6 @@ const csrftoken = getCookie('csrftoken');
                         // Show a failure message
                         return alert(msg);
                     }
-
-                    // Show a success message to the buyer
-                    alert('Transaction completed by ' + orderData.payer.name.given_name);
                 });
             }
 

@@ -7,8 +7,11 @@ from django.views.generic import View
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from .models import PayPalClient, Payment
-import stripe
-import json
+import stripe, random, string, json
+
+
+def create_ref_code():
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
 class StripeView(View):
@@ -16,8 +19,22 @@ class StripeView(View):
         order = Order.objects.get(user=self.request.user, ordered=False)
         context = {
             'order': order,
+            'DISPLAY_COUPON_FORM': False,
             'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         }
+        userprofile = self.request.user.userprofile
+        if userprofile.one_click_purchasing:
+            cards = stripe.Customer.list_sources(
+                userprofile.stripe_customer_id,
+                limit=3,
+                object='card'
+            )
+            card_list = cards['data']
+            if len(card_list) > 0:
+                context.update({
+                    'card': card_list[0]
+                })
+
         return render(self.request, 'stripe.html', context)
 
     def post(self, *args, **kwargs):
@@ -28,7 +45,7 @@ class StripeView(View):
         try:
             charge = stripe.Charge.create(
                 amount=amount,
-                currency='usd',
+                currency='eur',
                 source=token,
                 description='Charge for Auction'
             )
@@ -37,12 +54,13 @@ class StripeView(View):
             payment = Payment()
             payment.stripe_charge_id = charge['id']
             payment.user = self.request.user
-            payment.amount = order.get_total()
+            payment.amount = amount
             payment.save()
 
             # assign the payment to the order
             order.ordered = True
             order.payment = payment
+            order.ref_code = create_ref_code()
             order.save()
 
             messages.success(self.request, 'Your order was successfull')
@@ -101,7 +119,8 @@ class PaypalView(View):
         order = Order.objects.get(user=self.request.user, ordered=False)
         context = {
             'client_id': client_id,
-            'order': order
+            'order': order,
+            'currency': 'EUR'
         }
     
         return render(self.request, 'paypal.html', context)
@@ -127,7 +146,7 @@ class PaypalView(View):
                 "brand_name": "LADENBURGER SPIELZEUGAUKTION",
                 "landing_page": "NO_PREFERENCE",
                 "shipping_preference": "GET_FROM_FILE",
-                "user_action": "PAY_NOW"
+                "user_action": "PAY_NOW",
             },
             "purchase_units": [
                 {
@@ -186,75 +205,23 @@ class PaypalView(View):
                 ]
             }
         )
-        response = client.execute(create_order)
-        data = response.result.__dict__['_dict']
 
-        print(JsonResponse(data))
+        try:
+            response = client.execute(create_order)
+            data = response.result.__dict__['_dict']
+            order_id = response.result.__dict__['id']
+            return  JsonResponse(data)
 
-        order_id = response.result.__dict__['id']
-
-        return redirect('capture', order_id='order_id')
-
-
-
-# def pay(request):
-#     client_id = settings.PAYPAL_CLIENT_ID
-#     order = Order.objects.get(user=request.user, ordered=False)
-#     context = {
-#         'client_id': client_id,
-#         'order': order
-#     }
-    
-#     return render(request, 'paypal.html', context)
+        except IOError as ioe:
+            print(ioe)
+            if isinstance(ioe, HttpError):
+                print(ioe.status_code)
 
 
-# def create(request):
-#     if request.method == 'POST':
-#         environment = SandboxEnvironment(
-#             client_id=settings.PAYPAL_CLIENT_ID, 
-#             client_secret=settings.PAYPAL_CLIENT_SECRET
-#             )
-#         client = PayPalHttpClient(environment)
-#         order = Order.objects.get(user=request.user, ordered=False)
-#         currency = order.currency
-#         amount = order.amount
-#         tax = amount * 0,19
-#         shipping_value = 0
-#         create_order = OrdersCreateRequest()
-
-#         create_order.request_body(
-#              {
-#                 "intent": "CAPTURE",
-#                 "purchase_units": [
-#                     {
-#                         "amount": {
-#                             "currency_code": "USD",
-#                             "value": course.price,
-#                             "breakdown": {
-#                                 "item_total": {
-#                                     "currency_code": "USD",
-#                                     "value": course.price
-#                                 }
-#                                 },
-#                             },                               
-
-
-#                     }
-#                 ]
-#             }
-#         )
-
-
-
-#         response = client.execute(create_order)
-#         data = response.result.__dict__['_dict']
-#         return JsonResponse(data)
-#     else:
-#         return JsonResponse({'details': 'invalid response'})
-
-
+# Paypal capture the approved order
 def capture(request, order_id):
     if request.method =='POST':
+        order = Order.objects.get(user=request.user, ordered=False)
         capture_order = OrdersCaptureRequest(order_id)
         environment = SandboxEnvironment(
             client_id=settings.PAYPAL_CLIENT_ID, 
@@ -262,126 +229,31 @@ def capture(request, order_id):
             )
         client = PayPalHttpClient(environment)
 
-        response = client.execute(capture_order)
-        data = response.result.__dict__['_dict']
+        try:
+            response = client.execute(capture_order)
+            data = response.result.__dict__['_dict']
+            payment = Payment()
+            payment.user = request.user
+            payment.amount = order.get_total()
+            payment.paypal_id = order_id
+            payment.save()
+            order.ordered = True
+            order.ref_code = create_ref_code()
+            order.payment = payment
+            order.save()
+            messages.success(request, 'Your order was successfull')
+            return render(request, 'home.html')
 
-        order.ordered = True
-        order.save
-        messages.success(self.request, 'Your order was successfull')
-
-
-        print(JsonResponse(data))
-
-        return 
-
-    else:
-        return JsonResponse({'details': 'invalide request'})
+        except IOError as ioe:
+            if isinstance(ioe, HttpError):
+                print(ioe.status_code)
+                print(ioe.headers)
+                print(ioe)
+                
+            else:
+                print(ioe)
 
 
 def getClientId(request):
     if request.method == 'GET':
         return JsonResponse({'client_id': settings.PAYPAL_CLIENT_ID})
-
-
-
-
-
-
-# class PaypalView(PayPalClient):
-#     @staticmethod
-#     def build_request_body():
-#         order = Order.objects.get(user=request.user, ordered=False)
-#         amount = int(order.get_total() * 100)
-#         tax = amount * 0,19
-#         # TODO shipping
-#         shipping_value = 0
-#         currency = "EUR"
-#         return \
-#             {
-#                 "intent": "CAPTURE",
-#                 "application_context": {
-#                     "brand_name": "LADENBURGER SPIELZEUGAUKTION",
-#                     "landing_page": "NO_PREFERENCE",
-#                     "shipping_preference": "GET_FROM_FILE",
-#                     "user_action": "PAY_NOW"
-#                 },
-#                 "purchase_units": [
-#                     {
-#                         "description": "Antique Toys",
-#                         "custom_id": "CUST-Antique Toys",
-#                         "soft_descriptor": "Antique Toys",
-#                         "amount": {
-#                             "currency_code": currency,
-#                             "value": amount,
-#                             "breakdown": {
-#                                 "item_total": {
-#                                     "currency_code": currency,
-#                                     "value": amount - tax - shipping_value
-#                                 },
-#                                 "shipping": {
-#                                     "currency_code": currency,
-#                                     "value": shipping_value
-#                                 },
-#                                 "tax_total": {
-#                                     "currency_code": currency,
-#                                     "value": tax
-#                                 }
-#                             }
-#                         },
-#                         "items": [
-#                             {
-#                                 "name": item.title,
-#                                 "description": item.description,
-#                                 "unit_amount": {
-#                                     "currency_code": item.currency,
-#                                     "value": item.price
-#                                 },
-#                                 "tax": {
-#                                     "currency_code": "EUR",
-#                                     "value": (item.price * 0,19)
-#                                 },
-#                                 "quantity": item.quantity,
-#                                 "category": "PHYSICAL_GOODS"
-#                             }
-#                         ],
-#                         "shipping": {
-#                             "method": "United States Postal Service",
-#                             "name": {
-#                                 "full_name":"John Doe"
-#                             },
-#                             "address": {
-#                                 "address_line_1": "123 Townsend St",
-#                                 "address_line_2": "Floor 6",
-#                                 "admin_area_2": "San Francisco",
-#                                 "admin_area_1": "CA",
-#                                 "postal_code": "94107",
-#                                 "country_code": "US"
-#                             }
-#                         }
-#                     }
-#                 ]
-#             }
-
-#     """ This is the sample function which can be sued to create an order. It uses the
-#         JSON body returned by buildRequestBody() to create an new Order."""
-
-#     def create_order(self, debug=False):
-#         request = OrdersCreateRequest()
-#         request.headers['prefer'] = 'return=representation'
-#         request.request_body(self.build_request_body())
-#         response = self.client.execute(request)
-#         if debug:
-#             print ('Status Code: ', response.status_code)
-#             print ('Status: ', response.result.status)
-#             print ('Order ID: ', response.result.id)
-#             print ('Intent: ', response.result.intent)
-#             print ('Links:')
-            
-#             for link in response.result.links:
-#                 print('\t{}: {}\tCall Type: {}'.format(link.rel, link.href, link.method))
-            
-#             print ('Total Amount: {} {}'.format(response.result.purchase_units[0].amount.currency_code,
-#                                                response.result.purchase_units[0].amount.value))
-#             json_data = self.object_to_json(response.result)
-#             print ("json_data: ", json.dumps(json_data,indent=4))
-#         return response

@@ -11,8 +11,8 @@ from django.utils import timezone
 import json
 from paypalcheckoutsdk.orders import OrdersCreateRequest
 from paypalhttp.serializers.json_serializer import Json
-from .forms import CheckoutForm
-from .models import Item, OrderItem, Order, BillingAddress
+from .forms import CheckoutForm, RefundForm
+from .models import Item, OrderItem, Order, Address, Refund
 
 
 def products(request):
@@ -182,3 +182,34 @@ def remove_single_item_from_cart(request, slug):
     else:
         messages.info(request, 'You do not have an active order')
         return redirect('core:product', slug=slug)    
+
+
+class RequestRefundView(View):
+    def get(self, *args, **kwargs):
+        form = RefundForm()
+        context = {
+            'form': form,
+        }
+        return render(self.request, 'request_refund.html', context)
+
+    def post(self, *args, **kwargs):
+        form = RefundForm(self.request.POST)
+        if form.is_valid():
+            ref_code = form.cleaned_data.get('ref_code')
+            message = form.cleaned_data.get('message')
+            email = form.cleaned_data.get('email')
+            try:
+                order = Order.objects.get(ref_code=ref_code)
+                order.refund_requested = True
+                order.save()
+                refund = Refund()
+                refund.order = order
+                refund.reason = message
+                refund.email = email
+                refund.save()
+                messages.info(self.request, 'Your request was received')
+                return redirect('core:request-refund')
+
+            except ObjectDoesNotExist:
+                messages.warning(self.request, 'This order does not exist')
+                return redirect('core:request-refund')
