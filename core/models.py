@@ -36,7 +36,12 @@ class UserProfile(models.Model):
 class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=100000)
-    discount_price = models.DecimalField(decimal_places=2, max_digits=100000, blank=True, null=True)
+    discount_price = models.DecimalField(
+        decimal_places=2, 
+        max_digits=100000, 
+        blank=True, 
+        null=True
+    )
     image = models.ImageField(null=True, blank=True)
     category = models.CharField(max_length=20)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)

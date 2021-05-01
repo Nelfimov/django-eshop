@@ -39,17 +39,12 @@ INSTALLED_APPS = [
     ### providers: ###
     'allauth.socialaccount.providers.amazon',
     'allauth.socialaccount.providers.amazon_cognito',
-    'allauth.socialaccount.providers.angellist',
     'allauth.socialaccount.providers.apple',
-    'allauth.socialaccount.providers.auth0',
-    'allauth.socialaccount.providers.authentiq',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.odnoklassniki',
-    'allauth.socialaccount.providers.openid',
     'allauth.socialaccount.providers.paypal',
-    'allauth.socialaccount.providers.pinterest',
     'allauth.socialaccount.providers.telegram',
     'allauth.socialaccount.providers.tumblr',
     'allauth.socialaccount.providers.twitter',
@@ -159,6 +154,19 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 
+# Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Paypal
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
+
+
+# Stripe
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+
 ### allauth Provide specific settings: ###
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
@@ -167,17 +175,16 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': '456',
             'key': ''
         }
+    },
+    'paypal': {
+        'APP': {
+            'client_id': PAYPAL_CLIENT_ID,
+            # 'secret': PAYPAL_CLIENT_SECRET,
+        },
+        'SCOPE': ['profile', 'email'],
+        'MODE': 'test',
+    },
+    'telegram': {
+        'TOKEN': config('TELEGRAM_TOKEN')
     }
 }
-
-# Crispy Forms
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-# Paypal
-PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
-PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
-
-# Stripe
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')

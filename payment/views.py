@@ -142,14 +142,20 @@ class StripeView(View):
             except stripe.error.StripeError as e:
                 # Display a very generic error to the user, and maybe send
                 # yourself an email
-                messages.error(self.request, 'Something went wrong, you were not charged. Please try again')
+                messages.error(
+                    self.request, 
+                    'Something went wrong, you were not charged. Please try again'
+                )
                 return redirect('/')
 
             except Exception as e:
                 # Something else happened, completely unrelated to Stripe
                 # send an email to ourselves
 
-                messages.error(self.request, 'Serious error occured. We have been notified')
+                messages.error(
+                    self.request, 
+                    'Serious error occured. We have been notified'
+                )
                 return redirect('/')
 
 
@@ -186,7 +192,7 @@ class PaypalView(View):
             "application_context": {
                 "brand_name": "LADENBURGER SPIELZEUGAUKTION",
                 "landing_page": "NO_PREFERENCE",
-                "shipping_preference": "GET_FROM_FILE",
+                "shipping_preference": "SET_PROVIDED_ADDRESS",
                 "user_action": "PAY_NOW",
             },
             "purchase_units": [
@@ -228,20 +234,20 @@ class PaypalView(View):
                     #         "category": "PHYSICAL_GOODS"
                     #     }
                     # ],
-                    # "shipping": {
-                    #     "method": "United States Postal Service",
-                    #     "name": {
-                    #         "full_name":"John Doe"
-                    #     },
-                    #     "address": {
-                    #         "address_line_1": "123 Townsend St",
-                    #         "address_line_2": "Floor 6",
-                    #         "admin_area_2": "San Francisco",
-                    #         "admin_area_1": "CA",
-                    #         "postal_code": "94107",
-                    #         "country_code": "US"
-                    #         }
-                        # }
+                    "shipping": {
+                        "method": "United States Postal Service",
+                        "name": {
+                            "full_name":"John Doe"
+                        },
+                        "address": {
+                            "address_line_1": "123 Townsend St",
+                            "address_line_2": "Floor 6",
+                            "admin_area_2": "San Francisco",
+                            "admin_area_1": "CA",
+                            "postal_code": order.shipping_address.zip,
+                            "country_code": order.shipping_address.country,
+                            }
+                        }
                     }
                 ]
             }
@@ -283,7 +289,7 @@ def capture(request, order_id):
             order.payment = payment
             order.save()
             messages.success(request, 'Your order was successfull')
-            return render(request, 'home.html')
+            return redirect('/')
 
         except IOError as ioe:
             if isinstance(ioe, HttpError):
