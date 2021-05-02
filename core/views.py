@@ -8,9 +8,11 @@ from django.shortcuts import (render,
                               redirect)
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
+
 import json
 from paypalcheckoutsdk.orders import OrdersCreateRequest
 from paypalhttp.serializers.json_serializer import Json
+
 from .forms import CheckoutForm, RefundForm
 from .models import Item, OrderItem, Order, Address, Refund
 
@@ -46,12 +48,13 @@ class CheckoutView(View):
         )
         if shipping_address_qs.exists():
             context.update({ 'default_shipping_address': shipping_address_qs[0] })
-        
+
         billing_address_qs = Address.objects.filter(
             user=self.request.user,
             address_type='B',
             default=True
         )
+
         if billing_address_qs.exists():
             context.update({ 'default_billing_address': billing_address_qs[0] })
         return render(self.request, 'checkout.html', context)

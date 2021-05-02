@@ -45,8 +45,7 @@
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
-            <div class='container'>
-            <a class="btn btn-default" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            <div class='container' style="text-align: center;">
             <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
             <span id='cwppButton'></span>
             <script src='https://www.paypalobjects.com/js/external/connect/api.js'></script>
@@ -62,11 +61,12 @@
                 "buttonType":"CWP",
                 "buttonShape":"pill",
                 "buttonSize":"lg",
-                "fullPage":"false",
-                "returnurl":"http://example.com/accounts/paypal/login/callback"
+                "fullPage":"true",
+                "returnurl":"http://127.0.0.1:8000/accounts/paypal/login/callback/"
               });
             });
             </script>
+            <a class="btn btn-default" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
             </div>
           </form>
           </div>

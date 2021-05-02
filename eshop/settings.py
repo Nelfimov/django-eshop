@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    ### allauth ###
     'django.contrib.sites',
     'core',
     'payment',
@@ -168,6 +167,11 @@ STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 
 ### allauth Provide specific settings: ###
+ACCOUNT_EMAIL_REQUIRED = True  
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'APP': {
@@ -179,9 +183,8 @@ SOCIALACCOUNT_PROVIDERS = {
     'paypal': {
         'APP': {
             'client_id': PAYPAL_CLIENT_ID,
-            # 'secret': PAYPAL_CLIENT_SECRET,
         },
-        'SCOPE': ['profile', 'email'],
+        'SCOPE': ['email'],
         'MODE': 'test',
     },
     'telegram': {
