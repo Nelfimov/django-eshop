@@ -64,7 +64,6 @@ class CheckoutView(View):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             if form.is_valid():
-
                 use_default_shipping = form.cleaned_data.get('use_default_shipping')
                 if use_default_shipping:
                     print('Using default shipping address')
@@ -81,14 +80,12 @@ class CheckoutView(View):
                     else:
                         messages.info(self.request, 'No default shipping address available')
                         return redirect('core:checkout')
-
                 else:
                     print('User is entering a new shipping address')
                     shipping_address1 = form.cleaned_data.get('shipping_address')
                     shipping_address2 = form.cleaned_data.get('shipping_address2')
                     shipping_country = form.cleaned_data.get('shipping_country')
                     shipping_zip = form.cleaned_data.get('shipping_zip')
-                    
                     if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
                         shipping_address = Address(
                             user=self.request.user,
@@ -99,21 +96,16 @@ class CheckoutView(View):
                             address_type='S'
                         )
                         shipping_address.save()
-                
                     order.shipping_address = shipping_address
                     order.save()
-                    
                     set_default_shipping = form.cleaned_data.get('set_default_shipping')
-
                     if set_default_shipping:
                         shipping_address.default = True
                         shipping_address.save()
                     else:
                         messages.info(self.request, 'Please fill in the required shipping address')
-
                 use_default_billing = form.cleaned_data.get('use_default_billing')
                 same_billing_address = form.cleaned_data.get('same_billing_address')
-
                 if same_billing_address:
                     billing_address = shipping_address
                     billing_address.pk = None
@@ -122,7 +114,6 @@ class CheckoutView(View):
                     billing_address.save()
                     order.billing_address = billing_address
                     order.save()
-
                 elif use_default_billing:
                     print('Using default billing address')
                     address_qs = Address.objects.filter(
@@ -130,7 +121,6 @@ class CheckoutView(View):
                         address_type='B',
                         defulat=True,
                     )
-
                     if address_qs.exists():
                         billing_address = address_qs[0]
                         order.billing_address = billing_address
@@ -138,14 +128,12 @@ class CheckoutView(View):
                     else:
                         messages.info(self.request, 'No default billing address available')
                         return redirect('core:checkout')
-
                 else:
                     print('User is entering a new billing address')
                     billing_address1 = form.cleaned_data.get('billing_address')
                     billing_address2 = form.cleaned_data.get('billing_address2')
                     billing_country = form.cleaned_data.get('billing_country')
                     billing_zip = form.cleaned_data.get('billing_zip')
-                    
                     if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
                         shipping_address = Address(
                             user=self.request.user,
@@ -156,18 +144,14 @@ class CheckoutView(View):
                             address_type='B'
                         )
                         billing_address.save()
-                
                     order.billing_address = billing_address
                     order.save()
-                    
                     set_default_billing = form.cleaned_data.get('set_default_billing')
-
                     if set_default_billing:
                         billing_address.default = True
                         billing_address.save()
                     else:
                         messages.info(self.request, 'Please fill in the required shipping address')
-
                 payment_option = form.cleaned_data.get('payment_option')
                 if payment_option == 'S':
                     return redirect('payment:stripe')
@@ -187,6 +171,19 @@ class HomeView(ListView):
     model = Item
     paginate_by = 10
     template_name = 'home.html'
+
+
+class OrderView(LoginRequiredMixin, ListView):
+    def get(self, *args, **kwargs):
+        try:
+            orders = Order.objects.filter(user=self.request.user, ordered=True)
+            context = {
+                'object': orders
+            }
+            return render(self.request, 'orders_finished.html', context)
+        except ObjectDoesNotExist:
+            message.warning(self.request, 'You do not have any orders')
+            return redirect('/')
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
@@ -299,11 +296,19 @@ def remove_single_item_from_cart(request, slug):
 
 class RequestRefundView(View):
     def get(self, *args, **kwargs):
-        form = RefundForm()
-        context = {
-            'form': form,
-        }
-        return render(self.request, 'request_refund.html', context)
+        if self.request.GET['ref_code']:
+            ref_code = self.request.GET['ref_code']
+            order = Order.objects.get(ref_code=ref_code)
+            if order.user == self.request.user:
+                form = RefundForm(initial={'ref_code': ref_code})
+                context = {
+                    'form': form,
+                }
+                return render(self.request, 'request_refund.html', context)
+            else:
+                messages.warning(self.request, 'You are not the user who ordered this order')
+                return redirect('core:home')
+        return redirect('core:home')
 
     def post(self, *args, **kwargs):
         form = RefundForm(self.request.POST)
@@ -313,16 +318,30 @@ class RequestRefundView(View):
             email = form.cleaned_data.get('email')
             try:
                 order = Order.objects.get(ref_code=ref_code)
-                order.refund_requested = True
-                order.save()
-                refund = Refund()
-                refund.order = order
-                refund.reason = message
-                refund.email = email
-                refund.save()
-                messages.info(self.request, 'Your request was received')
-                return redirect('core:request-refund')
+                if order.user == self.request.user:
+                    if not order.refund_requested:
+                        order.refund_requested = True
+                        order.save()
+                        refund = Refund()
+                        refund.order = order
+                        refund.reason = message
+                        refund.email = email
+                        refund.save()
+                        messages.info(self.request, 'Your request was received')
+                        return redirect('core:orders-finished')
+                    
+                    elif order.refund_granted:
+                        messages.info(self.request, 'You have already received refund for this order')
+                    
+                    else:
+                        messages.info(self.request, 'You have already submitted a ticket. Please wait until we contact you')
+
+                    return redirect('core:orders-finished')
+
+                else:
+                    messages.warning(self.request, 'You are not the user who ordered this order')
+                    return redirect('core:home')
 
             except ObjectDoesNotExist:
                 messages.warning(self.request, 'This order does not exist')
-                return redirect('core:request-refund')
+                return redirect('core:orders-finished')

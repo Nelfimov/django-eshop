@@ -109,7 +109,7 @@ class Order(models.Model):
         on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(
         'payment.Payment', on_delete=models.SET_NULL, blank=True, null=True)
-    ref_code = models.CharField(max_length=20, blank=True, null=True)
+    ref_code = models.CharField(max_length=20, blank=True, null=True, default='')
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)

@@ -15,7 +15,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'django-eshop-app.herokuapp.com']
 
 
 # Application definition
@@ -165,6 +165,7 @@ PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 # Stripe
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+
 
 ### allauth Provide specific settings: ###
 ACCOUNT_EMAIL_REQUIRED = True  

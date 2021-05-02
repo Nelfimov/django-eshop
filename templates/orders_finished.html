@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+          <h2>Your Orders</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order Ref Code</th>
+                  <th scope="col">Order Date</th>
+                  <th scope="col">Ordered Items</th>
+                  <th scope="col">Total Order Amount</th>
+                  <th scope="col">Order Status</th>
+                  <th scope="col">Request Refund</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in object.all %}
+                <tr>
+                  <th scope="row">{{ order.ref_code }}</th>
+                  <th scope="row">{{ order.ordered_date }}</th>
+                  <td>
+                    {% for order_item in order.items.all %}
+                      {{ order_item.item.title|linebreaks }}
+                    {% endfor %}
+                  </td>
+                  <td>{{ order.get_total }} EUR</td>
+                  <td>
+                    {% if order.refund_granted %} 
+                    Refund Granted 
+                    {% elif order.refund_requested %} 
+                    Refund Requested 
+                    {% elif order.received %} 
+                    Completed 
+                    {% elif order.being_delivered %} 
+                    In delivery 
+                    {% else %}
+                    Draft
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a class='btn btn-danger' href="{% url 'core:request-refund' %}?ref_code={{ order.ref_code }}">Refund</a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="5">You have no orders</td>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% if object.get_total %}
+                <tr>
+                  <td colspan="4"><b>Order Total</b></td>
+                  <td><b>${{ object.get_total }}</b></td>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <a class='btn btn-danger float-right ml-2' href='/checkout/'>Proceed to checkout</a>
+                    <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
+                  </td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </main>
+
+{% endblock content %}
