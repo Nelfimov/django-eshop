@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    HomeView, 
+    HomeView,
     ItemDetailView, 
     CheckoutView, 
     add_to_cart, 

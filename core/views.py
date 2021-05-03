@@ -14,7 +14,7 @@ from paypalcheckoutsdk.orders import OrdersCreateRequest
 from paypalhttp.serializers.json_serializer import Json
 
 from .forms import CheckoutForm, RefundForm
-from .models import Item, OrderItem, Order, Address, Refund
+from .models import Item, OrderItem, Order, Address, Refund, Carousel
 
 
 def products(request):
@@ -167,10 +167,20 @@ class CheckoutView(View):
         return redirect('core:checkout')
 
 
-class HomeView(ListView):
-    model = Item
-    paginate_by = 10
-    template_name = 'home.html'
+class HomeView(View):
+    def get(self, *args, **kwargs):
+        paginate_by = 10
+        recently_added_items = Item.objects.all().order_by('created_date')
+        bestseller_items = Item.objects.order_by('how_many_times_ordered')[:10]
+        carousel_slides = Carousel.objects.order_by('index').all()
+        context = {
+            'carousel_slides': carousel_slides,
+            'recently_added_items': recently_added_items,
+            'bestseller_items': bestseller_items,
+            'paginate_by': paginate_by,
+        }
+
+        return render(self.request, 'home.html', context)
 
 
 class OrderView(LoginRequiredMixin, ListView):

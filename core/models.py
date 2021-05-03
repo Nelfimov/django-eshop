@@ -48,6 +48,8 @@ class Item(models.Model):
     stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
     description = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    how_many_times_ordered = models.IntegerField(default='0')
     
     def __str__(self):
         return self.title
@@ -150,6 +152,20 @@ class Refund(models.Model):
 
     def __str__(self):
         return f"{self.pk}"
+
+
+class Carousel(models.Model):
+    img = models.CharField(max_length=120)
+    title = models.CharField(max_length=120)
+    body = models.TextField()
+    alt = models.TextField()
+    index = models.IntegerField(unique=True)
+
+    def __unicode__(self):
+        return self.title
+
+    def __str__(self):
+        return self.title
 
 
 def userprofile_receiver(sender, instance, created, *args, **kwargs):

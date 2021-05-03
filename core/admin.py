@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Item, Order, OrderItem, Refund, Address, UserProfile
+from .models import (Item, Order, OrderItem, Refund,
+                     Address, UserProfile, Carousel)
 from payment.models import Payment
 
 
@@ -83,3 +84,4 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Refund)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(UserProfile)
+admin.site.register(Carousel)
