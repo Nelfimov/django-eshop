@@ -8,7 +8,7 @@ from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from .forms import PaymentForm
 from .models import PayPalClient, Payment
-import stripe, random, string, json
+import stripe, random, string
 
 
 def create_ref_code():
