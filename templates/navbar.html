@@ -19,35 +19,28 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <!-- {% comment %} <li class="nav-item active">
-            <a class="nav-link waves-effect" href="/">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="/checkout">
-            Checkout</a>
-          </li> {% endcomment %} -->
         </ul>
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons float-right">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
+            <a class="nav-link waves-effect">
             <i class="fas fa-user"></i>
-            <span class="clearfix d-none d-sm-inline-block">{{ request.user.username }}:</span>
+              <span class="clearfix d-none d-sm-inline-block"> {{ request.user.email }}: </span>
+            </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'core:order-summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{ request.user|cart_item_count }} </span>
               <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Your Cart </span>
+              <span class="clearfix d-none d-sm-inline-block"> My Cart </span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{% url 'core:orders-finished' %}" class="nav-link waves-effect">
               <i class="fas fa-shipping-fast"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Your Orders </span>
+              <span class="clearfix d-none d-sm-inline-block"> My Orders </span>
             </a>
           </li>
           <li class="nav-item">
