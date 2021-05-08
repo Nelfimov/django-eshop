@@ -27,7 +27,7 @@
           <li class="nav-item">
             <a class="nav-link waves-effect">
             <i class="fas fa-user"></i>
-              <span class="clearfix d-none d-sm-inline-block"> {% request.user.email %} {{ request.user.email }} {% else %} {{ request.user.username }} {% endif %}: </span>
+              <span class="clearfix d-none d-sm-inline-block"> {% if request.user.email %} {{ request.user.email }} {% else %} {{ request.user.username }} {% endif %}: </span>
             </a>
           </li>
           <li class="nav-item">
