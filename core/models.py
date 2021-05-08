@@ -34,8 +34,8 @@ class UserProfile(models.Model):
 
 
 class Item(models.Model):
-    title = models.CharField(max_length=100)
-    price = models.DecimalField(decimal_places=2, max_digits=100000)
+    title = models.CharField(max_length=100, null=True)
+    price = models.DecimalField(decimal_places=2, max_digits=100000, null=True)
     discount_price = models.DecimalField(
         decimal_places=2, 
         max_digits=100000, 
