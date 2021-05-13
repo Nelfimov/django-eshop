@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 from decouple import config
-import dj_database_url # HEROKU
+import dj_database_url  # HEROKU
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    ### providers: ###
+    # providers:
     'allauth.socialaccount.providers.amazon',
     'allauth.socialaccount.providers.amazon_cognito',
     'allauth.socialaccount.providers.apple',
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # HEROKU
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # HEROKU
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,7 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request', # allauth
+                'django.template.context_processors.request',  # allauth
             ],
         },
     },
@@ -184,8 +184,8 @@ STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 
 
-### allauth Provide specific settings: ###
-ACCOUNT_EMAIL_REQUIRED = True  
+# allauth Provide specific settings:
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 

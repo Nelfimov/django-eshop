@@ -2,12 +2,8 @@ from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
-from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
-from payment.models import Payment
-import os
-import sys
 
 
 LABEL_CHOICES = (
@@ -37,12 +33,12 @@ class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     discount_price = models.DecimalField(
-        decimal_places=2, 
-        max_digits=10, 
-        blank=True, 
-        null=True
+        decimal_places=2,
+        max_digits=10,
+        blank=True,
+        null=True,
     )
-    title_image = models.CharField(max_length=120)
+    title_image = models.CharField(max_length=120, blank=True, null=True)
     category = models.CharField(max_length=20)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     stock = models.IntegerField()
@@ -54,7 +50,7 @@ class Item(models.Model):
     add_info_image_3 = models.CharField(max_length=120, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     how_many_times_ordered = models.IntegerField(default='0')
-    
+
     def __str__(self):
         return self.title
     pass
@@ -92,7 +88,8 @@ class OrderItem(models.Model):
         return self.quantity * self.item.discount_price
 
     def get_amount_saved(self):
-        return self.get_total_item_price() - self.get_total_discount_item_price()
+        return self.get_total_item_price()
+        - self.get_total_discount_item_price()
 
     def get_final_price(self):
         if self.item.discount_price:
@@ -108,14 +105,19 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     billing_address = models.ForeignKey(
-        'Address', related_name='billing_address', 
+        'Address', related_name='billing_address',
         on_delete=models.SET_NULL, blank=True, null=True)
     shipping_address = models.ForeignKey(
-        'Address', related_name='shipping_address', 
+        'Address', related_name='shipping_address',
         on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(
         'payment.Payment', on_delete=models.SET_NULL, blank=True, null=True)
-    ref_code = models.CharField(max_length=20, blank=True, null=True, default='')
+    ref_code = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        default=''
+        )
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)

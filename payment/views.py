@@ -1,18 +1,22 @@
-from core.models import Order, OrderItem
+from urllib.error import HTTPError
+from core.models import Order, OrderItem, UserProfile
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from .forms import PaymentForm
 from .models import PayPalClient, Payment
-import stripe, random, string
+import stripe
+import random
+import string
 
 
 def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+    return ''.join(random.choices(
+        string.ascii_lowercase + string.digits, k=20))
 
 
 class StripeView(View):
@@ -72,7 +76,6 @@ class StripeView(View):
                 amount = int(order.get_total() * 100)
 
             try:
-                
                 if use_default:
                     charge = stripe.Charge.create(
                         amount=amount,
@@ -85,7 +88,6 @@ class StripeView(View):
                         currency='eur',
                         source=token,
                     )
-                
                 # create the payment
                 payment = Payment()
                 payment.stripe_charge_id = charge['id']
@@ -107,7 +109,6 @@ class StripeView(View):
                 messages.success(self.request, 'Your order was successfull')
                 return redirect('/')
 
-
             except stripe.error.CardError as e:
                 # Since it's a decline, stripe.error.CardError will be caught
 
@@ -125,7 +126,8 @@ class StripeView(View):
 
             except stripe.error.InvalidRequestError as e:
                 # Invalid parameters were supplied to Stripe's API
-                messages.error(self.request, 'Invalid parameters were supplied')
+                messages.error(self.request,
+                               'Invalid parameters were supplied')
                 return redirect('/')
 
             except stripe.error.AuthenticationError as e:
@@ -143,8 +145,9 @@ class StripeView(View):
                 # Display a very generic error to the user, and maybe send
                 # yourself an email
                 messages.error(
-                    self.request, 
-                    'Something went wrong, you were not charged. Please try again'
+                    self.request,
+                    'Something went wrong, you were not charged. \
+                        Please try again'
                 )
                 return redirect('/')
 
@@ -153,7 +156,7 @@ class StripeView(View):
                 # send an email to ourselves
 
                 messages.error(
-                    self.request, 
+                    self.request,
                     'Serious error occured. We have been notified'
                 )
                 return redirect('/')
@@ -169,33 +172,31 @@ class PaypalView(View):
             'order': order,
             'currency': 'EUR'
         }
-    
         return render(self.request, 'paypal.html', context)
 
     def post(self, *args, **kwargs):
         environment = SandboxEnvironment(
-            client_id=settings.PAYPAL_CLIENT_ID, 
+            client_id=settings.PAYPAL_CLIENT_ID,
             client_secret=settings.PAYPAL_CLIENT_SECRET
             )
         client = PayPalHttpClient(environment)
         order = Order.objects.get(user=self.request.user, ordered=False)
         amount = int(order.get_total())
         currency = 'EUR'
-        tax = amount * 0,19
+        tax = amount * 0, 19
         shipping_value = 0
         create_order = OrdersCreateRequest()
         create_order.headers['prefer'] = 'return=representation'
 
         create_order.request_body(
-            {
-            "intent": "CAPTURE",
-            "application_context": {
+            {"intent": "CAPTURE",
+             "application_context": {
                 "brand_name": "LADENBURGER SPIELZEUGAUKTION",
                 "landing_page": "NO_PREFERENCE",
                 "shipping_preference": "SET_PROVIDED_ADDRESS",
                 "user_action": "PAY_NOW",
-            },
-            "purchase_units": [
+                },
+             "purchase_units": [
                 {
                     "description": "Antique Toys",
                     "custom_id": "CUST-Antique Toys",
@@ -237,7 +238,7 @@ class PaypalView(View):
                     "shipping": {
                         "method": "United States Postal Service",
                         "name": {
-                            "full_name":"John Doe"
+                            "full_name": "John Doe"
                         },
                         "address": {
                             "address_line_1": "123 Townsend St",
@@ -250,28 +251,28 @@ class PaypalView(View):
                         }
                     }
                 ]
-            }
+             }
         )
 
         try:
             response = client.execute(create_order)
             data = response.result.__dict__['_dict']
             order_id = response.result.__dict__['id']
-            return  JsonResponse(data)
+            return JsonResponse(data)
 
         except IOError as ioe:
             print(ioe)
-            if isinstance(ioe, HttpError):
+            if isinstance(ioe, HTTPError):
                 print(ioe.status_code)
 
 
 # Paypal capture the approved order
 def capture(request, order_id):
-    if request.method =='POST':
+    if request.method == 'POST':
         order = Order.objects.get(user=request.user, ordered=False)
         capture_order = OrdersCaptureRequest(order_id)
         environment = SandboxEnvironment(
-            client_id=settings.PAYPAL_CLIENT_ID, 
+            client_id=settings.PAYPAL_CLIENT_ID,
             client_secret=settings.PAYPAL_CLIENT_SECRET
             )
         client = PayPalHttpClient(environment)
@@ -292,11 +293,10 @@ def capture(request, order_id):
             return redirect('/')
 
         except IOError as ioe:
-            if isinstance(ioe, HttpError):
+            if isinstance(ioe, HTTPError):
                 print(ioe.status_code)
                 print(ioe.headers)
                 print(ioe)
-                
             else:
                 print(ioe)
 

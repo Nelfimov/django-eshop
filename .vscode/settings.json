@@ -1,6 +1,9 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "/usr/local/bin/python3.9",
+    "python.pythonPath": "venv/bin/python",
     "python.linting.enabled": true,
     "python.linting.pycodestyleEnabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.analysis.useImportHeuristic": true,
+    "python.analysis.extraPaths": ["./sources"]
 }
