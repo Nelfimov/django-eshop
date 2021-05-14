@@ -41,7 +41,7 @@ class Item(models.Model):
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
-    title_image = models.ImageField(upload_to='items/' + slug + '/images/')
+    title_image = models.ImageField(upload_to='items/' + str(slug) + '/images/')
     description = models.TextField()
     additional_information = models.TextField()
     additional_information_images = models.ImageField(
