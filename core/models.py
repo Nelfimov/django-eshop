@@ -1,3 +1,4 @@
+from typing_extensions import Required
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
@@ -38,10 +39,12 @@ class Item(models.Model):
         null=True,
     )
     category = models.CharField(max_length=20)
-    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    label = models.CharField(
+        choices=LABEL_CHOICES, max_length=1, Required=False)
     stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
-    title_image = models.ImageField(upload_to='items/' + str(slug) + '/images/')
+    title_image = models.ImageField(
+        upload_to='items/' + str(slug) + '/images/')
     description = models.TextField()
     additional_information = models.TextField()
     additional_information_images = models.ImageField(
