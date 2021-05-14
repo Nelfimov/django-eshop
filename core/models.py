@@ -1,4 +1,3 @@
-from typing_extensions import Required
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
