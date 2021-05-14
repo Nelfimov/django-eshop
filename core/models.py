@@ -40,7 +40,7 @@ class Item(models.Model):
     )
     category = models.CharField(max_length=20)
     label = models.CharField(
-        choices=LABEL_CHOICES, max_length=1, Required=False)
+        choices=LABEL_CHOICES, max_length=1, null=True, required=False)
     stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
     title_image = models.ImageField(
