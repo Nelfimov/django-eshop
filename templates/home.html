@@ -20,7 +20,7 @@
     {% for slide in carousel_slides %}
       {% if forloop.first %}
         <div class="carousel-item active" data-interval="5000">
-          <img src="{{ slide.img }}" class="d-block w-100" alt="{{ slide.alt }}">
+          <img src="{{ slide.img.url }}" class="d-block w-100" alt="{{ slide.alt }}">
           <div class="carousel-caption d-none d-md-block">
             <h3>{{ slide.title }}</h3>
             <p>{{ slide.body }}</p>
@@ -28,7 +28,7 @@
         </div>
       {% else %}
         <div class="carousel-item" data-interval="5000">
-          <img src="{{ slide.img }}" class="d-block w-100" alt="{{ slide.alt }}">
+          <img src="{{ slide.img.url }}" class="d-block w-100" alt="{{ slide.alt }}">
           <div class="carousel-caption d-none d-md-block">
             <h3>{{ slide.title }}</h3>
             <p>{{ slide.body }}</p>
@@ -109,7 +109,7 @@
 
             <div class="card">
               <div class="view overlay">
-                <img src="{{ item.image }}" class="card-img-top">
+                <img src="{{ item.title_image.url }}" class="card-img-top">
                 <a href="{{ item.get_absolute_url }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -201,7 +201,7 @@
 
             <div class="card">
               <div class="view overlay">
-                <img src="{{ item.image }}" class="card-img-top">
+                <img src="{{ item.title_image.url }}" class="card-img-top">
                 <a href="{{ item.get_absolute_url }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -214,7 +214,10 @@
                 <h5>
                   <strong>
                     <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
-                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
+                      {% if item.get_label_display == 'NEW' %}
+                        <span class="badge badge-pill primary-color">{{ item.get_label_display }}</span>
+                      {% elif item.get_label_display == 'SALE' %}
+                          <span class="badge badge-pill danger-color">{{ item.get_label_display }}</span>
                     </a>
                   </strong>
                 </h5>

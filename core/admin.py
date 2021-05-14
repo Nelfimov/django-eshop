@@ -1,8 +1,8 @@
 from django.contrib import admin
-
-from .models import (Item, Order, OrderItem, Refund,
-                     Address, UserProfile, Carousel)
 from payment.models import Payment
+
+from .models import (Address, Carousel, Item, Order, OrderItem, Refund,
+                     UserProfile)
 
 
 def make_refund_accepted(modeladmin, request, queryset):
@@ -14,27 +14,27 @@ make_refund_accepted.short_description = 'Update orders to refund granted'
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
-        'user', 
+        'user',
         'payment',
-        'ordered', 
-        'being_delivered', 
-        'received', 
-        'refund_requested', 
-        'refund_granted', 
-        'shipping_address', 
-        'billing_address'
+        'ordered',
+        'being_delivered',
+        'received',
+        'refund_requested',
+        'refund_granted',
+        'shipping_address',
+        'billing_address',
     ]
     list_filter = [
-        'ordered', 
-        'being_delivered', 
-        'received', 
-        'refund_requested', 
+        'ordered',
+        'being_delivered',
+        'received',
+        'refund_requested',
         'refund_granted'
     ]
     list_display_links = [
-        'user', 
-        'shipping_address', 
-        'billing_address', 
+        'user',
+        'shipping_address',
+        'billing_address',
         'payment'
     ]
     search_fields = ['user__username', 'ref_code']
@@ -53,7 +53,7 @@ class AddressAdmin(admin.ModelAdmin):
     ]
     list_filter = ['default', 'address_type', 'country']
     search_fields = ['user', 'street_address', 'apartment_address', 'zip']
-    
+
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = [

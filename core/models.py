@@ -7,9 +7,8 @@ from django_countries.fields import CountryField
 
 
 LABEL_CHOICES = (
-    ('p', 'primary'),
-    ('s', 'secondary'),
-    ('d', 'danger')
+    ('n', 'NEW'),
+    ('s', 'SALE'),
 )
 
 
@@ -38,22 +37,20 @@ class Item(models.Model):
         blank=True,
         null=True,
     )
-    title_image = models.CharField(max_length=120, blank=True, null=True)
     category = models.CharField(max_length=20)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
+    title_image = models.ImageField(upload_to='items/' + slug + '/images/')
     description = models.TextField()
     additional_information = models.TextField()
-    add_info_image_1 = models.CharField(max_length=120)
-    add_info_image_2 = models.CharField(max_length=120, blank=True, null=True)
-    add_info_image_3 = models.CharField(max_length=120, blank=True, null=True)
+    additional_information_images = models.ImageField(
+        upload_to='items/' + slug + '/images/')
     created_date = models.DateTimeField(auto_now_add=True)
     how_many_times_ordered = models.IntegerField(default='0')
 
     def __str__(self):
         return self.title
-    pass
 
     def get_absolute_url(self):
         return reverse('core:product', kwargs={
@@ -161,7 +158,7 @@ class Refund(models.Model):
 
 
 class Carousel(models.Model):
-    img = models.CharField(max_length=120)
+    img = models.ImageField()
     title = models.CharField(max_length=120)
     body = models.TextField()
     alt = models.TextField()

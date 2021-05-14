@@ -1,16 +1,14 @@
-from django.contrib import messages
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import (render,
-                              get_object_or_404,
-                              redirect)
-from django.views.generic import ListView, DetailView, View
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.views.generic import DetailView, ListView, View
 
 from .forms import CheckoutForm, RefundForm
-from .models import Item, OrderItem, Order, Address, Refund, Carousel
+from .models import Address, Carousel, Item, Order, OrderItem, Refund
 
 
 def products(request):
