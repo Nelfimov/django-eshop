@@ -45,7 +45,7 @@ class Item(models.Model):
     description = models.TextField()
     additional_information = models.TextField()
     additional_information_images = models.ImageField(
-        upload_to='items/' + slug + '/images/')
+        upload_to='items/' + str(slug) + '/images/')
     created_date = models.DateTimeField(auto_now_add=True)
     how_many_times_ordered = models.IntegerField(default='0')
 
@@ -158,7 +158,7 @@ class Refund(models.Model):
 
 
 class Carousel(models.Model):
-    img = models.ImageField()
+    img = models.ImageField(upload_to='carousel/images/')
     title = models.CharField(max_length=120)
     body = models.TextField()
     alt = models.TextField()
