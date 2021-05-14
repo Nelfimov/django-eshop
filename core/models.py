@@ -43,11 +43,15 @@ class Item(models.Model):
     stock = models.IntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
     title_image = models.ImageField(
-        upload_to='items/' + str(slug) + '/images/')
+        upload_to='items/' + str(title) + '/images/')
     description = models.TextField()
-    additional_information = models.TextField()
-    additional_information_images = models.ImageField(
-        upload_to='items/' + str(slug) + '/images/')
+    additional_information = models.TextField(blank=True, null=True)
+    additional_information_image1 = models.ImageField(
+        upload_to='items/' + str(title) + '/images/', blank=True, null=True)
+    additional_information_image2 = models.ImageField(
+        upload_to='items/' + str(title) + '/images/', blank=True, null=True)
+    additional_information_image3 = models.ImageField(
+        upload_to='items/' + str(title) + '/images/', blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     how_many_times_ordered = models.IntegerField(default='0')
 

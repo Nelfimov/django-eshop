@@ -75,6 +75,7 @@
       <div class="row d-flex justify-content-center wow fadeIn">
 
         <!--Grid column-->
+        {% if object.additional_information %}
         <div class="col-md-6 text-center">
 
           <h4 class="my-4 h4">Additional information</h4>
@@ -82,6 +83,7 @@
           <p>{{ object.additional_information }}</p>
 
         </div>
+        {% endif %}
         <!--Grid column-->
 
       </div>
@@ -91,29 +93,33 @@
       <div class="row wow fadeIn">
 
         <!--Grid column-->
-        {% for image in object %}
+        {% if object.additional_information_image1.url %}
         <div class="col-lg-4 col-md-12 mb-4">
 
-          <img src="{{ image.additional_information_images.url }}" class="img-fluid" alt="">
+          <img src="{{ object.additional_information_image1.url }}" class="img-fluid" alt="">
 
         </div>
-        {% endfor %}
+        {% endif %}
         <!--Grid column-->
 
         <!--Grid column-->
-        {% comment %} <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="{{ object.add_info_image_2.url }}" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
+        {% if object.additional_information_image2.url %}
         <div class="col-lg-4 col-md-6 mb-4">
 
-          <img src="{{ object.add_info_image_3.url }}" class="img-fluid" alt="">
+          <img src="{{ object.additional_information_image2.url }}" class="img-fluid" alt="">
 
-        </div> {% endcomment %}
+        </div>
+        {% endif %}
+        <!--Grid column-->
+
+        <!--Grid column-->
+        {% if object.additional_information_image3.url %}
+        <div class="col-lg-4 col-md-6 mb-4">
+
+          <img src="{{ object.additional_information_image3.url }}" class="img-fluid" alt="">
+
+        </div>
+        {% endif %}
         <!--Grid column-->
 
       </div>
