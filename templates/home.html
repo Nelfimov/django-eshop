@@ -109,7 +109,7 @@
 
             <div class="card">
               <div class="view overlay">
-                <img src="{{ item.title_image.url }}" class="card-img-top">
+                <img src="{{ item.title_image.url }}" class="card-img-top" height="auto">
                 <a href="{{ item.get_absolute_url }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -122,7 +122,11 @@
                 <h5>
                   <strong>
                     <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
-                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
+                      {% if item.get_label_display == 'NEW' %}
+                        <span class="badge badge-pill primary-color">{{ item.get_label_display }}</span>
+                      {% elif item.get_label_display == 'HOT' %}
+                          <span class="badge badge-pill danger-color">{{ item.get_label_display }}</span>
+                      {% endif %}
                     </a>
                   </strong>
                 </h5>
@@ -216,7 +220,7 @@
                     <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
                       {% if item.get_label_display == 'NEW' %}
                         <span class="badge badge-pill primary-color">{{ item.get_label_display }}</span>
-                      {% elif item.get_label_display == 'SALE' %}
+                      {% elif item.get_label_display == 'HOT' %}
                           <span class="badge badge-pill danger-color">{{ item.get_label_display }}</span>
                       {% endif %}
                     </a>

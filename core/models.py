@@ -1,14 +1,16 @@
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
+from django.db.models.fields import CharField
 from django.db.models.signals import post_save
 from django.shortcuts import reverse
+from django_countries import Countries
 from django_countries.fields import CountryField
 
 
 LABEL_CHOICES = (
     ('n', 'NEW'),
-    ('s', 'SALE'),
+    ('h', 'HOT'),
 )
 
 
@@ -28,6 +30,14 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class CategoryItem(models.Model):
+    name = models.CharField(max_length=20)
+    slug = AutoSlugField(populate_from='name', unique_with='id')
+
+    def __str__(self):
+        return self.name
+
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
@@ -37,10 +47,15 @@ class Item(models.Model):
         blank=True,
         null=True,
     )
-    category = models.CharField(max_length=20)
+    category = models.ForeignKey(
+        CategoryItem,
+        on_delete=models.SET_NULL,
+        null=True,
+        default=''
+        )
     label = models.CharField(
         choices=LABEL_CHOICES, max_length=1, null=True, blank=True)
-    stock = models.IntegerField()
+    stock = models.PositiveIntegerField()
     slug = AutoSlugField(populate_from='title', unique_with='id')
     title_image = models.ImageField(
         upload_to='items/' + str(title) + '/images/')
@@ -91,8 +106,8 @@ class OrderItem(models.Model):
         return self.quantity * self.item.discount_price
 
     def get_amount_saved(self):
-        return self.get_total_item_price()
-        - self.get_total_discount_item_price()
+        return self.get_total_item_price() - \
+            self.get_total_discount_item_price()
 
     def get_final_price(self):
         if self.item.discount_price:
@@ -136,12 +151,20 @@ class Order(models.Model):
         return total
 
 
+class EUCountries(Countries):
+    only = [
+        'BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'GR', 'ES', 'FR', 'FR',
+        'HR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL',
+        'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'IS', 'NO', 'LI', 'CH', 'GB',
+    ]
+
+
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     apartment_address = models.CharField(max_length=100)
-    country = CountryField(multiple=False)
+    country = CountryField(multiple=False, countries=EUCountries)
     zip = models.CharField(max_length=100)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)

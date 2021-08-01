@@ -1,9 +1,9 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "venv/bin/python",
+    "python.pythonPath": "/usr/bin/python3",
     "python.linting.enabled": true,
     "python.linting.pycodestyleEnabled": true,
     "python.linting.pylintEnabled": false,
     "python.analysis.useImportHeuristic": true,
-    "python.analysis.extraPaths": ["./sources"]
+    "python.analysis.extraPaths": ["./sources", "./core", "./payment", "./eshop"]
 }
