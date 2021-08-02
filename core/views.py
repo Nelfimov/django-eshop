@@ -8,7 +8,8 @@ from django.utils import timezone
 from django.views.generic import DetailView, ListView, View
 
 from .forms import CheckoutForm, RefundForm
-from .models import Address, Carousel, Item, Order, OrderItem, Refund
+from .models import Address, Carousel, CategoryItem, Item, Order, OrderItem, \
+                    Refund
 
 
 def products(request):
@@ -190,11 +191,19 @@ class HomeView(View):
     def get(self, *args, **kwargs):
         paginate_by = 10
         recently_added_items = Item.objects.all().order_by('created_date')
+        categories = CategoryItem.objects.all()
         category_filter = None
+        search_result = None
         if self.request.GET.get('category'):
             category_filter = self.request.GET.get('category')
             recently_added_items = recently_added_items.filter(
                 category=category_filter)
+
+        if self.request.GET.get('search'):
+            search = self.request.GET.get('search')
+            recently_added_items = recently_added_items.filter(
+                title__icontains=search)
+
         bestseller_items = Item.objects.order_by(
             'how_many_times_ordered')[:10]
         carousel_slides = Carousel.objects.order_by('index').all()
@@ -206,6 +215,7 @@ class HomeView(View):
             'paginate_by': paginate_by,
             'all_recent_items': all_recent_items,
             'category_filter': category_filter,
+            'categories': categories,
         }
 
         return render(self.request, 'home.html', context)

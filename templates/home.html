@@ -73,23 +73,23 @@
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:home' %}">All
+              <a class="nav-link" href="{% url 'core:home' %}#basicExampleNav">All
                 <span class="sr-only">(current)</span>
               </a>
             </li>
 
             <!-- for item in object_list -->
-            {% for item in all_recent_items %}
-            <li class="nav-item {% if category_filter == item.category %} active {% endif %}">
-              <a class="nav-link" href="{% url 'core:home' %}?category={{ item.category }}">{{ item.category }}</a>
+            {% for item in categories %}
+            <li class="nav-item {% if category_filter == item %} active {% endif %}">
+              <a class="nav-link" href="{% url 'core:home' %}?category={{ item.id }}#basicExampleNav">{{ item }}</a>
             </li>
             {% endfor %}
           </ul>
           <!-- Links -->
 
-          <form class="form-inline">
+          <form class="form-inline" action=".#basicExampleNav">
             <div class="md-form my-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
             </div>
           </form>
         </div>
