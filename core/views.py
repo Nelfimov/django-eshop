@@ -189,11 +189,9 @@ class CheckoutView(View):
 
 class HomeView(View):
     def get(self, *args, **kwargs):
-        paginate_by = 10
+        paginate_by = 8
         recently_added_items = Item.objects.all().order_by('created_date')
         categories = CategoryItem.objects.all()
-        category_filter = None
-        search_result = None
         if self.request.GET.get('category'):
             category_filter = self.request.GET.get('category')
             recently_added_items = recently_added_items.filter(
@@ -207,14 +205,11 @@ class HomeView(View):
         bestseller_items = Item.objects.order_by(
             'how_many_times_ordered')[:10]
         carousel_slides = Carousel.objects.order_by('index').all()
-        all_recent_items = Item.objects.all().order_by('created_date')
         context = {
             'carousel_slides': carousel_slides,
             'recently_added_items': recently_added_items,
             'bestseller_items': bestseller_items,
             'paginate_by': paginate_by,
-            'all_recent_items': all_recent_items,
-            'category_filter': category_filter,
             'categories': categories,
         }
 
