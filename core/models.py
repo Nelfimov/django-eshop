@@ -41,6 +41,12 @@ class CategoryItem(models.Model):
 class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
+    delivery_price = models.DecimalField(
+        decimal_places=2,
+        max_digits=10,
+        blank=True,
+        null=True,
+    )
     discount_price = models.DecimalField(
         decimal_places=2,
         max_digits=10,

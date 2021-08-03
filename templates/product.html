@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <main class="mt-5 pt-4">
+  <main class="mt-1 pt-1">
     <div class="container dark-grey-text mt-5">
 
       <!--Grid row-->
@@ -10,9 +10,7 @@
 
         <!--Grid column-->
         <div class="col-md-6 mb-4">
-
           <img src="{{ object.title_image.url }}" class="img-fluid" alt="">
-
         </div>
         <!--Grid column-->
 
@@ -29,20 +27,23 @@
             </div>
 
             <p class="lead">
-              {% if object.discount_price %}
-              <span class="mr-1">
-                <del>${{ object.price }}</del>
-              </span>
-              <span>${{ object.discount_price }}</span>
-              {% else %}
-              <span>${{ object.price }}</span>
-              {% endif %}
+              <h4 class="font-weight-bold blue-text">
+                <strong>
+                  {% if object.discount_price %}
+                    <span class="mr-1">
+                      <h4 class="font-weight-bold text-danger">
+                        <del>&euro; {{ object.price }}</del>
+                      </h4>
+                    </span>
+                    <span>&euro; {{ object.discount_price }}</span>
+                  {% else %}
+                    <span>&euro; {{ object.price }}</span>
+                  {% endif %}
+                </strong>
+              </h4>
             </p>
-
             <p class="lead font-weight-bold">Description</p>
-
             <p>{{ object.description }}</p>
-
             {% comment %} <form class="d-flex justify-content-left">
               <!-- Default input -->
               <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
@@ -50,8 +51,12 @@
                 Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
               </button>
-
             </form> {% endcomment %}
+            {% if object.stock != 0 %}
+              <p class="font-italic">On stock left: {{ object.stock }} </p>
+            {% else %}
+              <p class="font-weighted-bold red-text">On stock left: {{ object.stock }} </p>
+            {% endif %}
             <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
               Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
@@ -59,7 +64,6 @@
             <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
               Remove from cart
             </a>
-
           </div>
           <!--Content-->
 
@@ -76,13 +80,10 @@
 
         <!--Grid column-->
         {% if object.additional_information %}
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>{{ object.additional_information }}</p>
-
-        </div>
+          <div class="col-md-6 text-center">
+            <h4 class="my-4 h4">Additional information</h4>
+            <p>{{ object.additional_information }}</p>
+          </div>
         {% endif %}
         <!--Grid column-->
 
@@ -94,31 +95,25 @@
 
         <!--Grid column-->
         {% if object.additional_information_image1 %}
-        <div class="col-lg-4 col-md-12 mb-4">
-
-          <img src="{{ object.additional_information_image1.url }}" class="img-fluid" alt="">
-
-        </div>
+          <div class="col-lg-4 col-md-12 mb-4">
+            <img src="{{ object.additional_information_image1.url }}" class="img-fluid" alt="">
+          </div>
         {% endif %}
         <!--Grid column-->
 
         <!--Grid column-->
         {% if object.additional_information_image2 %}
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="{{ object.additional_information_image2.url }}" class="img-fluid" alt="">
-
-        </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <img src="{{ object.additional_information_image2.url }}" class="img-fluid" alt="">
+          </div>
         {% endif %}
         <!--Grid column-->
 
         <!--Grid column-->
         {% if object.additional_information_image3 %}
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="{{ object.additional_information_image3.url }}" class="img-fluid" alt="">
-
-        </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <img src="{{ object.additional_information_image3.url }}" class="img-fluid" alt="">
+          </div>
         {% endif %}
         <!--Grid column-->
 
