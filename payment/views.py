@@ -19,6 +19,7 @@ def create_ref_code():
         string.ascii_lowercase + string.digits, k=20))
 
 
+# Stripe
 class StripeView(View):
     def get(self, *args, **kwargs):
         order = Order.objects.get(user=self.request.user, ordered=False)
@@ -184,7 +185,7 @@ class PaypalView(View):
         amount = int(order.get_total())
         currency = 'EUR'
         tax = amount * 0, 19
-        shipping_value = 0
+        shipping_value = order.items.item.delivery_price
         create_order = OrdersCreateRequest()
         create_order.headers['prefer'] = 'return=representation'
 

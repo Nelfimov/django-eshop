@@ -261,14 +261,32 @@ def add_to_cart(request, slug):
         # check if the order item is in the order
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
+            if order_item.quantity > item.stock:
+                messages.warning(
+                    request,
+                    'Unfortunately we do not have this quantity on stock')
+                return redirect('core:order-summary')
+
             order_item.save()
             messages.info(request, 'Quantity was updated')
             return redirect('core:order-summary')
         else:
+            if item.stock == 0:
+                messages.warning(
+                    request,
+                    'Unfortunately we do not have item on stock')
+                return redirect('core:product')
+
             order.items.add(order_item)
             messages.info(request, 'This item was added to your cart')
             return redirect('core:order-summary')
     else:
+        if item.stock == 0:
+            messages.warning(
+                    request,
+                    'Unfortunately we do not have item on stock')
+            return redirect('core:product')
+
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
@@ -298,10 +316,10 @@ def remove_from_cart(request, slug):
             messages.info(request, 'This item was removed from your cart')
             return redirect('core:order-summary')
         else:
-            messages.info(request, 'This item was not in your cart')
+            messages.warning(request, 'This item was not in your cart')
             return redirect('core:product', slug=slug)
     else:
-        messages.info(request, 'You do not have an active order')
+        messages.warning(request, 'You do not have an active order')
         return redirect('core:product', slug=slug)
 
 

@@ -106,10 +106,11 @@ class OrderItem(models.Model):
         return f"{self.quantity} of {self.item.title}"
 
     def get_total_item_price(self):
-        return self.quantity * self.item.price
+        return self.quantity * (self.item.price + self.item.delivery_price)
 
     def get_total_discount_item_price(self):
-        return self.quantity * self.item.discount_price
+        return self.quantity * (
+            self.item.discount_price + self.item.delivery_price)
 
     def get_amount_saved(self):
         return self.get_total_item_price() - \
