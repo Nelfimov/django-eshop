@@ -182,10 +182,31 @@ class PaypalView(View):
             )
         client = PayPalHttpClient(environment)
         order = Order.objects.get(user=self.request.user, ordered=False)
+        order_items = order[0].items.all()
         amount = int(order.get_total())
         currency = 'EUR'
-        tax = amount * 0, 19
-        shipping_value = order.items.item.delivery_price
+        shipping_value = 0
+        items_in_order = []
+        for i in order_items:
+            shipping_value += i.item.delivery_price
+            items_in_order.append(
+                {
+                    'name': str(i.item.title),
+                    'description': str(i.item.description),
+                    'price': float(i.item.price),
+                    'unit_amount': {
+                        'currency_code': currency,
+                        'value': round(float(i.item.price)/1.19, 2)
+                    },
+                    'tax': {
+                        'currency_code': currency,
+                        'value': round(float(i.item.price)*0.19, 2),
+                    },
+                    'quantity': i.quantity,
+                    'category': 'PHYSICAL_GOODS'
+                }
+            )
+
         create_order = OrdersCreateRequest()
         create_order.headers['prefer'] = 'return=representation'
 
@@ -205,41 +226,27 @@ class PaypalView(View):
                     "amount": {
                         "currency_code": currency,
                         "value": amount,
-                        # "breakdown": {
-                        #     "item_total": {
-                        #         "currency_code": currency,
-                        #         "value": amount
-                        #     },
-                        #     "shipping": {
-                        #         "currency_code": currency,
-                        #         "value": shipping_value
-                        #     },
-                        #     "tax_total": {
-                        #         "currency_code": currency,
-                        #         "value": tax
-                        #     }
-                        # }
+                        "breakdown": {
+                            "item_total": {
+                                "currency_code": currency,
+                                "value": amount
+                            },
+                            "shipping": {
+                                "currency_code": currency,
+                                "value": shipping_value
+                            },
+                            "tax_total": {
+                                "currency_code": currency,
+                                "value": round(amount*0.19, 2)
+                            }
+                        }
                     },
-                    # "items": [
-                    #     {
-                    #         "name": 'Toys',
-                    #         "description": 'Toys from antique',
-                    #         "unit_amount": {
-                    #             "currency_code": currency,
-                    #             "value": (amount/1,19)
-                    #         },
-                    #         "tax": {
-                    #             "currency_code": "EUR",
-                    #             "value": tax
-                    #         },
-                    #         "quantity": '1',
-                    #         "category": "PHYSICAL_GOODS"
-                    #     }
-                    # ],
+                    "items": items_in_order,
                     "shipping": {
-                        "method": "United States Postal Service",
+                        "method": "DHL",
                         "name": {
-                            "full_name": "John Doe"
+                            "full_name":
+                            order.shipping_address.name_for_delivery
                         },
                         "address": {
                             "address_line_1": "123 Townsend St",

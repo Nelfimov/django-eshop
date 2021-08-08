@@ -1,7 +1,6 @@
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
-from django.db.models.fields import CharField
 from django.db.models.signals import post_save
 from django.shortcuts import reverse
 from django_countries import Countries
@@ -169,6 +168,7 @@ class EUCountries(Countries):
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
+    name_for_delivery = models.CharField(max_length=120)
     street_address = models.CharField(max_length=100)
     apartment_address = models.CharField(max_length=100)
     country = CountryField(multiple=False, countries=EUCountries)

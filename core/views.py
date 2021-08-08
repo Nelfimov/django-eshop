@@ -80,18 +80,25 @@ class CheckoutView(View):
                         return redirect('core:checkout')
                 else:
                     print('User is entering a new shipping address')
+                    full_name = form.cleaned_data.get(
+                        'name_for_delivery'
+                        )
                     shipping_address1 = form.cleaned_data.get(
-                        'shipping_address')
+                        'shipping_address'
+                        )
                     shipping_address2 = form.cleaned_data.get(
-                        'shipping_address2')
+                        'shipping_address2'
+                        )
                     shipping_country = form.cleaned_data.get(
-                        'shipping_country')
+                        'shipping_country'
+                        )
                     shipping_zip = form.cleaned_data.get('shipping_zip')
                     if is_valid_form([shipping_address1,
                                       shipping_country,
                                       shipping_zip]):
                         shipping_address = Address(
                             user=self.request.user,
+                            name_for_delivery=full_name,
                             street_address=shipping_address1,
                             apartment_address=shipping_address2,
                             country=shipping_country,

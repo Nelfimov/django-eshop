@@ -1,6 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from pkg_resources import require
 
 from .models import EUCountries
 
@@ -12,15 +13,16 @@ PAYMENT_CHOICES = (
 
 
 class CheckoutForm(forms.Form):
-    shipping_address = forms.CharField(required=False)
-    shipping_address2 = forms.CharField(required=False)
+    shipping_address = forms.CharField(required=True)
+    shipping_address2 = forms.CharField(required=True)
     shipping_country = CountryField(
         countries=EUCountries, blank_label='(select country)').formfield(
         required=False,
         widget=CountrySelectWidget(attrs={
             'class': 'custom-select d-block w-100'
         }))
-    shipping_zip = forms.CharField(required=False)
+    shipping_zip = forms.CharField(required=True)
+    name_for_delivery = forms.CharField(required=True)
     billing_address = forms.CharField(required=False)
     billing_address2 = forms.CharField(required=False)
     billing_country = CountryField(
