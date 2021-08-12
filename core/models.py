@@ -80,18 +80,20 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse('core:product', kwargs={
-            'slug': self.slug
-        })
+            'slug': self.slug})
 
     def get_add_to_cart_url(self):
         return reverse('core:add-to-cart', kwargs={
-            'slug': self.slug
-        })
+            'slug': self.slug})
 
     def get_remove_from_cart_url(self):
         return reverse('core:remove-from-cart', kwargs={
-            'slug': self.slug
-        })
+            'slug': self.slug})
+
+    def get_final_price(self):
+        if self.discount_price:
+            return self.discount_price
+        return self.price
 
 
 class OrderItem(models.Model):
@@ -105,11 +107,14 @@ class OrderItem(models.Model):
         return f"{self.quantity} of {self.item.title}"
 
     def get_total_item_price(self):
-        return self.quantity * (self.item.price + self.item.delivery_price)
+        return self.quantity * (
+            self.item.price + self.item.delivery_price
+        )
 
     def get_total_discount_item_price(self):
         return self.quantity * (
-            self.item.discount_price + self.item.delivery_price)
+            self.item.discount_price + self.item.delivery_price
+        )
 
     def get_amount_saved(self):
         return self.get_total_item_price() - \

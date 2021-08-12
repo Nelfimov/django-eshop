@@ -2,6 +2,7 @@ from urllib.error import HTTPError
 from core.models import Order, OrderItem, UserProfile
 from django.conf import settings
 from django.contrib import messages
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
@@ -182,25 +183,36 @@ class PaypalView(View):
             )
         client = PayPalHttpClient(environment)
         order = Order.objects.get(user=self.request.user, ordered=False)
-        order_items = order[0].items.all()
-        amount = int(order.get_total())
+        amount = round(float(order.get_total()), 2)
         currency = 'EUR'
-        shipping_value = 0
+        shipping_value = round(float(0), 2)
         items_in_order = []
-        for i in order_items:
-            shipping_value += i.item.delivery_price
+        for i in order.items.all():
+            shipping_value += round(
+                float(
+                    i.item.delivery_price * i.quantity
+                ),
+                2)
             items_in_order.append(
                 {
                     'name': str(i.item.title),
                     'description': str(i.item.description),
-                    'price': float(i.item.price),
                     'unit_amount': {
                         'currency_code': currency,
-                        'value': round(float(i.item.price)/1.19, 2)
+                        'value': round(
+                            (float(i.item.get_final_price()) -
+                                float(i.item.delivery_price)) / 1.19,
+                            2
+                        )
                     },
                     'tax': {
                         'currency_code': currency,
-                        'value': round(float(i.item.price)*0.19, 2),
+                        'value': round(
+                            float(i.item.get_final_price()) -
+                            float(i.item.get_final_price()) /
+                            1.19,
+                            2
+                        ),
                     },
                     'quantity': i.quantity,
                     'category': 'PHYSICAL_GOODS'
@@ -225,19 +237,22 @@ class PaypalView(View):
                     "soft_descriptor": "Antique Toys",
                     "amount": {
                         "currency_code": currency,
-                        "value": amount,
+                        "value": amount,  # Сумма заказа с НДС и доставкой
                         "breakdown": {
                             "item_total": {
                                 "currency_code": currency,
-                                "value": amount
+                                # Сумма только товаров без доставки и налогов
+                                "value": round((amount-shipping_value)/1.19, 2)
                             },
                             "shipping": {
                                 "currency_code": currency,
-                                "value": shipping_value
+                                # Сумма только доставки
+                                "value": round(shipping_value, 2)
                             },
                             "tax_total": {
                                 "currency_code": currency,
-                                "value": round(amount*0.19, 2)
+                                # Сумма только налогов
+                                "value": round(amount*19/1.19, 2)
                             }
                         }
                     },
@@ -254,7 +269,8 @@ class PaypalView(View):
                             "admin_area_2": "San Francisco",
                             "admin_area_1": "CA",
                             "postal_code": order.shipping_address.zip,
-                            "country_code": order.shipping_address.country,
+                            "country_code": str(
+                                order.shipping_address.country),
                             }
                         }
                     }
@@ -266,7 +282,7 @@ class PaypalView(View):
             response = client.execute(create_order)
             data = response.result.__dict__['_dict']
             order_id = response.result.__dict__['id']
-            return JsonResponse(data)
+            return JsonResponse(model_to_dict(data))
 
         except IOError as ioe:
             print(ioe)
@@ -278,6 +294,7 @@ class PaypalView(View):
 def capture(request, order_id):
     if request.method == 'POST':
         order = Order.objects.get(user=request.user, ordered=False)
+        order_items = order.items.all()
         capture_order = OrdersCaptureRequest(order_id)
         environment = SandboxEnvironment(
             client_id=settings.PAYPAL_CLIENT_ID,
@@ -297,6 +314,10 @@ def capture(request, order_id):
             order.ref_code = create_ref_code()
             order.payment = payment
             order.save()
+            for i in order_items:
+                i.item.stock -= i.quantity
+                i.item.save()
+
             messages.success(request, 'Your order was successfull')
             return redirect('/')
 
