@@ -2,9 +2,9 @@ from urllib.error import HTTPError
 from core.models import Order, UserProfile
 from django.conf import settings
 from django.contrib import messages
-from django.forms.models import model_to_dict
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
@@ -168,14 +168,18 @@ class StripeView(View):
 # PAYPAL
 class PaypalView(View):
     def get(self, *args, **kwargs):
-        client_id = settings.PAYPAL_CLIENT_ID
-        order = Order.objects.get(user=self.request.user, ordered=False)
-        context = {
-            'client_id': client_id,
-            'order': order,
-            'currency': 'EUR'
-        }
-        return render(self.request, 'paypal.html', context)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            client_id = settings.PAYPAL_CLIENT_ID
+            context = {
+                'client_id': client_id,
+                'order': order,
+                'currency': 'EUR'
+            }
+            return render(self.request, 'paypal.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, 'You do not have an active order')
+            return redirect('core:home')
 
     def post(self, *args, **kwargs):
         environment = SandboxEnvironment(
@@ -229,6 +233,7 @@ class PaypalView(View):
                 "landing_page": "NO_PREFERENCE",
                 "shipping_preference": "SET_PROVIDED_ADDRESS",
                 "user_action": "PAY_NOW",
+                "return_url": "http://127.0.0.1:8000/",
                 },
              "purchase_units": [
                 {
@@ -321,7 +326,6 @@ def capture(request, order_id):
             for i in order_items:
                 i.item.stock -= i.quantity
                 i.item.save()
-
             messages.success(request, 'Your order was successfull')
             return redirect('/')
 

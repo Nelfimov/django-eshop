@@ -185,18 +185,53 @@ class CheckoutView(View):
                                       'Please fill in the required \
                                       shipping address')
 
-                payment_option = form.cleaned_data.get('payment_option')
-                if payment_option == 'S':
-                    return redirect('payment:stripe')
-                elif payment_option == 'P':
-                    return redirect('payment:paypal')
+            #  If default Shipping is selected
+            use_default_shipping = form.cleaned_data.get(
+                'use_default_shipping')
+            if use_default_shipping:
+                print('Using default shipping address')
+                address_qs = Address.objects.filter(
+                    user=self.request.user,
+                    address_type='S',
+                    default=True,
+                )
+
+                if address_qs.exists():
+                    shipping_address = address_qs[0]
+                    order.shipping_address = shipping_address
+                    order.save()
                 else:
-                    messages.warning(self.request,
-                                     'Invalid payment option selected')
+                    messages.info(self.request,
+                                  'No default shipping address available')
                     return redirect('core:checkout')
 
+            #  If default Billing is selected
+            use_default_billing = form.cleaned_data.get(
+                'use_default_billing')
+            if use_default_billing:
+                print('Using default billing address')
+                address_qs = Address.objects.filter(
+                    user=self.request.user,
+                    address_type='B',
+                    default=True,
+                )
+                if address_qs.exists():
+                    billing_address = address_qs[0]
+                    order.billing_address = billing_address
+                    order.save()
+                else:
+                    messages.info(self.request,
+                                  'No default billing address available')
+                    return redirect('core:checkout')
+
+            payment_option = form.cleaned_data.get('payment_option')
+            if payment_option == 'S':
+                return redirect('payment:stripe')
+            elif payment_option == 'P':
+                return redirect('payment:paypal')
             else:
-                messages.warning(self.request, 'What is going on???')
+                messages.warning(self.request,
+                                 'Invalid payment option selected')
                 return redirect('core:checkout')
 
         except ObjectDoesNotExist:

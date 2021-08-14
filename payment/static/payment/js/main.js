@@ -62,6 +62,9 @@ const csrftoken = getCookie('csrftoken');
                         // Show a failure message
                         return alert(msg);
                     }
+
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + orderData.payer.name.given_name);
                 });
             }
 
