@@ -90,10 +90,16 @@ class Item(models.Model):
         return reverse('core:remove-from-cart', kwargs={
             'slug': self.slug})
 
+    def get_price_delivery(self):
+        return self.price + self.delivery_price
+
     def get_final_price(self):
         if self.discount_price:
             return self.discount_price
         return self.price
+
+    def get_final_price_delivery(self):
+        return self.get_final_price() + self.delivery_price
 
 
 class OrderItem(models.Model):
@@ -164,9 +170,10 @@ class Order(models.Model):
 
 class EUCountries(Countries):
     only = [
-        'BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'GR', 'ES', 'FR', 'FR',
-        'HR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT', 'PL',
-        'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'IS', 'NO', 'LI', 'CH', 'GB',
+        'BE', 'BG', 'CZ', 'DK', 'DE', 'EE', 'IE', 'GR', 'ES', 'FR',
+        'HR', 'IT', 'CY', 'LV', 'LT', 'LU', 'HU', 'MT', 'NL', 'AT',
+        'PL', 'PT', 'RO', 'SI', 'SK', 'FI', 'SE', 'NO', 'LI', 'CH',
+        'GB',
     ]
 
 

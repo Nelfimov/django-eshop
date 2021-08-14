@@ -132,12 +132,17 @@
                 </h5>
 
                 <h4 class="font-weight-bold blue-text">
-                  <strong>&euro;
-                  {% if item.discount_price %}
-                    {{ item.discount_price }}
-                  {% else %}
-                    {{ item.price }}
-                  {% endif %}
+                  <strong>
+                    {% if item.discount_price %}
+                      <span class="mr-1">
+                        <h4 class="font-weight-bold text-danger">
+                          <del>{{ item.get_price_delivery }}&euro; </del>
+                        </h4>
+                      </span>
+                      <span>{{ item.get_final_price_delivery }}&euro; </span>
+                    {% else %}
+                      <span>{{ item.get_final_price_delivery }}&euro;</span>
+                    {% endif %}
                   </strong>
                 </h4>
 
@@ -228,12 +233,17 @@
                 </h5>
 
                 <h4 class="font-weight-bold blue-text">
-                  <strong>&euro;
-                  {% if item.discount_price %}
-                    {{ item.discount_price }}
-                  {% else %}
-                    {{ item.price }}
-                  {% endif %}
+                  <strong>
+                    {% if item.discount_price %}
+                      <span class="mr-1">
+                        <h4 class="font-weight-bold text-danger">
+                          <del>{{ item.get_price_delivery }}&euro; </del>
+                        </h4>
+                      </span>
+                      <span>{{ item.get_final_price_delivery }}&euro; </span>
+                    {% else %}
+                      <span>{{ item.get_final_price_delivery }}&euro;</span>
+                    {% endif %}
                   </strong>
                 </h4>
 

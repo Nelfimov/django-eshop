@@ -1,5 +1,5 @@
 from urllib.error import HTTPError
-from core.models import Order, OrderItem, UserProfile
+from core.models import Order, UserProfile
 from django.conf import settings
 from django.contrib import messages
 from django.forms.models import model_to_dict
@@ -9,7 +9,8 @@ from django.views.generic import View
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from .forms import PaymentForm
-from .models import PayPalClient, Payment
+from .models import PayPalClient, Payment, VAT_RATES
+import datetime
 import stripe
 import random
 import string
@@ -200,8 +201,7 @@ class PaypalView(View):
                     'unit_amount': {
                         'currency_code': currency,
                         'value': round(
-                            (float(i.item.get_final_price()) -
-                                float(i.item.delivery_price)) / 1.19,
+                            float(i.item.get_final_price()) / 1.19,
                             2
                         )
                     },
@@ -252,7 +252,10 @@ class PaypalView(View):
                             "tax_total": {
                                 "currency_code": currency,
                                 # Сумма только налогов
-                                "value": round(amount*19/1.19, 2)
+                                "value": round(
+                                    (amount-shipping_value) -
+                                    (amount-shipping_value)/1.19,
+                                    2)
                             }
                         }
                     },
@@ -261,14 +264,14 @@ class PaypalView(View):
                         "method": "DHL",
                         "name": {
                             "full_name":
-                            order.shipping_address.name_for_delivery
+                            str(order.shipping_address.name_for_delivery)
                         },
                         "address": {
                             "address_line_1": "123 Townsend St",
                             "address_line_2": "Floor 6",
                             "admin_area_2": "San Francisco",
                             "admin_area_1": "CA",
-                            "postal_code": order.shipping_address.zip,
+                            "postal_code": str(order.shipping_address.zip),
                             "country_code": str(
                                 order.shipping_address.country),
                             }
@@ -281,8 +284,8 @@ class PaypalView(View):
         try:
             response = client.execute(create_order)
             data = response.result.__dict__['_dict']
-            order_id = response.result.__dict__['id']
-            return JsonResponse(model_to_dict(data))
+            # order_id = response.result.__dict__['id']
+            return JsonResponse(data)
 
         except IOError as ioe:
             print(ioe)
@@ -313,6 +316,7 @@ def capture(request, order_id):
             order.ordered = True
             order.ref_code = create_ref_code()
             order.payment = payment
+            order.ordered_date = datetime.datetime.now()
             order.save()
             for i in order_items:
                 i.item.stock -= i.quantity

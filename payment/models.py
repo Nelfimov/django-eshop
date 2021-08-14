@@ -6,6 +6,17 @@ import sys
 import os
 
 
+VAT_RATES = {
+        'BE': '21', 'BG': '20', 'CZ': '21', 'DK': '25', 'DE': '19',
+        'EE': '20', 'IE': '23', 'GR': '24', 'ES': '21', 'FR': '20',
+        'HR': '25', 'IT': '22', 'CY': '19', 'LV': '21', 'LT': '21',
+        'LU': '17', 'HU': '27', 'MT': '18', 'NL': '21', 'AT': '20',
+        'PL': '23', 'PT': '23', 'RO': '19', 'SI': '22', 'SK': '20',
+        'FI': '24', 'SE': '25', 'NO': '25', 'LI': '8', 'CH': '7.7',
+        'GB': '20',
+}
+
+
 class PayPalClient:
     def __init__(self):
         self.client_id = os.environ["PAYPAL_CLIENT_ID"] \

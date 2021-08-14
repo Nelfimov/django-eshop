@@ -19,8 +19,8 @@
                 {% for order_item in object.items.all %}
                 <tr>
                   <th scope="row">{{ forloop.counter }}</th>
-                  <td>{{ order_item.item.title }}</td>
-                  <td>{{ order_item.item.price }}&euro;</td>
+                  <td><a style='color: blue' href="{{ order_item.item.get_absolute_url }}"> {{ order_item.item.title }} </a></td>
+                  <td>{{ order_item.item.get_price_delivery }}&euro;</td>
                   <td>
                     <a href="{% url 'core:remove-single-item-from-cart' order_item.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
                     {{ order_item.quantity }}

@@ -27,8 +27,8 @@
                 </div>
 
                 <div class="md-form mb-5">
-                  <input type='text' placeholder='Full name' id='name_for_delivery' name='name_for_delivery' class='form-control' />
-                  <label for="name_for_delivery" class="">Name for delivery</label>
+                  <input type='text' placeholder='Full name' id='shipping_name' name='shipping_name' class='form-control' />
+                  <label for="shipping_name" class="">Name for shipping</label>
                 </div>
 
                 <div class="row">
@@ -81,6 +81,11 @@
                   <label for="billing_address2" class="">Address 2 (optional)</label>
                 </div>
 
+                <div class="md-form mb-5">
+                  <input type='text' placeholder='Full name' id='billing_name' name='billing_name' class='form-control' />
+                  <label for='billing_name' class="">Name for billing</label>
+                </div>
+
                 <div class="row">
                   <div class="col-lg-4 col-md-12 mb-4">
                     <label for="country">Country</label>
@@ -107,12 +112,14 @@
 
               </div>
 
+              <div class='hideable_billing_form_advanced'>
               {% if default_billing_address %}
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing">
-                <label class="custom-control-label" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:10 }}</label>
-              </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing">
+                  <label class="custom-control-label" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:10 }}</label>
+                </div>
               {% endif %}
+              </div>
               <hr>
 
               <h3>Payment option</h3>
@@ -150,9 +157,11 @@
 <script>
 var hideable_shipping_form = $('.hideable_shipping_form');
 var hideable_billing_form = $('.hideable_billing_form');
+var hideable_billing_form_advanced = $('.hideable_billing_form_advanced');
 
 var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
 var use_default_billing = document.querySelector("input[name=use_default_billing]");
+var same_billing_address = document.querySelector("input[name=same_billing_address]");
 
 use_default_shipping.addEventListener('change', function() {
   if (this.checked) {
@@ -167,6 +176,16 @@ use_default_billing.addEventListener('change', function() {
     hideable_billing_form.hide();
   } else {
     hideable_billing_form.show();
+  }
+})
+
+same_billing_address.addEventListener('change', function() {
+  if (this.checked) {
+    hideable_billing_form.hide();
+    hideable_billing_form_advanced.hide();
+  } else {
+    hideable_billing_form.show();
+    hideable_billing_form_advanced.show();
   }
 })
 

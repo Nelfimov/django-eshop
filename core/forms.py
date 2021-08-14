@@ -22,7 +22,7 @@ class CheckoutForm(forms.Form):
             'class': 'custom-select d-block w-100'
         }))
     shipping_zip = forms.CharField(required=True)
-    name_for_delivery = forms.CharField(required=True)
+    shipping_name = forms.CharField(required=True)
     billing_address = forms.CharField(required=False)
     billing_address2 = forms.CharField(required=False)
     billing_country = CountryField(
@@ -32,6 +32,7 @@ class CheckoutForm(forms.Form):
             'class': 'custom-select d-block w-100'
         }))
     billing_zip = forms.CharField(required=False)
+    billing_name = forms.CharField(required=False)
     same_billing_address = forms.BooleanField(required=False)
     set_default_shipping = forms.BooleanField(required=False)
     use_default_shipping = forms.BooleanField(required=False)
