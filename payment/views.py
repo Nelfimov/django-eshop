@@ -2,9 +2,12 @@ from urllib.error import HTTPError
 from core.models import Order, UserProfile
 from django.conf import settings
 from django.contrib import messages
+from django.core import mail
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.views.generic import View
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
@@ -325,7 +328,22 @@ def capture(request, order_id):
             order.save()
             for i in order_items:
                 i.item.stock -= i.quantity
+                i.item.how_many_times_ordered += 1
                 i.item.save()
+
+            #  Send mail for confirmation of order
+            subject = 'Your order at Jetztistdiebestezeit.de #' \
+                      + order.ref_code
+            html_message = render_to_string(
+                '/emails/order_confirmation_email.html',
+                {'object': order}
+                )
+            plain_message = strip_tags(html_message)
+            from_email = settings.EMAIL_HOST_USER
+            to = request.user.email
+            mail.send_mail(subject, plain_message, from_email,
+                           [to], html_message=html_message)
+
             messages.success(request, 'Your order was successfull')
             return redirect('/')
 

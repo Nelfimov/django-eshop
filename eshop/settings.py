@@ -102,20 +102,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.\
-            password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.' +
+        'NumericPasswordValidator',
     },
 ]
 
@@ -174,6 +174,17 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 
+# Email
+EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.web.de'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_FILE_PATH = '/templates/emails'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -192,6 +203,13 @@ STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_MAX_EMAIL_ADDRESSES = 1
+ACCOUNT_EMAIL_MAX_LENGTH = 254
+ACCOUNT_UNIQUE_EMAIL = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
+SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
 
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -206,7 +224,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'APP': {
             'client_id': PAYPAL_CLIENT_ID,
         },
-        'SCOPE': ['email'],
+        'SCOPE': ['openid', 'email'],
         'MODE': 'test',
     },
     'telegram': {

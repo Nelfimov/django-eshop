@@ -1,0 +1,52 @@
+{% extends "base_email.html" %}
+
+{% block content %}
+  <main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+          <h2>Your Order has been receievd and will be processed shortly</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                    <th scope="col">Order Ref Code</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Ordered Items</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Order Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in object.all %}
+                <tr>
+                    <th scope="row">{{ order.ref_code }}</th>
+                    <th scope="row">{{ order.ordered_date }}</th>
+                    <td>
+                        {% for order_item in order.items.all %}
+                            {{ order_item.item.title|linebreaks }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for order_item in order.items.all %}
+                        {{ order_item.quantity|linebreaks }}
+                        {% endfor %}
+                    </td>
+                    <td>{{ order.get_total }} EUR</td>
+                </tr>
+                {% endfor %}
+                {% if object.get_total %}
+                <tr>
+                  <td colspan="4"><b>Order Total</b></td>
+                  <td><b>${{ object.get_total }}</b></td>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
+                  </td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </main>
+{% endblock content %}
