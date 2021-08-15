@@ -161,7 +161,6 @@ DATABASES['default'].update(prod_db)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # allauth
-
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
@@ -175,14 +174,16 @@ LOGIN_REDIRECT_URL = '/'
 
 
 # Email
-EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.web.de'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
+# EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKED = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '25'
+EMAIL_USE_TLS = False
 EMAIL_USE_SSL = False
 EMAIL_FILE_PATH = '/templates/emails'
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 
 
 # Crispy Forms
@@ -223,9 +224,11 @@ SOCIALACCOUNT_PROVIDERS = {
     'paypal': {
         'APP': {
             'client_id': PAYPAL_CLIENT_ID,
+            'client_secret': PAYPAL_CLIENT_SECRET,
         },
         'SCOPE': ['openid', 'email'],
         'MODE': 'test',
+        'redirect_url': 'http://127.0.0.1:8000'
     },
     'telegram': {
         'TOKEN': config('TELEGRAM_TOKEN')

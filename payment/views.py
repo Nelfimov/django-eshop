@@ -335,7 +335,7 @@ def capture(request, order_id):
             subject = 'Your order at Jetztistdiebestezeit.de #' \
                       + order.ref_code
             html_message = render_to_string(
-                '/emails/order_confirmation_email.html',
+                'emails/order_confirmation_email.html',
                 {'object': order}
                 )
             plain_message = strip_tags(html_message)
