@@ -37,20 +37,21 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     # providers:
-    'allauth.socialaccount.providers.amazon',
-    'allauth.socialaccount.providers.amazon_cognito',
-    'allauth.socialaccount.providers.apple',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.instagram',
-    'allauth.socialaccount.providers.odnoklassniki',
+    # 'allauth.socialaccount.providers.amazon',
+    # 'allauth.socialaccount.providers.amazon_cognito',
+    # 'allauth.socialaccount.providers.apple',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.instagram',
+    # 'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.paypal',
     'allauth.socialaccount.providers.telegram',
-    'allauth.socialaccount.providers.tumblr',
-    'allauth.socialaccount.providers.twitter',
-    'allauth.socialaccount.providers.vk',
-    'allauth.socialaccount.providers.xing',
-    'allauth.socialaccount.providers.yandex',
+    # 'allauth.socialaccount.providers.tumblr',
+    # 'allauth.socialaccount.providers.twitter',
+    # 'allauth.socialaccount.providers.vk',
+    # 'allauth.socialaccount.providers.xing',
+    # 'allauth.socialaccount.providers.yandex',
 ]
 
 MIDDLEWARE = [
@@ -200,6 +201,11 @@ STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 
 
+# Github
+GITHUB_CLIENT_ID = config('GITHUB_CLIENT_ID')
+GITHUB_CLIENT_SECRET = config('GITHUB_CLIENT_SECRET')
+
+
 # allauth Provide specific settings:
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -221,16 +227,26 @@ SOCIALACCOUNT_PROVIDERS = {
             'key': ''
         }
     },
-    'paypal': {
-        'APP': {
-            'client_id': PAYPAL_CLIENT_ID,
-            'client_secret': PAYPAL_CLIENT_SECRET,
-        },
-        'SCOPE': ['openid', 'email'],
-        'MODE': 'test',
-        'redirect_url': 'http://127.0.0.1:8000'
-    },
+    # 'paypal': {
+    #     # 'APP': {
+    #     #     'client_id': PAYPAL_CLIENT_ID,
+    #     #     'secret': PAYPAL_CLIENT_SECRET,
+    #     # },
+    #     'SCOPE': ['openid', 'email'],
+    #     'MODE': 'test',
+    #     # 'redirect_url': 'http://127.0.0.1:8000'
+    # },
     'telegram': {
         'TOKEN': config('TELEGRAM_TOKEN')
-    }
+    },
+    # # 'github': {
+    # #     # 'APP': {
+    # #     #     'client_id': GITHUB_CLIENT_ID,
+    # #     #     'secret': GITHUB_CLIENT_SECRET,
+    # #     # },
+    # #     'SCOPE': [
+    # #         'read:user',
+    # #         'read:email',
+    #     ]
+    # }
 }
