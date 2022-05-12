@@ -7,11 +7,8 @@ import dj_database_url  # HEROKU
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -121,9 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -134,9 +128,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -202,8 +193,8 @@ STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 
 
 # Github
-GITHUB_CLIENT_ID = config('GITHUB_CLIENT_ID')
-GITHUB_CLIENT_SECRET = config('GITHUB_CLIENT_SECRET')
+# GITHUB_CLIENT_ID = config('GITHUB_CLIENT_ID')
+# GITHUB_CLIENT_SECRET = config('GITHUB_CLIENT_SECRET')
 
 
 # allauth Provide specific settings:
@@ -219,34 +210,34 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = False
 SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
 
 
-SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
-    },
-    # 'paypal': {
-    #     # 'APP': {
-    #     #     'client_id': PAYPAL_CLIENT_ID,
-    #     #     'secret': PAYPAL_CLIENT_SECRET,
-    #     # },
-    #     'SCOPE': ['openid', 'email'],
-    #     'MODE': 'test',
-    #     # 'redirect_url': 'http://127.0.0.1:8000'
-    # },
-    'telegram': {
-        'TOKEN': config('TELEGRAM_TOKEN')
-    },
-    # # 'github': {
-    # #     # 'APP': {
-    # #     #     'client_id': GITHUB_CLIENT_ID,
-    # #     #     'secret': GITHUB_CLIENT_SECRET,
-    # #     # },
-    # #     'SCOPE': [
-    # #         'read:user',
-    # #         'read:email',
-    #     ]
-    # }
-}
+# SOCIALACCOUNT_PROVIDERS = {
+#     'facebook': {
+#         'APP': {
+#             'client_id': '123',
+#             'secret': '456',
+#             'key': ''
+#         }
+#     },
+#     # 'paypal': {
+#     #     # 'APP': {
+#     #     #     'client_id': PAYPAL_CLIENT_ID,
+#     #     #     'secret': PAYPAL_CLIENT_SECRET,
+#     #     # },
+#     #     'SCOPE': ['openid', 'email'],
+#     #     'MODE': 'test',
+#     #     # 'redirect_url': 'http://127.0.0.1:8000'
+#     # },
+#     'telegram': {
+#         'TOKEN': config('TELEGRAM_TOKEN')
+#     },
+#     # # 'github': {
+#     # #     # 'APP': {
+#     # #     #     'client_id': GITHUB_CLIENT_ID,
+#     # #     #     'secret': GITHUB_CLIENT_SECRET,
+#     # #     # },
+#     # #     'SCOPE': [
+#     # #         'read:user',
+#     # #         'read:email',
+#     #     ]
+#     # }
+# }
