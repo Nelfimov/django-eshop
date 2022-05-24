@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('core.urls', namespace='core')),
+    path('cart/', include('cart.urls', namespace='cart')),
     path('payment/', include('payment.urls', namespace='payment')),
 ]
 

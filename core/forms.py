@@ -13,11 +13,12 @@ PAYMENT_CHOICES = (
 
 
 class CheckoutForm(forms.Form):
+    email = forms.EmailField(required=True)
     shipping_address = forms.CharField(required=True)
     shipping_address2 = forms.CharField(required=True)
     shipping_country = CountryField(
         countries=EUCountries, blank_label='(select country)').formfield(
-        required=False,
+        required=True,
         widget=CountrySelectWidget(attrs={
             'class': 'custom-select d-block w-100'
         }))
@@ -39,8 +40,8 @@ class CheckoutForm(forms.Form):
     set_default_billing = forms.BooleanField(required=False)
     use_default_billing = forms.BooleanField(required=False)
     save_info = forms.BooleanField(required=False)
-    payment_option = forms.ChoiceField(
-        widget=forms.RadioSelect(), choices=PAYMENT_CHOICES)
+    # payment_option = forms.ChoiceField(
+    #     widget=forms.RadioSelect(), choices=PAYMENT_CHOICES)
 
 
 class RefundForm(forms.Form):

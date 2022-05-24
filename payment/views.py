@@ -1,22 +1,24 @@
+import datetime
+import random
+import string
 from urllib.error import HTTPError
-from core.models import Order, UserProfile
+
+from cart.models import Cart
+from core.models import Order
+from decouple import config
 from django.conf import settings
 from django.contrib import messages
 from django.core import mail
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.views.generic import View
-from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
-from .forms import PaymentForm
-from .models import PayPalClient, Payment, VAT_RATES
-import datetime
-import stripe
-import random
-import string
+from paypalcheckoutsdk.orders import OrdersCaptureRequest, OrdersCreateRequest
+
+from .models import Payment, PayPalClient
 
 
 def create_ref_code():
@@ -24,173 +26,62 @@ def create_ref_code():
         string.ascii_lowercase + string.digits, k=20))
 
 
-# Stripe
-class StripeView(View):
-    def get(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
-        if order.billing_address:
-            context = {
-                'order': order,
-                'DISPLAY_COUPON_FORM': False,
-                'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
-            }
-            userprofile = self.request.user.userprofile
-            if userprofile.one_click_purchasing:
-                cards = stripe.Customer.list_sources(
-                    userprofile.stripe_customer_id,
-                    limit=3,
-                    object='card'
-                )
-                card_list = cards['data']
-                if len(card_list) > 0:
-                    context.update({
-                        'card': card_list[0]
-                    })
-
-            return render(self.request, 'stripe.html', context)
-
-        else:
-            messages.warning(
-                self.request, 'You have not added a billing address')
-            return redirect('core:checkout')
-
-    def post(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
-        form = PaymentForm(self.request.POST)
-        userprofile = UserProfile.objects.get(user=self.request.user)
-        if form.is_valid():
-            token = self.request.POST.get('stripeToken')
-            save = form.cleaned_data.get('save')
-            use_default = form.cleaned_data.get('use_default')
-
-            if save:
-                # alow to fetch cards
-                if not userprofile.stripe_customer_id:
-                    customer = stripe.Customer.create(
-                        email=self.request.user.email,
-                        source=token,
-                    )
-                    userprofile.stripe_customer_id = customer['id']
-                    userprofile.one_click_purchasing = True
-                    userprofile.save()
-                else:
-                    stripe.Customer.create_source(
-                        userprofile.stripe_customer_id,
-                        source=token,
-                    )
-
-                amount = int(order.get_total() * 100)
-
-            try:
-                if use_default:
-                    charge = stripe.Charge.create(
-                        amount=amount,
-                        currency='eur',
-                        customer=userprofile.stripe_customer_id,
-                    )
-                else:
-                    charge = stripe.Charge.create(
-                        amount=amount,
-                        currency='eur',
-                        source=token,
-                    )
-                # create the payment
-                payment = Payment()
-                payment.stripe_charge_id = charge['id']
-                payment.user = self.request.user
-                payment.amount = order.get_total()
-                payment.save()
-
-                # assign the payment to the order
-                order_items = order.items.all()
-                order_items.update(ordered=True)
-                for item in order_items:
-                    item.save()
-
-                order.ordered = True
-                order.payment = payment
-                order.ref_code = create_ref_code()
-                order.save()
-
-                messages.success(self.request, 'Your order was successfull')
-                return redirect('/')
-
-            except stripe.error.CardError as e:
-                # Since it's a decline, stripe.error.CardError will be caught
-
-                print('Status is: %s' % e.http_status)
-                print('Code is: %s' % e.code)
-                # param is '' in this case
-                print('Param is: %s' % e.param)
-                print('Message is: %s' % e.user_message)
-                return redirect('/')
-
-            except stripe.error.RateLimitError as e:
-                # Too many requests made to the API too quickly
-                messages.error(self.request, 'Rate limit error')
-                return redirect('/')
-
-            except stripe.error.InvalidRequestError as e:
-                # Invalid parameters were supplied to Stripe's API
-                messages.error(self.request,
-                               'Invalid parameters were supplied')
-                return redirect('/')
-
-            except stripe.error.AuthenticationError as e:
-                # Authentication with Stripe's API failed
-                # (maybe you changed API keys recently)
-                messages.error(self.request, 'Authentication failed')
-                return redirect('/')
-
-            except stripe.error.APIConnectionError as e:
-                # Network communication with Stripe failed
-                messages.error(self.request, 'Network error')
-                return redirect('/')
-
-            except stripe.error.StripeError as e:
-                # Display a very generic error to the user, and maybe send
-                # yourself an email
-                messages.error(
-                    self.request,
-                    'Something went wrong, you were not charged. \
-                        Please try again'
-                )
-                return redirect('/')
-
-            except Exception as e:
-                # Something else happened, completely unrelated to Stripe
-                # send an email to ourselves
-
-                messages.error(
-                    self.request,
-                    'Serious error occured. We have been notified'
-                )
-                return redirect('/')
-
-
 # PAYPAL
 class PaypalView(View):
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-            client_id = settings.PAYPAL_CLIENT_ID
+            if self.request.user.is_authenticated:
+                cart = Cart.objects.get(
+                    user=self.request.user,
+                    checked_out=False
+                )
+                order = Order.objects.get(
+                    user=self.request.user,
+                    ordered=False,
+                    cart=cart
+                )
+            else:
+                cart = Cart.objects.get(
+                    user=None,
+                    checked_out=False,
+                    session_key=self.request.session.session_key
+                )
+                order = Order.objects.get(ordered=False, cart=cart)
+            client_id = config('PAYPAL_CLIENT_ID')
             context = {
                 'client_id': client_id,
                 'order': order,
-                'currency': 'EUR'
+                'currency': 'EUR',
+                'cart': cart,
             }
             return render(self.request, 'paypal.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, 'You do not have an active order')
-            return redirect('core:home')
+            return redirect('cart:cart-summary')
 
     def post(self, *args, **kwargs):
         environment = SandboxEnvironment(
-            client_id=settings.PAYPAL_CLIENT_ID,
-            client_secret=settings.PAYPAL_CLIENT_SECRET
+            client_id=config('PAYPAL_CLIENT_ID'),
+            client_secret=config('PAYPAL_CLIENT_SECRET')
             )
         client = PayPalHttpClient(environment)
-        order = Order.objects.get(user=self.request.user, ordered=False)
+        if self.request.user.is_authenticated:
+            cart = Cart.objects.get(
+                user=self.request.user,
+                checked_out=False
+            )
+            order = Order.objects.get(
+                user=self.request.user,
+                ordered=False,
+                cart=cart
+            )
+        else:
+            cart = Cart.objects.get(
+                user=None,
+                checked_out=False,
+                session_key=self.request.session.session_key
+            )
+            order = Order.objects.get(user=None, ordered=False, cart=cart)
         amount = round(float(order.get_total()), 2)
         currency = 'EUR'
         shipping_value = round(float(0), 2)
@@ -208,16 +99,14 @@ class PaypalView(View):
                     'unit_amount': {
                         'currency_code': currency,
                         'value': round(
-                            float(i.item.get_final_price()) / 1.19,
+                            float(i.item.price - i.item.discount) / 1.19,
                             2
                         )
                     },
                     'tax': {
                         'currency_code': currency,
                         'value': round(
-                            float(i.item.get_final_price()) -
-                            float(i.item.get_final_price()) /
-                            1.19,
+                            float(i.item.price - i.item.discount) * 19 / 119,
                             2
                         ),
                     },
@@ -236,8 +125,9 @@ class PaypalView(View):
                 "landing_page": "NO_PREFERENCE",
                 "shipping_preference": "SET_PROVIDED_ADDRESS",
                 "user_action": "PAY_NOW",
-                "return_url": "http://127.0.0.1:8000/",
-                },
+                "return_url": "https://example.com/",
+                "cancel_url": "https://example.com/",
+             },
              "purchase_units": [
                 {
                     "description": "Antique Toys",
@@ -261,8 +151,7 @@ class PaypalView(View):
                                 "currency_code": currency,
                                 # Сумма только налогов
                                 "value": round(
-                                    (amount-shipping_value) -
-                                    (amount-shipping_value)/1.19,
+                                    (amount - shipping_value) * 19 / 119,
                                     2)
                             }
                         }
@@ -292,7 +181,6 @@ class PaypalView(View):
         try:
             response = client.execute(create_order)
             data = response.result.__dict__['_dict']
-            # order_id = response.result.__dict__['id']
             return JsonResponse(data)
 
         except IOError as ioe:
@@ -300,24 +188,38 @@ class PaypalView(View):
             if isinstance(ioe, HTTPError):
                 print(ioe.status_code)
 
+        except ObjectDoesNotExist:
+            messages.warning(self.request, 'You do not have an active order')
+            return redirect('core:home')
+
 
 # Paypal capture the approved order
 def capture(request, order_id):
     if request.method == 'POST':
-        order = Order.objects.get(user=request.user, ordered=False)
+        if request.user.is_authenticated:
+            cart = Cart.objects.get(user=request.user, checked_out=False)
+        else:
+            cart = Cart.objects.get(
+                user=None, checked_out=False,
+                session_key=request.session.session_key
+            )
+        order = Order.objects.get(cart=cart, user=cart.user)
         order_items = order.items.all()
         capture_order = OrdersCaptureRequest(order_id)
         environment = SandboxEnvironment(
-            client_id=settings.PAYPAL_CLIENT_ID,
-            client_secret=settings.PAYPAL_CLIENT_SECRET
-            )
+            client_id=config('PAYPAL_CLIENT_ID'),
+            client_secret=config('PAYPAL_CLIENT_SECRET')
+        )
         client = PayPalHttpClient(environment)
 
         try:
             response = client.execute(capture_order)
             data = response.result.__dict__['_dict']
             payment = Payment()
-            payment.user = request.user
+            if request.user.is_authenticated:
+                payment.user = request.user
+            else:
+                payment.user = None
             payment.amount = order.get_total()
             payment.paypal_id = order_id
             payment.save()
@@ -326,26 +228,30 @@ def capture(request, order_id):
             order.payment = payment
             order.ordered_date = datetime.datetime.now()
             order.save()
+            cart.checked_out = True
+            cart.save()
             for i in order_items:
                 i.item.stock -= i.quantity
-                i.item.how_many_times_ordered += 1
+                i.item.ordered_counter += 1
                 i.item.save()
+                i.ordered = True
+                i.save()
 
             #  Send mail for confirmation of order
-            subject = 'Your order at Jetztistdiebestezeit.de #' \
-                      + order.ref_code
-            html_message = render_to_string(
-                'emails/order_confirmation_email.html',
-                {'object': order}
-                )
-            plain_message = strip_tags(html_message)
-            from_email = settings.EMAIL_HOST_USER
-            to = request.user.email
-            mail.send_mail(subject, plain_message, from_email,
-                           [to], html_message=html_message)
+            # subject = 'Your order at Jetztistdiebestezeit.de #' \
+            #           + order.ref_code
+            # html_message = render_to_string(
+            #     'emails/order_confirmation_email.html',
+            #     {'object': order}
+            #     )
+            # plain_message = strip_tags(html_message)
+            # from_email = settings.EMAIL_HOST_USER
+            # to = order.shipping_address.email
+            # mail.send_mail(subject, plain_message, from_email,
+            #                [to], html_message=html_message)
 
-            messages.success(request, 'Your order was successfull')
-            return redirect('/')
+            # messages.success(request, 'Your order was successfull')
+            return JsonResponse(data)
 
         except IOError as ioe:
             if isinstance(ioe, HTTPError):
@@ -358,4 +264,4 @@ def capture(request, order_id):
 
 def getClientId(request):
     if request.method == 'GET':
-        return JsonResponse({'client_id': settings.PAYPAL_CLIENT_ID})
+        return JsonResponse({'client_id': config('PAYPAL_CLIENT_ID')})

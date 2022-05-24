@@ -22,10 +22,11 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions',  # Sessions
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'cart',
     'core',
     'payment',
     'crispy_forms',
@@ -54,7 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # HEROKU
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Sessions
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -120,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -167,15 +168,15 @@ LOGIN_REDIRECT_URL = '/'
 
 # Email
 # EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKED = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKED = 'django.core.mail.backends.filebased.EmailBackend'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = '25'
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = False
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = '25'
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = False
 EMAIL_FILE_PATH = '/templates/emails'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
 
 
 # Crispy Forms
@@ -209,6 +210,11 @@ ACCOUNT_UNIQUE_EMAIL = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
 SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
 
+
+# Sessions
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 1209600
+# SESSION_SAVE_EVERY_REQUEST = True
 
 # SOCIALACCOUNT_PROVIDERS = {
 #     'facebook': {
