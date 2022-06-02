@@ -17,7 +17,13 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 // const order_id = document.getElementById('order-id').value
         paypal.Buttons({
-
+            style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'horizontal',
+                label: 'buynow',
+                
+            },
             // Call your server to set up the transaction
             createOrder: function(data, actions) {
                 return fetch('/payment/paypal/', {
@@ -64,7 +70,8 @@ const csrftoken = getCookie('csrftoken');
                     }
 
                     // Show a success message to the buyer
-                    alert('Transaction completed by ' + orderData.payer.name.given_name);
+                    alert('Transaction completed, we have received your order');
+                    actions.redirect('http://127.0.0.1:8000/');
                 });
             }
 

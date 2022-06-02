@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block head_title %} Home | Jetzt ist die beste Zeit {% endblock %}
 
@@ -42,11 +43,11 @@
   <!-- Buttons -->
   <a class="carousel-control-prev" role="button" href="#carouselExampleFade" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
+    <span class="sr-only">{% translate "Previous" %}</span>
   </a>
   <a class="carousel-control-next" role="button" href="#carouselExampleFade" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
+    <span class="sr-only">{% translate "Next"%}</span>
   </a>
   <!-- /Buttons -->
 </div>
@@ -56,7 +57,7 @@
     <!--Navbar recenly added-->
     <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
       <!-- Navbar brand -->
-      <span class="navbar-brand">Recently added:</span>
+      <span class="navbar-brand">{% translate "Recently added" %}:</span>
       <!-- Collapse button -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
         aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,7 +147,7 @@
         <li class="page-item">
           <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{% translate "Previous" %}</span>
           </a>
         </li>
         {% endif %}
@@ -159,7 +160,7 @@
         <li class="page-item">
           <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{% translate "Next" %}</span>
           </a>
         </li>
         {% endif %}
@@ -169,7 +170,7 @@
     <!--Navbar Bestsellers-->
     <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
       <!-- Navbar brand -->
-      <span class="navbar-brand">Our Bestsellers</span>
+      <span class="navbar-brand">{% translate "Our Bestsellers" %}</span>
     </nav>
     <!--/.Navbar-->
     <!--Section: Products v.3-->
@@ -229,7 +230,7 @@
         <li class="page-item">
           <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{% translate "Previous" %}</span>
           </a>
         </li>
         {% endif %}
@@ -242,7 +243,7 @@
         <li class="page-item">
           <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{% translate "Next" %}</span>
           </a>
         </li>
         {% endif %}

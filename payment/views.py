@@ -17,8 +17,9 @@ from django.utils.html import strip_tags
 from django.views.generic import View
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from paypalcheckoutsdk.orders import OrdersCaptureRequest, OrdersCreateRequest
+from django.utils.translation import gettext_lazy as _
 
-from .models import Payment, PayPalClient
+from .models import Payment
 
 
 def create_ref_code():
@@ -26,7 +27,6 @@ def create_ref_code():
         string.ascii_lowercase + string.digits, k=20))
 
 
-# PAYPAL
 class PaypalView(View):
     def get(self, *args, **kwargs):
         try:
@@ -35,18 +35,12 @@ class PaypalView(View):
                     user=self.request.user,
                     checked_out=False
                 )
-                order = Order.objects.get(
-                    user=self.request.user,
-                    ordered=False,
-                    cart=cart
-                )
             else:
                 cart = Cart.objects.get(
-                    user=None,
-                    checked_out=False,
+                    user=None, checked_out=False,
                     session_key=self.request.session.session_key
                 )
-                order = Order.objects.get(ordered=False, cart=cart)
+            order = Order.objects.get(user=cart.user, ordered=False, cart=cart)
             client_id = config('PAYPAL_CLIENT_ID')
             context = {
                 'client_id': client_id,
@@ -56,68 +50,65 @@ class PaypalView(View):
             }
             return render(self.request, 'paypal.html', context)
         except ObjectDoesNotExist:
-            messages.warning(self.request, 'You do not have an active order')
-            return redirect('cart:cart-summary')
+            messages.warning(
+                self.request,
+                _('You do not have anything in your cart')
+            )
+            return redirect('core:home')
 
     def post(self, *args, **kwargs):
         environment = SandboxEnvironment(
             client_id=config('PAYPAL_CLIENT_ID'),
             client_secret=config('PAYPAL_CLIENT_SECRET')
-            )
+        )
         client = PayPalHttpClient(environment)
         if self.request.user.is_authenticated:
             cart = Cart.objects.get(
                 user=self.request.user,
                 checked_out=False
             )
-            order = Order.objects.get(
-                user=self.request.user,
-                ordered=False,
-                cart=cart
-            )
         else:
             cart = Cart.objects.get(
-                user=None,
-                checked_out=False,
+                user=None, checked_out=False,
                 session_key=self.request.session.session_key
             )
-            order = Order.objects.get(user=None, ordered=False, cart=cart)
-        amount = round(float(order.get_total()), 2)
+        amount = round(float(cart.get_total()), 2)
+        order = Order.objects.get(user=cart.user, ordered=False, cart=cart)
         currency = 'EUR'
         shipping_value = round(float(0), 2)
         items_in_order = []
-        for i in order.items.all():
-            shipping_value += round(
-                float(
-                    i.item.delivery_price * i.quantity
-                ),
-                2)
+        for i in cart.items.all():
+            shipping_value += round(float(i.item.delivery_price * i.quantity),
+                                    2)
             items_in_order.append(
                 {
                     'name': str(i.item.title),
                     'description': str(i.item.description),
                     'unit_amount': {
                         'currency_code': currency,
+                        # 'value': round(
+                        #     float(i.item.price - i.item.discount) / 1.19,
+                        #     2
+                        # )
                         'value': round(
-                            float(i.item.price - i.item.discount) / 1.19,
+                            float(i.item.price - i.item.discount),
                             2
                         )
                     },
                     'tax': {
                         'currency_code': currency,
-                        'value': round(
-                            float(i.item.price - i.item.discount) * 19 / 119,
-                            2
-                        ),
+                        # 'value': round(
+                        #     float(i.item.price - i.item.discount) * 19 / 119,
+                        #     2
+                        # ),
+                        'value': '0'
                     },
                     'quantity': i.quantity,
                     'category': 'PHYSICAL_GOODS'
                 }
             )
-
         create_order = OrdersCreateRequest()
         create_order.headers['prefer'] = 'return=representation'
-
         create_order.request_body(
             {"intent": "CAPTURE",
              "application_context": {
@@ -125,8 +116,8 @@ class PaypalView(View):
                 "landing_page": "NO_PREFERENCE",
                 "shipping_preference": "SET_PROVIDED_ADDRESS",
                 "user_action": "PAY_NOW",
-                "return_url": "https://example.com/",
-                "cancel_url": "https://example.com/",
+                "return_url": "http://127.0.0.1:8000/",
+                "cancel_url": "http://127.0.0.1:8000/",
              },
              "purchase_units": [
                 {
@@ -140,7 +131,8 @@ class PaypalView(View):
                             "item_total": {
                                 "currency_code": currency,
                                 # Сумма только товаров без доставки и налогов
-                                "value": round((amount-shipping_value)/1.19, 2)
+                                # "value":round((amount-shipping_value)/1.19,2)
+                                "value": round((amount - shipping_value), 2)
                             },
                             "shipping": {
                                 "currency_code": currency,
@@ -150,9 +142,10 @@ class PaypalView(View):
                             "tax_total": {
                                 "currency_code": currency,
                                 # Сумма только налогов
-                                "value": round(
-                                    (amount - shipping_value) * 19 / 119,
-                                    2)
+                                # "value": round(
+                                #     (amount - shipping_value) * 19 / 119,
+                                #     2)
+                                'value': '0'
                             }
                         }
                     },
@@ -164,8 +157,12 @@ class PaypalView(View):
                             str(order.shipping_address.name_for_delivery)
                         },
                         "address": {
-                            "address_line_1": "123 Townsend St",
-                            "address_line_2": "Floor 6",
+                            "address_line_1": str(
+                                order.shipping_address.street_address
+                            ),
+                            "address_line_2": str(
+                                order.shipping_address.apartment_address
+                            ),
                             "admin_area_2": "San Francisco",
                             "admin_area_1": "CA",
                             "postal_code": str(order.shipping_address.zip),
@@ -189,7 +186,10 @@ class PaypalView(View):
                 print(ioe.status_code)
 
         except ObjectDoesNotExist:
-            messages.warning(self.request, 'You do not have an active order')
+            messages.warning(
+                self.request,
+                _('You do not have an active order')
+            )
             return redirect('core:home')
 
 
@@ -220,7 +220,7 @@ def capture(request, order_id):
                 payment.user = request.user
             else:
                 payment.user = None
-            payment.amount = order.get_total()
+            payment.amount = cart.get_total()
             payment.paypal_id = order_id
             payment.save()
             order.ordered = True
@@ -238,19 +238,20 @@ def capture(request, order_id):
                 i.save()
 
             #  Send mail for confirmation of order
-            # subject = 'Your order at Jetztistdiebestezeit.de #' \
-            #           + order.ref_code
-            # html_message = render_to_string(
-            #     'emails/order_confirmation_email.html',
-            #     {'object': order}
-            #     )
-            # plain_message = strip_tags(html_message)
-            # from_email = settings.EMAIL_HOST_USER
-            # to = order.shipping_address.email
-            # mail.send_mail(subject, plain_message, from_email,
-            #                [to], html_message=html_message)
+            subject = _('Your order #') + order.ref_code
+            header = subject + _(' from ') + order.ordered_date + \
+                _(' has been received and will be processed shortly')
+            html_message = render_to_string(
+                'emails/order_confirmation_email.html',
+                {'order': order, 'header': header}
+            )
+            plain_message = strip_tags(html_message)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to = order.shipping_address.email
+            mail.send_mail(subject, plain_message, from_email,
+                           [to], html_message=html_message)
 
-            # messages.success(request, 'Your order was successfull')
+            messages.success(request, _('Your order was successfull'))
             return JsonResponse(data)
 
         except IOError as ioe:

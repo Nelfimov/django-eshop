@@ -1,7 +1,10 @@
+from email import message
+from django.db.models import F
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
 
 from .models import Cart, CartItem
@@ -13,7 +16,6 @@ def add_to_cart(request, slug):
     if request.user.is_authenticated:
         cart_item, created = CartItem.objects.get_or_create(
             item=item,
-            user=request.user,
             ordered=False
         )
         cart_qs = Cart.objects.filter(user=request.user, checked_out=False)
@@ -24,71 +26,75 @@ def add_to_cart(request, slug):
                 if cart_item.quantity > item.stock:
                     messages.warning(
                         request,
-                        'Unfortunately we do not have this quantity on stock'
+                        _('Unfortunately we do not have this quantity on stock')
                     )
                     return redirect('cart:cart-summary')
 
                 cart_item.save()
-                messages.info(request, 'Quantity was updated')
+                messages.info(request, _('Quantity was updated'))
                 return redirect('cart:cart-summary')
             else:
                 if item.stock <= 0:
                     messages.warning(
                         request,
-                        'Unfortunately we do not have item on stock'
+                        _('Unfortunately we do not have item on stock')
                     )
-                    return redirect('core:product')
+                    return redirect('core:product', slug=slug)
 
                 cart.items.add(cart_item)
-                messages.info(request, 'This item was added to your cart')
+                messages.info(request, _('This item was added to your cart'))
                 return redirect('cart:cart-summary')
         else:
             if item.stock == 0:
                 messages.warning(
                     request,
-                    'Unfortunately we do not have item on stock'
+                    _('Unfortunately we do not have item on stock')
                 )
                 return redirect('core:product')
 
             cart = Cart.objects.create(user=request.user,
                                        creation_date=timezone.now())
             cart.items.add(cart_item)
-            messages.info(request, 'This item was added to your cart')
+            messages.info(request, _('This item was added to your cart'))
             return redirect('cart:cart-summary')
     else:
-        cart_item, created = CartItem.objects.get_or_create(
-            user=None,
-            item=item,
-        )
         if not request.session.exists(request.session.session_key):
             request.session.create()
 
         cart_qs = Cart.objects.filter(user=None, checked_out=False,
                                       session_key=request.session.session_key)
         if cart_qs.exists():
-            cart = cart_qs[0]
-            if cart.items.filter(item__slug=item.slug).exists():
-                cart_item.quantity += 1
-                if cart_item.quantity > item.stock:
+            cart_item = cart_qs[0].items.filter(item__slug=item.slug)
+
+            if cart_item.exists():
+
+                if cart_item[0].quantity > (item.stock - 1):
                     messages.warning(
                         request,
-                        'Unfortunately we do not have this quantity on stock'
+                        _('Unfortunately we do not have this quantity on stock')
                     )
                     return redirect('cart:cart-summary')
-                cart_item.save()
+                cart_item.update(quantity=F('quantity') + 1)
+                messages.info(
+                    request,
+                    _('Your cart item quantity has been updated')
+                )
                 return redirect('cart:cart-summary')
             else:
-                cart.items.add(cart_item)
+                cart_qs[0].items.add(CartItem.objects.create(item=item))
+                messages.info(
+                    request,
+                    _('Item has been added to your cart')
+                )
                 return redirect('cart:cart-summary')
         else:
-            cart, created = Cart.objects.get_or_create(
+            cart = Cart.objects.create(
                 user=None,
                 session_key=request.session.session_key,
                 creation_date=timezone.now()
             )
-            print(request.session.session_key)
-            cart.items.add(cart_item)
-            messages.info(request, 'This item was added to your cart')
+            cart.items.add(CartItem.objects.create(item=item))
+            messages.info(request, _('This item was added to your cart'))
             return redirect('cart:cart-summary')
 
 
@@ -103,18 +109,21 @@ def remove_from_cart(request, slug):
             cart = cart_qs[0]
             if cart.items.filter(item__slug=item.slug).exists():
                 cart_item = CartItem.objects.filter(
-                    items=item,
-                    user=request.user,
-                    checked_out=False
+                    item=item,
+                    ordered=False
                 )[0]
                 cart.items.remove(cart_item)
-                messages.info(request, 'This item was removed from your cart')
+                cart_item.delete()
+                messages.info(
+                    request,
+                    _('This item was removed from your cart')
+                )
                 return redirect('cart:cart-summary')
             else:
-                messages.warning(request, 'This item was not in your cart')
+                messages.warning(request, _('This item was not in your cart'))
                 return redirect('core:product', slug=slug)
         else:
-            messages.warning(request, 'Your cart is empty')
+            messages.warning(request, _('Your cart is empty'))
             return redirect('core:product', slug=slug)
     else:
         cart_qs = Cart.objects.filter(
@@ -127,16 +136,19 @@ def remove_from_cart(request, slug):
             if cart.items.filter(item__slug=item.slug).exists():
                 cart_item = CartItem.objects.filter(
                     item=item,
-                    user=None,
                 )[0]
                 cart.items.remove(cart_item)
-                messages.info(request, 'This item was removed from your cart')
+                cart_item.delete()
+                messages.info(
+                    request,
+                    _('This item was removed from your cart')
+                )
                 return redirect('cart:cart-summary')
             else:
-                messages.warning(request, 'This item was not in your cart')
+                messages.warning(request, _('This item was not in your cart'))
                 return redirect('core:product', slug=slug)
         else:
-            messages.warning(request, 'Your cart is empty')
+            messages.warning(request, _('Your cart is empty'))
             return redirect('core:product', slug=slug)
 
 
@@ -152,7 +164,6 @@ def remove_single_item_from_cart(request, slug):
             if cart.items.filter(item__slug=item.slug).exists():
                 cart_item = CartItem.objects.filter(
                     item=item,
-                    user=request.user,
                     ordered=False
                 )[0]
                 if cart_item.quantity > 1:
@@ -160,13 +171,14 @@ def remove_single_item_from_cart(request, slug):
                     cart_item.save()
                 else:
                     cart.items.remove(cart_item)
-                messages.info(request, 'This item quantity was updated')
+                    cart_item.delete()
+                messages.info(request, _('This item quantity was updated'))
                 return redirect('cart:cart-summary')
             else:
-                messages.info(request, 'This item was not in your cart')
+                messages.info(request, _('This item was not in your cart'))
                 return redirect('core:product', slug=slug)
         else:
-            messages.info(request, 'You do not have an active order')
+            messages.info(request, _('You do not have an active order'))
             return redirect('core:product', slug=slug)
     else:
         cart_qs = Cart.objects.filter(
@@ -179,7 +191,6 @@ def remove_single_item_from_cart(request, slug):
             if cart.items.filter(item__slug=item.slug).exists():
                 cart_item = CartItem.objects.filter(
                     item=item,
-                    user=None,
                     ordered=False
                 )[0]
                 if cart_item.quantity > 1:
@@ -187,13 +198,14 @@ def remove_single_item_from_cart(request, slug):
                     cart_item.save()
                 else:
                     cart.items.remove(cart_item)
-                messages.info(request, 'This item quantity was updated')
+                    cart_item.delete()
+                messages.info(request, _('This item quantity was updated'))
                 return redirect('cart:cart-summary')
             else:
-                messages.info(request, 'This item was not in your cart')
+                messages.info(request, _('This item was not in your cart'))
                 return redirect('core:product', slug=slug)
         else:
-            messages.info(request, 'You do not have an active order')
+            messages.info(request, _('You do not have an active order'))
             return redirect('core:product', slug=slug)
 
 
@@ -216,5 +228,5 @@ class CartView(View):
             }
             return render(self.request, 'cart_summary.html', context)
         except ObjectDoesNotExist:
-            messages.warning(self.request, 'Your cart is empty')
+            messages.warning(self.request, _('Your cart is empty'))
             return redirect('/')

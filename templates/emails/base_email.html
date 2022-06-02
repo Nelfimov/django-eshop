@@ -59,20 +59,21 @@
 {% load cart_template_tags %}
 
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
-    <div class="container">
-      <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="/">
-        <strong class="blue-text">JETZT IST DIE BESTE ZEIT</strong>
-      </a>
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand waves-effect" href="/">
+      <strong class="blue-text">JETZT IST DIE BESTE ZEIT</strong>
+    </a>
+  </div>
 </nav>
 
 <body>
-    {% block content %}
-    {% endblock content %}
+  {% block content %}
+  {% endblock content %}
 
-    {% block extra_body %}
-    {% endblock %}
+  {% block extra_body %}
+  {% endblock %}
 
-    {% include "footer.html" %}
+  {% include "footer.html" %}
 </body>
 </html>

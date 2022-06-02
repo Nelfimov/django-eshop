@@ -1,23 +1,21 @@
+from tabnanny import verbose
 from django.db import models
 from django.conf import settings
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 
 
 class CartItem(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True,
-                             on_delete=models.CASCADE, null=True)
-    ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(to='core.Item', on_delete=models.CASCADE)
-    quantity = models.IntegerField(default='1')
+    ordered = models.BooleanField(default=False, verbose_name=_('ordered'))
+    item = models.ForeignKey(to='core.Item', on_delete=models.CASCADE,
+                             verbose_name=_('item'))
+    quantity = models.IntegerField(default='1', verbose_name=_('quantity'))
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
 
     def get_total_item_price(self):
-        return self.quantity * (
-            self.item.price + self.item.delivery_price - self.item.discount
-        )
+        return self.quantity * self.item.get_final_price()
 
     def get_saving(self):
         return self.quantity * self.item.discount
@@ -26,11 +24,15 @@ class CartItem(models.Model):
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
                              on_delete=models.CASCADE, blank=True)
-    creation_date = models.DateTimeField(verbose_name=_('creation date'))
+    creation_date = models.DateTimeField(
+        verbose_name=_('creation date'),
+        auto_now_add=True,
+    )
     checked_out = models.BooleanField(default=False,
                                       verbose_name=_('checked out'))
-    items = models.ManyToManyField(CartItem, blank=True)
-    session_key = models.CharField(max_length=60, null=True)
+    items = models.ManyToManyField(CartItem, blank=True,
+                                   verbose_name=_('items'))
+    session_key = models.CharField(max_length=60, null=True, blank=True)
 
     class Meta:
         verbose_name = _('cart')
@@ -39,8 +41,8 @@ class Cart(models.Model):
         unique_together = ('user', 'session_key')
 
     def __str__(self):
-        return f"Session key: {self.session_key} with {self.items.count()}\
-             items in it"
+        return f'Session key: {self.session_key} with {self.items.count()}\
+             items in it'
 
     def get_total(self):
         total = 0

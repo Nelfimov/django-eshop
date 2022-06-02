@@ -70,8 +70,8 @@ const csrftoken = getCookie('csrftoken');
                     }
 
                     // Show a success message to the buyer
-                    alert('Transaction completed');
-                    actions.redirect('https://example.com/');
+                    alert('Transaction completed, we have received your order');
+                    actions.redirect('http://127.0.0.1:8000/');
                 });
             }
 

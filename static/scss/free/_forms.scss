@@ -15,6 +15,7 @@
   input[type="tel"]:not(.browser-default),
   input[type="number"]:not(.browser-default),
   input[type="search"]:not(.browser-default),
+  input[type="phone"]:not(.browser-default),
   input[type="search-md"],
   textarea.md-textarea {
 
@@ -109,7 +110,6 @@
   }
 
   > input[type="date"]:not(.browser-default) + label {
-    transform: translateY(-27px) scale(.8);
     transform-origin: 0 0;
   }
 
@@ -237,13 +237,21 @@
   // Textarea
   textarea {
     &.md-textarea {
-      padding: $textarea-padding 0;
+      padding: 0;
       overflow-y: hidden;
+
+      & + label {
+        top: -0.6rem;
+      }
     }
 
     &.md-textarea-auto {
       padding: 0;
       padding-top: $textarea-padding;
+
+      & + label {
+        top: 0;
+      }
     }
 
     // Label color for textarea
@@ -543,7 +551,6 @@
     }
 
     > input[type="date"]:not(.browser-default) + label {
-      transform: translateY(-12px) scale(.8);
       transform-origin: 0 0;
     }
 
@@ -623,4 +630,82 @@
       }
     }
   }
+}
+
+.md-form {
+  & > label {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .form-control {
+    box-sizing: border-box !important;
+  }
+
+  .form-control.valid + label,
+  .form-control.invalid + label {
+    overflow: visible;
+  }
+
+  .input-prefix {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: $input-prefix-transition;
+    color: rgba(0,0,0,.87);
+    pointer-events: none;
+
+    &.active {
+      color: $input-md-focus-color;
+    }
+  }
+
+  &.input-with-pre-icon {
+    label {
+      left: 36px;
+      right: initial;
+    }
+
+    .input-prefix {
+      left: 16px;
+      right: initial;
+    }
+
+    .form-control {
+      padding-left: 2.7rem !important;
+    }
+  }
+
+  &.input-with-post-icon {
+
+    .input-prefix {
+      right: 16px;
+      left: initial;
+    }
+
+    .form-control {
+      padding-right: 2.7rem !important;
+    }
+  }
+
+  &.input-with-post-icon.input-with-pre-icon {
+
+    .input-prefix {
+      right: 16px;
+      left: initial;
+    }
+
+    .input-prefix:first-of-type {
+      left: 16px;
+      right: initial;
+    }
+
+    .form-control {
+      padding-left: 2.5rem !important;
+      padding-right: 2.5rem !important;
+    }
+  }
+
 }

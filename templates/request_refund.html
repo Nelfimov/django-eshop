@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block head_title %} {% translate "Request Refund" %} | Jetzt ist die beste Zeit {% endblock head_title %}
+
 {% block content %}
   <main>
     <div class="container">
-    <h1>Request Refund</h1>
+    <h1>{% translate "Request Refund" %}</h1>
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type='submit' class='btn btn-primary'>Submit</button>
+        <button type='submit' class='btn btn-primary'>{% translate "Submit" %}</button>
     </form>
     </div>
   </main>

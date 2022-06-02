@@ -1,7 +1,10 @@
-from pathlib import Path
 import os
-from decouple import config
+from pathlib import Path
+
 import dj_database_url  # HEROKU
+from decouple import config
+from django.utils.translation import gettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # HEROKU
     'django.contrib.sessions.middleware.SessionMiddleware',  # Sessions
+    'django.middleware.locale.LocaleMiddleware',  # For translation
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -119,38 +123,41 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de'
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('de', _('German')),
+]
+USE_I18N = True
+USE_L10N = True
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+    BASE_DIR / 'cart' / 'locale',
+    BASE_DIR / 'core' / 'locale',
+    BASE_DIR / 'payment' / 'locale',
+    BASE_DIR / 'eshop' / 'locale',
+]
 
 TIME_ZONE = 'Europe/Moscow'
-
-USE_I18N = True
-
-USE_L10N = True
-
 USE_TZ = True
 
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# FOR HEROKU WHITENOISE
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# FOR HEROKU WHITENOISE
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # Extra lookup directories for collectstatic to find static files
 prod_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
-
 # HEROKU END
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # allauth
@@ -167,17 +174,13 @@ LOGIN_REDIRECT_URL = '/'
 
 
 # Email
-# EMAIL_BACKED = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKED = 'django.core.mail.backends.filebased.EmailBackend'
-
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = '25'
-# EMAIL_USE_TLS = False
-# EMAIL_USE_SSL = False
-EMAIL_FILE_PATH = '/templates/emails'
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('GMAIL_ACCOUNT')
+EMAIL_HOST_PASSWORD = config('GMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'JETZT IST DIE BESTE ZEIT <nelfimov.ne@gmail.com>'
 
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -186,11 +189,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Paypal
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
-
-
-# Stripe
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 
 
 # Github
@@ -214,7 +212,6 @@ SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
 # Sessions
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 1209600
-# SESSION_SAVE_EVERY_REQUEST = True
 
 # SOCIALACCOUNT_PROVIDERS = {
 #     'facebook': {

@@ -1,17 +1,17 @@
 from datetime import datetime
+
+from cart.models import Cart, CartItem
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Sum, F
+from django.db.models import F, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, View
-
-import cart
 
 from .forms import CheckoutForm, RefundForm
 from .models import Address, Carousel, CategoryItem, Item, Order, Refund
-from cart.models import Cart, CartItem
 
 
 def is_valid_form(values):
@@ -59,7 +59,7 @@ class CheckoutView(View):
                                     billing_address_qs[0]})
             return render(self.request, 'checkout.html', context)
         except ObjectDoesNotExist:
-            messages.info(self.request, 'You do not have an active order')
+            messages.info(self.request, _('You do not have anything in cart'))
             return redirect('core:home')
 
     def post(self, *args, **kwargs):
@@ -80,11 +80,11 @@ class CheckoutView(View):
                 order, created = Order.objects.get_or_create(
                     cart=cart, user=cart.user
                 )
-                order.ordered_date = datetime.now()
                 order.items.set(cart_items)
                 if self.request.user.is_authenticated:
                     use_default_shipping = form.cleaned_data.get(
                         'use_default_shipping')
+
                     if use_default_shipping:
                         address_qs = Address.objects.filter(
                             user=self.request.user,
@@ -99,61 +99,63 @@ class CheckoutView(View):
                         else:
                             messages.warning(
                                 self.request,
-                                'No default shipping address available'
+                                _('No default shipping address available')
                             )
                             return redirect('core:checkout')
-                else:
-                    email = form.cleaned_data.get(
-                        'email')
-                    shipping_name = form.cleaned_data.get(
-                        'shipping_name')
-                    shipping_address = form.cleaned_data.get(
-                        'shipping_address')
-                    shipping_address2 = form.cleaned_data.get(
-                        'shipping_address2')
-                    shipping_country = form.cleaned_data.get(
-                        'shipping_country')
-                    shipping_zip = form.cleaned_data.get('shipping_zip')
-                    if is_valid_form([email,
-                                      shipping_address,
-                                      shipping_country,
-                                      shipping_name,
-                                      shipping_zip]):
-                        if self.request.user.is_authenticated:
-                            shipping_address = Address(
-                                user=self.request.user,
-                                email=email,
-                                name_for_delivery=shipping_name,
-                                street_address=shipping_address,
-                                apartment_address=shipping_address2,
-                                country=shipping_country,
-                                zip=shipping_zip,
-                                address_type='S'
-                            )
-                            set_default_shipping = form.cleaned_data.get(
-                                'set_default_shipping')
-                            if set_default_shipping:
-                                shipping_address.default = True
-                                shipping_address.save()
-                        else:
-                            shipping_address = Address(
-                                user=None,
-                                email=email,
-                                name_for_delivery=shipping_name,
-                                street_address=shipping_address,
-                                apartment_address=shipping_address2,
-                                country=shipping_country,
-                                zip=shipping_zip,
-                                address_type='S'
-                            )
-                        shipping_address.save()
-                        order.shipping_address = shipping_address
-                        order.save()
                     else:
-                        messages.warning(
-                            self.request,
-                            'Please fill in the required shipping address'
-                        )
+                        email = form.cleaned_data.get(
+                            'email')
+                        shipping_name = form.cleaned_data.get(
+                            'shipping_name')
+                        shipping_address = form.cleaned_data.get(
+                            'shipping_address')
+                        shipping_address2 = form.cleaned_data.get(
+                            'shipping_address2')
+                        shipping_country = form.cleaned_data.get(
+                            'shipping_country')
+                        shipping_zip = form.cleaned_data.get('shipping_zip')
+                        if is_valid_form([email,
+                                          shipping_address,
+                                          shipping_country,
+                                          shipping_name,
+                                          shipping_zip]):
+                            if self.request.user.is_authenticated:
+                                shipping_address = Address(
+                                    user=self.request.user,
+                                    email=email,
+                                    name_for_delivery=shipping_name,
+                                    street_address=shipping_address,
+                                    apartment_address=shipping_address2,
+                                    country=shipping_country,
+                                    zip=shipping_zip,
+                                    address_type='S'
+                                )
+                                set_default_shipping = form.cleaned_data.get(
+                                    'set_default_shipping')
+                                if set_default_shipping:
+                                    shipping_address.default = True
+                                    shipping_address.save()
+                            else:
+                                shipping_address = Address(
+                                    user=None,
+                                    email=email,
+                                    name_for_delivery=shipping_name,
+                                    street_address=shipping_address,
+                                    apartment_address=shipping_address2,
+                                    country=shipping_country,
+                                    zip=shipping_zip,
+                                    address_type='S'
+                                )
+                            shipping_address.save()
+                            order.shipping_address = shipping_address
+                            order.save()
+                        else:
+                            messages.warning(
+                                self.request,
+                                _('Please fill in the required shipping address')
+                            )
+
+                #  Billing address
                 if self.request.user.is_authenticated:
                     use_default_billing = form.cleaned_data.get(
                         'use_default_billing')
@@ -170,7 +172,7 @@ class CheckoutView(View):
                         else:
                             messages.warning(
                                 self.request,
-                                'No default billing address available'
+                                _('No default billing address available')
                             )
                             return redirect('core:checkout')
 
@@ -230,7 +232,7 @@ class CheckoutView(View):
                     else:
                         messages.warning(
                             self.request,
-                            'Please fill in the required billing address'
+                            _('Please fill in the required billing address')
                         )
                         return redirect('core:checkout')
 
@@ -245,7 +247,7 @@ class CheckoutView(View):
             #     return redirect('core:checkout')
 
         except ObjectDoesNotExist:
-            messages.warning(self.request, 'You do not have an active order')
+            messages.warning(self.request, _('You do not have an active order'))
             return redirect('core:order-summary')
 
 
@@ -264,8 +266,8 @@ class HomeView(View):
             recently_added_items = recently_added_items.filter(
                 title__icontains=search)
 
-        bestseller_items = Item.objects.order_by(
-            'ordered_counter')[:10]
+        bestseller_items = Item.objects.filter(ordered_counter__gt=0).order_by(
+            '-ordered_counter')[:8]
         carousel_slides = Carousel.objects.order_by('index').all()
         context = {
             'carousel_slides': carousel_slides,
@@ -278,7 +280,6 @@ class HomeView(View):
         return render(self.request, 'home.html', context)
 
 
-# class OrderView(LoginRequiredMixin, ListView):
 class OrderView(ListView):
     def get(self, *args, **kwargs):
         try:
@@ -288,7 +289,7 @@ class OrderView(ListView):
             }
             return render(self.request, 'orders_finished.html', context)
         except ObjectDoesNotExist:
-            messages.warning(self.request, 'You do not have any orders')
+            messages.warning(self.request, _('You do not have any orders'))
             return redirect('/')
 
 
@@ -310,8 +311,7 @@ class RequestRefundView(View):
                 return render(self.request, 'request_refund.html', context)
             else:
                 messages.warning(self.request,
-                                 'You are not the user who ordered \
-                                 this order')
+                                 _('You are not the user who ordered this order'))
                 return redirect('core:home')
         return redirect('core:home')
 
@@ -333,27 +333,30 @@ class RequestRefundView(View):
                         refund.email = email
                         refund.save()
                         messages.info(self.request,
-                                      'Your request was received')
+                                      _('Your request was received'))
                         return redirect('core:orders-finished')
 
                     elif order.refund_granted:
-                        messages.info(self.request,
-                                      'You have already received refund \
-                                          for this order')
+                        messages.info(
+                            self.request,
+                            _('You have already received refund for this order')
+                        )
 
                     else:
-                        messages.info(self.request,
-                                      'You have already submitted a ticket. \
-                                          Please wait until we contact you')
+                        messages.info(
+                            self.request,
+                            _('You have already submitted a ticket. Please wait until we contact you')
+                        )
 
                     return redirect('core:orders-finished')
 
                 else:
-                    messages.warning(self.request,
-                                     'You are not the user who ordered \
-                                         this order')
+                    messages.warning(
+                        self.request,
+                        _('You are not the user who ordered this order')
+                    )
                     return redirect('core:home')
 
             except ObjectDoesNotExist:
-                messages.warning(self.request, 'This order does not exist')
+                messages.warning(self.request, _('This order does not exist'))
                 return redirect('core:orders-finished')

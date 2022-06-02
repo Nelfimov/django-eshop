@@ -1,4 +1,5 @@
 from re import UNICODE
+from django.utils.translation import gettext as _
 from django.conf import settings
 from django.db import models
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
@@ -75,13 +76,18 @@ class PayPalClient:
 
 
 class Payment(models.Model):
-    stripe_charge_id = models.CharField(max_length=100, null=True, blank=True)
     paypal_id = models.CharField(max_length=100, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.SET_NULL,
                              blank=True, null=True)
-    amount = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    amount = models.FloatField(verbose_name=_('Amount'))
+    timestamp = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Timestamp'))
 
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        verbose_name = _('Payment')
+        verbose_name_plural = _('Payments')

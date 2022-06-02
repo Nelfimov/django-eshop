@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-02 18:43+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cart/models.py:9
+msgid "ordered"
+msgstr "Bestellt"
+
+#: cart/models.py:11
+#, fuzzy
+#| msgid "items"
+msgid "item"
+msgstr "Artikeln"
+
+#: cart/models.py:12
+msgid "quantity"
+msgstr "Menge"
+
+#: cart/models.py:28
+msgid "creation date"
+msgstr "Erstellungsdatum"
+
+#: cart/models.py:32
+msgid "checked out"
+msgstr "Abgemeldet"
+
+#: cart/models.py:34
+msgid "items"
+msgstr "Artikeln"
+
+#: cart/models.py:38
+msgid "cart"
+msgstr "Warenkorb"
+
+#: cart/models.py:39
+msgid "carts"
+msgstr "Warenkorben"
+
+#: cart/views.py:29 cart/views.py:74
+msgid "Unfortunately we do not have this quantity on stock"
+msgstr "Leider haben wir diese Menge nicht auf Lager"
+
+#: cart/views.py:34
+msgid "Quantity was updated"
+msgstr "Menge wurde aktualisiert"
+
+#: cart/views.py:40 cart/views.py:51
+msgid "Unfortunately we do not have item on stock"
+msgstr "Artikel haben wir leider nicht auf Lager "
+
+#: cart/views.py:45 cart/views.py:58 cart/views.py:97
+msgid "This item was added to your cart"
+msgstr "Dieser Artikel wurde Ihrem Warenkorb hinzugefügt"
+
+#: cart/views.py:80
+msgid "Your cart item quantity has been updated"
+msgstr "Die Artikelmenge Ihres Einkaufswagens wurde aktualisiert"
+
+#: cart/views.py:87
+msgid "Item has been added to your cart"
+msgstr "Der Artikel wurde Ihrem Warenkorb hinzugefügt"
+
+#: cart/views.py:119 cart/views.py:144
+msgid "This item was removed from your cart"
+msgstr "Dieser Artikel wurde aus Ihrem Einkaufswagen entfernt"
+
+#: cart/views.py:123 cart/views.py:148 cart/views.py:178 cart/views.py:205
+msgid "This item was not in your cart"
+msgstr "Dieser Artikel war nicht in Ihrem Warenkorb"
+
+#: cart/views.py:126 cart/views.py:151 cart/views.py:231
+msgid "Your cart is empty"
+msgstr "Ihr Warenkorb ist leer"
+
+#: cart/views.py:175 cart/views.py:202
+msgid "This item quantity was updated"
+msgstr "Die Artikelmenge wurde aktualisiert"
+
+#: cart/views.py:181 cart/views.py:208
+msgid "You do not have an active order"
+msgstr "Sie haben keine aktive Bestellung"
+
+#~ msgid "user"
+#~ msgstr "User"
+
+#, fuzzy
+#~| msgid "creation date"
+#~ msgid "creation_date"
+#~ msgstr "Erstellungsdatum"
+
+#, fuzzy
+#~| msgid "checked out"
+#~ msgid "checked_out"
+#~ msgstr "Abgemeldet"
+
+#~ msgid "session_key"
+#~ msgstr "Session Key"
+
+#~ msgid "id"
+#~ msgstr "id"
+
+#~ msgid "get_price"
+#~ msgstr "Preis bekommen"
+
+#~ msgid "get_total_item_price"
+#~ msgstr "erhalten den gesamten Artikelpreis"

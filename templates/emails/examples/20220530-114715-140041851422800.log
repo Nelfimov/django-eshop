@@ -1,0 +1,336 @@
+Content-Type: multipart/alternative;
+ boundary="===============6477390273973088206=="
+MIME-Version: 1.0
+Subject: Your order at Jetztistdiebestezeit.de #knjitpbe6txq8470juiz
+From: webmaster@localhost
+To: nelfimov@mail.ru
+Date: Mon, 30 May 2022 08:47:15 -0000
+Message-ID: <165390043533.249943.11337508189807629622@fedora>
+
+--===============6477390273973088206==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+    .carousel-caption {
+      background: rgba(0, 0, 0, 0.5);
+      font-weight: bolder;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+      .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        font-weight: bolder;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+      .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        font-weight: bolder;
+      }
+    }
+
+  
+
+
+
+
+
+    
+      
+      
+        JETZT IST DIE BESTE ZEIT
+      
+
+
+
+    
+  
+    
+        
+          Your Order has been receievd and will be processed shortly
+            
+              
+                
+                    Order Ref Code
+                    Order Date
+                    Ordered Items
+                    Quantity
+                    Total Order Amount
+                
+              
+              
+                
+                
+              
+            
+          
+    
+  
+
+
+    
+    
+
+    
+  
+  
+    
+      Impressum
+      
+      Data Protection
+    
+    
+      Jetzt ist die beste Zeit
+      
+      Lustgartenstr. 6
+      
+      68526
+      
+      Germany
+    
+    
+      
+        
+          
+            
+              Telephone: 
+            
+            
+              +49 (0) 6203 13014
+              
+          
+          
+            
+              Email: 
+            
+            
+              drantusi@web.de
+              
+          
+        
+      
+    
+  
+  
+  
+    
+      
+    
+    
+      
+    
+  
+  
+
+  
+  
+    © 2022 Copyright:
+     MDBootstrap.com 
+  
+  
+
+
+
+--===============6477390273973088206==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+  
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/mdb.min.css" rel="stylesheet">
+  <link href="/static/css/style.min.css" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+    .carousel-caption {
+      background: rgba(0, 0, 0, 0.5);
+      font-weight: bolder;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+      .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        font-weight: bolder;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+      .carousel-caption {
+        background: rgba(0, 0, 0, 0.5);
+        font-weight: bolder;
+      }
+    }
+
+  </style>
+</head>
+
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect" href="/">
+        <strong class="blue-text">JETZT IST DIE BESTE ZEIT</strong>
+      </a>
+</nav>
+
+<body>
+    
+  <main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+          <h2>Your Order has been receievd and will be processed shortly</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                    <th scope="col">Order Ref Code</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Ordered Items</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Order Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </main>
+
+
+    
+    
+
+    <footer class="page-footer text-center font-big mt-4 wow fadeIn">
+  <hr class="my-4">
+  <div class="row">
+    <div class="col-md-4 footer">
+      <a class="footer-link" href="/impressum/">Impressum</a>
+      <br>
+      <a class="footer-link" href="/data-protection/">Data Protection</a>
+    </div>
+    <div class="col-md-4">
+      Jetzt ist die beste Zeit
+      <br>
+      Lustgartenstr. 6
+      <br>
+      68526
+      <br>
+      Germany
+    </div>
+    <div class="col-md-4 footer">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              Telephone: 
+            </td>
+            <td>
+              <a class="text-nowrap" href="tel:+49620313014">+49 (0) 6203 13014</a>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              Email: 
+            </td>
+            <td>
+              <a class="text-nowrap" href="mailto:mail@drantusi@web.de">drantusi@web.de</a>
+            </td>  
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Social icons -->
+  <div class="pb-4">
+    <a href="https://www.facebook.com/spielzeugauktion" target="_blank">
+      <i class="fab fa-facebook-f mr-3 fa-2x"></i>
+    </a>
+    <a href="https://www.instagram.com/ladenburger_spielzeugauktion/" target="_blank">
+      <i class="fab fa-instagram mr-3 fa-2x"></i>
+    </a>
+  </div>
+  <!-- Social icons -->
+
+  <!--Copyright-->
+  <div class="footer-copyright py-3">
+    © 2022 Copyright:
+    <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
+  </div>
+  <!--/.Copyright-->
+</footer>
+</body>
+</html>
+--===============6477390273973088206==--
+
+-------------------------------------------------------------------------------

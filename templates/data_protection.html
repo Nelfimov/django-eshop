@@ -1,13 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block head_title %} Data Protection | Jetzt ist die beste Zeit {% endblock %}
+{% block head_title %} {% trans "Data Protection" %} | Jetzt ist die beste Zeit {% endblock %}
 
 {% block content %}
 <main>
-    <div class="container">
-        <h2>Data Protection</h2>
-          <p>
-            Einleitung <br> <br>
+  <div class="container">
+  <h2>{% trans "Data Protection" %}</h2>
+  <p>Einleitung
+    
+  <br> <br>
 Diese Datenschutzerklärung soll Ihnen einen Überblick über die von uns verarbeiteten personenbezogenen Daten geben und unsere Informationspflichten Ihnen gegenüber erfüllen.
 <br><br>
 Grundsätzlich verwenden wir Ihre Daten nur für die angegeben Zwecke. Wir betreiben keinen Datenhandel, keine Nutzerverfolgung (Tracking) und über unsere Seiten werden keine Daten an Werbenetzwerke geliefert.
@@ -251,7 +253,7 @@ Lustgartenstraße 6
 Telefon: +49-(0)6203-13014
 Telefax: +49-(0)6203-17193
 Email: mail@spielzeugauktion.de
-         </p>
-    </div>
+    </p>
+  </div>
 </main>
 {% endblock content %}

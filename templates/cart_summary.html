@@ -1,20 +1,21 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block head_title %} My Cart | Jetzt ist die beste Zeit {% endblock %}
+{% block head_title %} {% translate "My Cart" %} | Jetzt ist die beste Zeit {% endblock %}
 
 {% block content %}
 <main>
   <div class="container">
       <div class="table-responsive text-nowrap">
-        <h2>Cart Summary</h2>
+        <h2>{% translate "Cart Summary" %}</h2>
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Item Title</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total Item Price</th>
+                <th scope="col">{% translate "Item Title" %}</th>
+                <th scope="col">{% translate "Price" %}</th>
+                <th scope="col">{% translate "Quantity" %}</th>
+                <th scope="col">{% translate "Total Item Price" %}</th>
               </tr>
             </thead>
             <tbody>
@@ -33,7 +34,7 @@
                 <td>
                   {% if cart_item.item.discount_price %}
                     {{ cart_item.item.get_final_price }}&euro;
-                    <span class="badge bg-primary">Saving {{ cart_item.get_saving }}&euro;</span>
+                    <span class="badge bg-primary">{% translate "Saving" %} {{ cart_item.get_saving }}&euro;</span>
                   {% else %}
                     {{ cart_item.get_total_item_price }}&euro;
                   {% endif %}
@@ -44,23 +45,23 @@
               </tr>
               {% empty %}
               <tr>
-                <td colspan="5">Your cart is empty</td>
+                <td colspan="5">{% translate "Your cart is empty" %}</td>
               </tr>
               <tr>
                 <td colspan="5">
-                  <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
+                  <a class='btn btn-primary float-right' href='/'>{% translate "Continue shopping" %}</a>
                 </td>
               </tr>
               {% endfor %}
               {% if object.get_total %}
               <tr>
-                <td colspan="4"><b>Cart Total</b></td>
+                <td colspan="4"><b>{% translate "Cart Total" %}</b></td>
                 <td><b>{{ object.get_total }}&euro;</b></td>
               </tr>
               <tr>
                 <td colspan="5">
-                  <a class='btn btn-danger float-right ml-2' href='/checkout/'>Proceed to checkout</a>
-                  <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
+                  <a class='btn btn-danger float-right ml-2' href='/checkout/'>{% translate "Proceed to checkout" %}</a>
+                  <a class='btn btn-primary float-right' href='/'>{% translate "Continue shopping" %}</a>
                 </td>
               </tr>
               {% endif %}

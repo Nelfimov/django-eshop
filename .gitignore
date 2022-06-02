@@ -6,4 +6,5 @@ db.sqlite3
 .env
 /media
 /staticfiles
-*.code-workspace
+/*.code-workspace
+/.vscode

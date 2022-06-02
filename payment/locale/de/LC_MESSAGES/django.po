@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-02 18:43+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: payment/models.py:83
+msgid "Amount"
+msgstr "Summe"
+
+#: payment/models.py:86
+msgid "Timestamp"
+msgstr "Zeitstempel"
+
+#: payment/models.py:92
+msgid "Payment"
+msgstr "Zauhlung"
+
+#: payment/models.py:93
+msgid "Payments"
+msgstr "Zahlungen"
+
+#: payment/views.py:55
+msgid "You do not have anything in your cart"
+msgstr "Sie haben nichts in Ihrem Warenkorb"
+
+#: payment/views.py:191
+msgid "You do not have an active order"
+msgstr "Sie haben keine aktive Bestellung"
+
+#: payment/views.py:241
+msgid "Your order #"
+msgstr "Ihre Bestellung #"
+
+#: payment/views.py:242
+msgid " from "
+msgstr " von "
+
+#: payment/views.py:243
+msgid " has been received and will be processed shortly"
+msgstr " ist eingegangen und wird in Kürze bearbeitet"
+
+#: payment/views.py:254
+msgid "Your order was successfull"
+msgstr "Ihre Bestellung war erfolgreich"

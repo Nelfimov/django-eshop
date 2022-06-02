@@ -1,8 +1,7 @@
 from django.contrib import admin
-from payment.models import Payment
 
-from .models import (Address, Carousel, CategoryItem, Item, Order, CartItem,
-                     Refund)
+from .models import (Address, Carousel, CategoryItem, Item, Order, Refund,
+                     TrackingCompany)
 
 
 def make_refund_accepted(modeladmin, request, queryset):
@@ -18,7 +17,6 @@ class OrderAdmin(admin.ModelAdmin):
         'payment',
         'ordered',
         'being_delivered',
-        'received',
         'refund_requested',
         'refund_granted',
         'shipping_address',
@@ -27,7 +25,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = [
         'ordered',
         'being_delivered',
-        'received',
         'refund_requested',
         'refund_granted'
     ]
@@ -56,9 +53,26 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ['user', 'street_address', 'apartment_address', 'zip']
 
 
-admin.site.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = [
+        'category', 'title', 'price', 'delivery_price',
+        'discount', 'stock', 'ordered_counter',
+    ]
+    list_filter = [
+        'category',
+    ]
+
+
+class CarouselAdmin(admin.ModelAdmin):
+    list_display = [
+        'index', 'title',
+    ]
+
+
+admin.site.register(TrackingCompany)
+admin.site.register(Item, ItemAdmin)
 admin.site.register(CategoryItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Refund)
 admin.site.register(Address, AddressAdmin)
-admin.site.register(Carousel)
+admin.site.register(Carousel, CarouselAdmin)
