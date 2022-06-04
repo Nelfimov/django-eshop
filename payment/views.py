@@ -4,7 +4,7 @@ import string
 from urllib.error import HTTPError
 
 from cart.models import Cart
-from core.models import Order
+from order.models import Order
 from decouple import config
 from django.conf import settings
 from django.contrib import messages

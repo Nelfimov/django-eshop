@@ -1,5 +1,3 @@
-from tabnanny import verbose
-from django.db import models
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext as _
@@ -7,9 +5,13 @@ from django.utils.translation import gettext as _
 
 class CartItem(models.Model):
     ordered = models.BooleanField(default=False, verbose_name=_('ordered'))
-    item = models.ForeignKey(to='core.Item', on_delete=models.CASCADE,
+    item = models.ForeignKey('core.Item', on_delete=models.CASCADE,
                              verbose_name=_('item'))
     quantity = models.IntegerField(default='1', verbose_name=_('quantity'))
+
+    class Meta:
+        verbose_name = _('Cart Item')
+        verbose_name_plural = _('Cart Items')
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
@@ -30,7 +32,7 @@ class Cart(models.Model):
     )
     checked_out = models.BooleanField(default=False,
                                       verbose_name=_('checked out'))
-    items = models.ManyToManyField(CartItem, blank=True,
+    items = models.ManyToManyField('CartItem', blank=True,
                                    verbose_name=_('items'))
     session_key = models.CharField(max_length=60, null=True, blank=True)
 

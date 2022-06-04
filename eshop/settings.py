@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'cart',
+    'order',
     'core',
     'payment',
     'crispy_forms',
@@ -151,6 +152,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 41943040  # File upload size to 40Mb
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760
 
 # Extra lookup directories for collectstatic to find static files
 prod_db = dj_database_url.config(conn_max_age=500)
