@@ -60,6 +60,12 @@
       }
     }
   </script>
+  <script>
+    lightbox.option({
+      'resizeDuration': 100,
+      'wrapAround': True,
+    })
+  </script>
 {% endblock extra_scripts %}
 
 {% block extra_head %}
@@ -116,14 +122,6 @@
             <p class="font-italic">{% translate "Including delivery cost" %}: {{ object.delivery_price }}&euro;</p>
             <p class="lead font-weight-bold">{% translate "Description" %}</p>
             <p>{{ object.description }}</p>
-            {% comment %} <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit">
-                Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
-            </form> {% endcomment %}
             {% if object.stock != 0 %}
               <p class="font-italic">{% translate "On stock left" %}: {{ object.stock }} </p>
               <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
@@ -170,6 +168,19 @@
           </div>
         {% endif %}
       </div>
+      {% if object.images.all %}
+        <div class="container">
+          <div class="row photos">
+            {% for image in object.images.all %}
+              <div class="col-sm-6 col-md-4 col-lg-3 item">
+                <a href="{{ image.image.url }}" data-lightbox="photos">
+                  <img class="img-fluid" src="{{ image.image.url }}">
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
     </div>
   </main>
 {% endblock content %}

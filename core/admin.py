@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import Carousel, CategoryItem, Item
+from .models import Carousel, CategoryItem, Item, ItemImage
+
+
+class ItemImageAdmin(admin.TabularInline):
+    model = ItemImage
+    extra = 3
 
 
 class ItemAdmin(admin.ModelAdmin):
@@ -11,6 +16,7 @@ class ItemAdmin(admin.ModelAdmin):
     list_filter = [
         'category',
     ]
+    inlines = [ItemImageAdmin]
 
 
 class CarouselAdmin(admin.ModelAdmin):

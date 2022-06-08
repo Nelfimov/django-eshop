@@ -4,53 +4,41 @@
 {% block head_title %} Home | Jetzt ist die beste Zeit {% endblock %}
 
 {% block content %}
-<!-- Carousel Wrapper -->
-<div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    {% for slide in carousel_slides %}
-      {% if forloop.first %}
-        <li data-target="#carouselExampleFade" data-slide-to="{{ slide.index }}" class="active"></li>
-      {% else %}
-        <li data-target="#carouselExampleFade" data-slide-to="{{ slide.index }}"></li>
-      {% endif %}
-    {% endfor %}
-  </ol>
-  <!-- /Indicators -->
-  <!-- Inner -->
-  <div class="carousel-inner">
-    {% for slide in carousel_slides %}
-      {% if forloop.first %}
-        <div class="carousel-item active" data-interval="5000">
-          <img src="{{ slide.img.url }}" class="d-block w-100" alt="{{ slide.alt }}">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>{{ slide.title }}</h3>
-            <p>{{ slide.body }}</p>
+  <div class="container h-auto">
+    <!-- Carousel Wrapper -->
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators d-md-none">
+        {% for slide in carousel_slides %}
+          <li data-target="#carouselExampleFade" data-slide-to="{{ slide.index }}" {% if forloop.first %} class="active"{% endif %}></li>
+        {% endfor %}
+      </ol>
+      <!-- /Indicators -->
+      <!-- Inner -->
+      <div class="carousel-inner">
+        {% for slide in carousel_slides %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}" data-interval="5000">
+            <img src="{{ slide.img.url }}" class="d-block w-100 h-auto" alt="{{ slide.alt }}">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>{{ slide.title }}</h3>
+              <p>{{ slide.body }}</p>
+            </div>
           </div>
-        </div>
-      {% else %}
-        <div class="carousel-item" data-interval="5000">
-          <img src="{{ slide.img.url }}" class="d-block w-100" alt="{{ slide.alt }}">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>{{ slide.title }}</h3>
-            <p>{{ slide.body }}</p>
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+        {% endfor %}
+      </div>
+      <!-- /Inner -->
+      <!-- Buttons -->
+      <a class="carousel-control-prev" role="button" href="#carouselExampleFade" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">{% translate "Previous" %}</span>
+      </a>
+      <a class="carousel-control-next" role="button" href="#carouselExampleFade" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">{% translate "Next"%}</span>
+      </a>
+      <!-- /Buttons -->
+    </div>
   </div>
-  <!-- /Inner -->
-  <!-- Buttons -->
-  <a class="carousel-control-prev" role="button" href="#carouselExampleFade" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">{% translate "Previous" %}</span>
-  </a>
-  <a class="carousel-control-next" role="button" href="#carouselExampleFade" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">{% translate "Next"%}</span>
-  </a>
-  <!-- /Buttons -->
-</div>
 <!-- /Carousel Wrapper -->
 <main>
   <div class="container">
@@ -96,12 +84,25 @@
         {% for item in recently_added_items %}
         <div class="col-lg-3 col-md-6 mb-4">
           <div class="card">
-            <div class="view overlay">
-              <img src="{{ item.title_image.url }}" class="card-img-top" height="auto">
-              <a href="{{ item.get_absolute_url }}">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
+            {% if item.stock <= 0 %}
+              <div class="view">
+                <img src="{{ item.title_image.url }}" class="card-img-top" height="auto">
+                <a href="{{ item.get_absolute_url }}">
+                  <div class="mask rgba-red-strong">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                      <p class="text-white mb-0">{% translate "Sold out" %}</p>
+                    </div>
+                  </div>
+                </a>
+              </div> 
+            {% else %}
+              <div class="view overlay">
+                <img src="{{ item.title_image.url }}" class="card-img-top" height="auto">
+                <a href="{{ item.get_absolute_url }}">
+                  <div class="mask rgba-white-slight"></div>      
+                </a>
+              </div>
+            {% endif %}
             <div class="card-body text-center">
               <a href="" class="grey-text">
                 <h5>{{ item.get_category_display }}</h5>
@@ -209,7 +210,7 @@
                         <del>{{ item.price|add:item.delivery_price }}&euro; </del>
                       </h4>
                     </span>
-                    <span>{{ item.get_final_price }}&euro; </span>
+                    <span>{{ item.get_final_price }}&euro;</span>
                   {% else %}
                     <span>{{ item.get_final_price }}&euro;</span>
                   {% endif %}

@@ -151,7 +151,8 @@ class CheckoutView(View):
                         else:
                             messages.warning(
                                 self.request,
-                                _('Please fill in the required shipping address')
+                                _('Please fill in the' +
+                                  ' required shipping address')
                             )
 
                 #  Billing address
@@ -246,7 +247,8 @@ class CheckoutView(View):
             #     return redirect('order:checkout')
 
         except ObjectDoesNotExist:
-            messages.warning(self.request, _('You do not have an active order'))
+            messages.warning(self.request, _('You do not have an' +
+                                             ' active order'))
             return redirect('cart:cart-summary')
 
 
@@ -254,7 +256,10 @@ class OrderView(ListView):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             try:
-                orders = Order.objects.filter(user=self.request.user, ordered=True)
+                orders = Order.objects.filter(
+                    user=self.request.user,
+                    ordered=True
+                )
                 context = {
                     'object': orders
                 }
@@ -280,7 +285,8 @@ class RequestRefundView(View):
                 return render(self.request, 'request_refund.html', context)
             else:
                 messages.warning(self.request,
-                                 _('You are not the user who ordered this order'))
+                                 _('You are not the user who ordered' +
+                                   ' this order'))
                 return redirect('core:home')
         return redirect('core:home')
 
@@ -308,13 +314,15 @@ class RequestRefundView(View):
                     elif order.refund_granted:
                         messages.info(
                             self.request,
-                            _('You have already received refund for this order')
+                            _('You have already received refund' +
+                              'for this order')
                         )
 
                     else:
                         messages.info(
                             self.request,
-                            _('You have already submitted a ticket. Please wait until we contact you')
+                            _('You have already submitted a ticket.' +
+                              ' Please wait until we contact you')
                         )
 
                     return redirect('order:orders-finished')
