@@ -4,6 +4,9 @@ from autoslug import AutoSlugField
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
+from io import BytesIO
+from PIL import Image
+from django.core.files import File
 
 LABEL_CHOICES = (
     ('n', 'NEW'),
@@ -14,6 +17,15 @@ LABEL_CHOICES = (
 def item_image_path(instance, filename):
     dt = date.today()
     return f'items/{dt.year}/{dt.month}/{instance.slug}/{filename}'
+
+
+# Image compression method
+def compress(image):
+    im = Image.open(image)
+    im_io = BytesIO()
+    im.save(im_io, 'JPEG', quality=80)
+    new_image = File(im_io, name=image.name)
+    return new_image
 
 
 class CategoryItem(models.Model):
@@ -81,6 +93,16 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.title_image = compress(self.title_image)
+        if self.additional_information_image1:
+            self.title_image = compress(self.additional_information_image1)
+        if self.additional_information_image2:
+            self.title_image = compress(self.additional_information_image2)
+        if self.additional_information_image2:
+            self.title_image = compress(self.additional_information_image3)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('core:product', kwargs={

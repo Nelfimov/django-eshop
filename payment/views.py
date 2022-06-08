@@ -163,8 +163,8 @@ class PaypalView(View):
                             "address_line_2": str(
                                 order.shipping_address.apartment_address
                             ),
-                            "admin_area_2": "San Francisco",
-                            "admin_area_1": "CA",
+                            "admin_area_2": "asdf",
+                            "admin_area_1": "asdf",
                             "postal_code": str(order.shipping_address.zip),
                             "country_code": str(
                                 order.shipping_address.country),
@@ -239,7 +239,7 @@ def capture(request, order_id):
 
             #  Send mail for confirmation of order
             subject = _('Your order #') + order.ref_code
-            header = subject + _(' from ') + order.ordered_date + \
+            header = subject + _(' from ') + str(order.ordered_date) + \
                 _(' has been received and will be processed shortly')
             html_message = render_to_string(
                 'emails/order_confirmation_email.html',

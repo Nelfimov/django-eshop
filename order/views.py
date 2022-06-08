@@ -1,4 +1,5 @@
 from cart.models import Cart
+from decouple import config
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F, Sum
@@ -34,6 +35,8 @@ class CheckoutView(View):
             context = {
                 'form': form,
                 'cart': cart,
+                'client_id': config('PAYPAL_CLIENT_ID'),
+                'currency': 'EUR',
             }
             if self.request.user.is_authenticated:
                 shipping_address_qs = Address.objects.filter(

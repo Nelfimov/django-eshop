@@ -138,6 +138,7 @@ LOCALE_PATHS = [
     BASE_DIR / 'core' / 'locale',
     BASE_DIR / 'payment' / 'locale',
     BASE_DIR / 'eshop' / 'locale',
+    BASE_DIR / 'order' / 'locale',
 ]
 
 TIME_ZONE = 'Europe/Moscow'

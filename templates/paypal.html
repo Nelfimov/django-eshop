@@ -12,7 +12,7 @@
             <div style='text-align:center'>
               <input id="order-id"  value={{ order.id }} hidden/>
               <br>
-              <div id="paypal-button-container"></div>
+              <div class="col-md-12 mb-1" id="paypal-button-container"></div>
             </div>
           </div>
         </div>
@@ -26,5 +26,82 @@
 
 {% block extra_scripts %}
   <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency={{ currency }}"></script> 
-  <script src="{% static  'payment/js/main.js' %}"></script>
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+    // const order_id = document.getElementById('order-id').value
+    paypal.Buttons({
+        style: {
+            shape: 'rect',
+            color: 'gold',
+            layout: 'vertical',
+            label: 'buynow',
+        },
+        // Call your server to set up the transaction
+        createOrder: function(data, actions) {
+            return fetch("{{ request.path }}", {
+                method: 'post',
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    'content-type': 'application/json'
+                }
+            }).then(function(res) {
+                return res.json();
+            }).then(function(orderData) {
+                return orderData.id;
+            });
+        },
+
+        // Call your server to finalize the transaction
+        onApprove: function(data, actions) {
+            return fetch("{{ request.path }}" + 'capture/' + data.orderID + '/', {
+                method: 'post',
+                headers: {"X-CSRFToken": csrftoken},
+            }).then(function(res) {
+                return res.json();
+            }).then(function(orderData) {
+                // Three cases to handle:
+                //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
+                //   (2) Other non-recoverable errors -> Show a failure message
+                //   (3) Successful transaction -> Show a succ  ess / thank you message
+
+                // Your server defines the structure of 'orderData', which may differ
+                var errorDetail = Array.isArray(orderData.details) && orderData.details[0];
+
+                if (errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED') {
+                    // Recoverable state, see: "Handle Funding Failures"
+                    // https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
+                    return actions.restart();
+                }
+
+                if (errorDetail) {
+                    var msg = 'Sorry, your transaction could not be processed.';
+                    if (errorDetail.description) msg += '\n\n' + errorDetail.description;
+                    if (orderData.debug_id) msg += ' (' + orderData.debug_id + ')';
+                    // Show a failure message
+                    return alert(msg);
+                }
+
+                // Show a success message to the buyer
+                alert('Transaction completed, we have received your order');
+                actions.redirect('http://127.0.0.1:8000/');
+            });
+        }
+    }).render('#paypal-button-container');
+  </script>
 {% endblock extra_scripts %}
