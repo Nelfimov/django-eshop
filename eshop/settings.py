@@ -16,8 +16,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['127.0.0.1', 'django-eshop-app.herokuapp.com']
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', config('HOST')]
 
 # Application definition
 
@@ -185,7 +184,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = config('GMAIL_ACCOUNT')
 EMAIL_HOST_PASSWORD = config('GMAIL_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'JETZT IST DIE BESTE ZEIT <nelfimov.ne@gmail.com>'
+DEFAULT_FROM_EMAIL = 'JETZT IST DIE BESTE ZEIT <' + config('GMAIL_ACCOUNT') + '>'
+SERVER_EMAIL = 'django@jetztistdiebestezeit.de'
+
+ADMINS = (
+    (config('ADMIN1_NAME'), config('ADMIN1_EMAIL')),
+    (config('ADMIN2_NAME'), config('ADMIN2_EMAIL')),
+)
 
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -5,7 +5,9 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
-urlpatterns = []
+urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),  # set_language in Navbar
+]
 
 if settings.DEBUG:
     import debug_toolbar

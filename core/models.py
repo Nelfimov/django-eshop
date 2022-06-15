@@ -1,5 +1,4 @@
 from datetime import date
-from tabnanny import verbose
 
 from autoslug import AutoSlugField
 from django.db import models
@@ -73,12 +72,6 @@ class Item(models.Model):
         null=True,
         verbose_name=_('Additional Information')
     )
-    additional_information_image1 = models.ImageField(
-        upload_to=item_image_path, blank=True, null=True)
-    additional_information_image2 = models.ImageField(
-        upload_to=item_image_path, blank=True, null=True)
-    additional_information_image3 = models.ImageField(
-        upload_to=item_image_path, blank=True, null=True)
     created_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Creation date')

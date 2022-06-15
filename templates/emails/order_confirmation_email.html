@@ -1,42 +1,55 @@
 {% extends "emails/base_email.html" %}
+{% load i18n %}
 
 {% block content %}
-<main>
-  <div class="container">
-    <div class="table-responsive text-nowrap">
-      <h2>{{ header }}</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Item title</th>
-            <th scope="col">Price (incl. Delivery)</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total Item Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order_item in order.items.all %}
+  <main>
+    <div class="container">
+      <div class="table-responsive text-nowrap">
+        <h2>{{ header }}</h2>
+        <p> {% translate "Your order will be delivered at following address" %}:
+          <br>
+          {{ order.shipping_address.name_for_delivery }}
+          <br>
+          {{ order.shipping_address.street_address }}
+          <br>
+          {{ order.shipping_address.apartment_address }}
+          <br>
+          {{ order.shipping_address.country }}
+          <br>
+          {{ order.shipping_address.zip }}
+        </p>
+        <table class="table">
+          <thead>
             <tr>
-              <th scope="row">{{ forloop.counter }}</th>
-              <td><a style='color: blue' href="{{ order_item.item.get_absolute_url }}"> {{ order_item.item.title }} </a></td>              
-              <td>{{ order_item.item.get_final_price }}&euro;</td>
-              <td>{{ order_item.quantity }}</td>
-              <td>{{ order_item.get_total_item_price }}&euro;</td>
+              <th scope="col">#</th>
+              <th scope="col">{% translate "Item title" %}</th>
+              <th scope="col">{% translate "Price (incl. Delivery)" %}</th>
+              <th scope="col">{% translate "Quantity" %}</th>
+              <th scope="col">{% translate "Total Item Price" %}</th>
             </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="4"><b>Order Total</b></td>
-            <td><b>{{ order.cart.get_total }}&euro;</b></td>
-          </tr>
-          <tr>
-            <td colspan="5">
-              <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for order_item in order.items.all %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a style='color: blue' href="{{ order_item.item.get_absolute_url }}"> {{ order_item.item.title }} </a></td>              
+                <td>{{ order_item.item.get_final_price }}&euro;</td>
+                <td>{{ order_item.quantity }}</td>
+                <td>{{ order_item.get_total_item_price }}&euro;</td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <td colspan="4"><b>{% translate "Order Total" %}</b></td>
+              <td><b>{{ order.cart.get_total }}&euro;</b></td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <a class='btn btn-primary float-right' href='/'>{% translate "Continue shopping" %}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 {% endblock content %}

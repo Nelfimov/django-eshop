@@ -250,7 +250,13 @@ def capture(request, order_id):
             to = order.shipping_address.email
             mail.send_mail(subject, plain_message, from_email,
                            [to], html_message=html_message)
-
+            subject_admin = _('New order ') + order.ref_code
+            + _(' has been paid')
+            mail.mail_admins(
+                subject=subject_admin,
+                message='',
+                fail_silently=False,
+            )
             messages.success(request, _('Your order was successfull'))
             return JsonResponse(data)
 
