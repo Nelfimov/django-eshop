@@ -2,10 +2,10 @@ from cart.models import Cart
 from decouple import config
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Sum
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView, View
+from django.views.generic import ListView, View
+from requests import request
 
 from .forms import CheckoutForm, RefundForm
 from .models import Address, Order, Refund
@@ -22,15 +22,15 @@ def is_valid_form(values):
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         try:
-            if self.request.user.is_authenticated:
-                cart = Cart.objects.get(
-                    user=self.request.user, checked_out=False
-                )
-            else:
-                cart = Cart.objects.get(
-                    user=None, session_key=self.request.session.session_key,
-                    checked_out=False
-                )
+            cart = Cart.objects.get(
+                checked_out=False,
+                user=(self.request.user
+                      if self.request.user.is_authenticated
+                      else None),
+                session_key=(None
+                             if self.request.user.is_authenticated
+                             else self.request.session.session_key),
+            )
             form = CheckoutForm()
             context = {
                 'form': form,
@@ -65,21 +65,22 @@ class CheckoutView(View):
         form = CheckoutForm(self.request.POST or None)
         try:
             shipping_address = Address.objects.create()
-            if self.request.user.is_authenticated:
-                cart = Cart.objects.get(
-                    user=self.request.user, checked_out=False
-                )
-            else:
-                cart = Cart.objects.get(
-                    user=None, session_key=self.request.session.session_key,
-                    checked_out=False
-                )
+            cart = Cart.objects.get(
+                checked_out=False,
+                user=(self.request.user
+                      if self.request.user.is_authenticated
+                      else None),
+                session_key=(None
+                             if self.request.user.is_authenticated
+                             else self.request.session.session_key),
+            )
             if form.is_valid():
                 cart_items = cart.items.all()
                 order, created = Order.objects.get_or_create(
                     cart=cart, user=cart.user
                 )
                 order.items.set(cart_items)
+
                 if self.request.user.is_authenticated:
                     use_default_shipping = form.cleaned_data.get(
                         'use_default_shipping')
@@ -101,59 +102,49 @@ class CheckoutView(View):
                                 _('No default shipping address available')
                             )
                             return redirect('order:checkout')
-                    else:
-                        email = form.cleaned_data.get(
-                            'email')
-                        shipping_name = form.cleaned_data.get(
-                            'shipping_name')
-                        shipping_address = form.cleaned_data.get(
-                            'shipping_address')
-                        shipping_address2 = form.cleaned_data.get(
-                            'shipping_address2')
-                        shipping_country = form.cleaned_data.get(
-                            'shipping_country')
-                        shipping_zip = form.cleaned_data.get('shipping_zip')
-                        if is_valid_form([email,
-                                          shipping_address,
-                                          shipping_country,
-                                          shipping_name,
-                                          shipping_zip]):
-                            if self.request.user.is_authenticated:
-                                shipping_address = Address(
-                                    user=self.request.user,
-                                    email=email,
-                                    name_for_delivery=shipping_name,
-                                    street_address=shipping_address,
-                                    apartment_address=shipping_address2,
-                                    country=shipping_country,
-                                    zip=shipping_zip,
-                                    address_type='S'
-                                )
-                                set_default_shipping = form.cleaned_data.get(
-                                    'set_default_shipping')
-                                if set_default_shipping:
-                                    shipping_address.default = True
-                                    shipping_address.save()
-                            else:
-                                shipping_address = Address(
-                                    user=None,
-                                    email=email,
-                                    name_for_delivery=shipping_name,
-                                    street_address=shipping_address,
-                                    apartment_address=shipping_address2,
-                                    country=shipping_country,
-                                    zip=shipping_zip,
-                                    address_type='S'
-                                )
-                            shipping_address.save()
-                            order.shipping_address = shipping_address
-                            order.save()
-                        else:
-                            messages.warning(
-                                self.request,
-                                _('Please fill in the' +
-                                  ' required shipping address')
-                            )
+
+                email = form.cleaned_data.get(
+                    'email')
+                shipping_name = form.cleaned_data.get(
+                    'shipping_name')
+                shipping_address = form.cleaned_data.get(
+                    'shipping_address')
+                shipping_address2 = form.cleaned_data.get(
+                    'shipping_address2')
+                shipping_country = form.cleaned_data.get(
+                    'shipping_country')
+                shipping_zip = form.cleaned_data.get('shipping_zip')
+                set_default_shipping = form.cleaned_data.get(
+                    'set_default_shipping'
+                )
+
+                if is_valid_form([email, shipping_address,
+                                  shipping_country, shipping_name,
+                                  shipping_zip]):
+
+                    shipping_address = Address(
+                        user=(self.request.user
+                              if self.request.user.is_authenticated
+                              else None),
+                        email=email,
+                        name_for_delivery=shipping_name,
+                        street_address=shipping_address,
+                        apartment_address=shipping_address2,
+                        country=shipping_country,
+                        zip=shipping_zip,
+                        address_type='S',
+                        default=True if set_default_shipping else False,
+                    )
+
+                    shipping_address.save()
+                    order.shipping_address = shipping_address
+                    order.save()
+                else:
+                    messages.warning(
+                        self.request,
+                        _('Please fill in the' +
+                            ' required shipping address')
+                    )
 
                 #  Billing address
                 if self.request.user.is_authenticated:
@@ -181,7 +172,6 @@ class CheckoutView(View):
                 if same_billing_address:
                     billing_address = shipping_address
                     billing_address.pk = None
-                    billing_address.save()
                     billing_address.address_type = 'B'
                     billing_address.save()
                     order.billing_address = billing_address
@@ -197,38 +187,27 @@ class CheckoutView(View):
                         'billing_country')
                     billing_zip = form.cleaned_data.get(
                         'billing_zip')
+                    set_default_billing = form.cleaned_data.get(
+                        'set_default_billing')
                     if is_valid_form([billing_address,
                                       billing_name,
                                       billing_country,
                                       billing_zip]):
-                        if self.request.user.is_authenticated:
-                            billing_address = Address(
-                                user=self.request.user,
-                                name_for_delivery=billing_name,
-                                street_address=billing_address,
-                                apartment_address=billing_address2,
-                                country=billing_country,
-                                zip=billing_zip,
-                                address_type='B'
-                            )
-                            set_default_billing = form.cleaned_data.get(
-                                'set_default_billing')
-                        else:
-                            billing_address = Address(
-                                user=None,
-                                name_for_delivery=billing_name,
-                                street_address=billing_address,
-                                apartment_address=billing_address2,
-                                country=billing_country,
-                                zip=billing_zip,
-                                address_type='B'
-                            )
+                        billing_address = Address(
+                            user=(self.request.user
+                                  if self.request.user.is_authenticated
+                                  else None),
+                            name_for_delivery=billing_name,
+                            street_address=billing_address,
+                            apartment_address=billing_address2,
+                            country=billing_country,
+                            zip=billing_zip,
+                            address_type='B',
+                            default=True if set_default_shipping else False,
+                        )
                         billing_address.save()
                         order.billing_address = billing_address
                         order.save()
-                        if set_default_billing:
-                            billing_address.default = True
-                            billing_address.save()
                     else:
                         messages.warning(
                             self.request,
@@ -238,9 +217,9 @@ class CheckoutView(View):
 
             # payment_option = form.cleaned_data.get('payment_option')
             # if payment_option == 'S':
-            #     return redirect('payment:stripe')
+            #     return redirect('payment:payment')
             # elif payment_option == 'P':
-            return redirect('payment:paypal')
+            return redirect('payment:payment')
             # else:
             #     messages.warning(self.request,
             #                      'Invalid payment option selected')

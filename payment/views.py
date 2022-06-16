@@ -1,10 +1,8 @@
-import datetime
 import random
 import string
 from urllib.error import HTTPError
 
 from cart.models import Cart
-from order.models import Order
 from decouple import config
 from django.conf import settings
 from django.contrib import messages
@@ -13,11 +11,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.html import strip_tags
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
+from order.models import Order
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from paypalcheckoutsdk.orders import OrdersCaptureRequest, OrdersCreateRequest
-from django.utils.translation import gettext_lazy as _
 
 from .models import Payment
 
@@ -48,7 +48,7 @@ class PaypalView(View):
                 'currency': 'EUR',
                 'cart': cart,
             }
-            return render(self.request, 'paypal.html', context)
+            return render(self.request, 'payment.html', context)
         except ObjectDoesNotExist:
             messages.warning(
                 self.request,
@@ -226,7 +226,7 @@ def capture(request, order_id):
             order.ordered = True
             order.ref_code = create_ref_code()
             order.payment = payment
-            order.ordered_date = datetime.datetime.now()
+            order.ordered_date = timezone.now()
             order.save()
             cart.checked_out = True
             cart.save()
@@ -250,8 +250,8 @@ def capture(request, order_id):
             to = order.shipping_address.email
             mail.send_mail(subject, plain_message, from_email,
                            [to], html_message=html_message)
-            subject_admin = _('New order ') + order.ref_code
-            + _(' has been paid')
+            subject_admin = (_('New order ') + order.ref_code
+                             + _(' has been paid'))
             mail.mail_admins(
                 subject=subject_admin,
                 message='',
