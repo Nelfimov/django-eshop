@@ -43,11 +43,11 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.apple',
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.github',
     # 'allauth.socialaccount.providers.instagram',
     # 'allauth.socialaccount.providers.odnoklassniki',
     'allauth.socialaccount.providers.paypal',
-    'allauth.socialaccount.providers.telegram',
+    # 'allauth.socialaccount.providers.telegram',
     # 'allauth.socialaccount.providers.tumblr',
     # 'allauth.socialaccount.providers.twitter',
     # 'allauth.socialaccount.providers.vk',
@@ -176,7 +176,6 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
-
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -184,7 +183,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = config('GMAIL_ACCOUNT')
 EMAIL_HOST_PASSWORD = config('GMAIL_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'JETZT IST DIE BESTE ZEIT <' + config('GMAIL_ACCOUNT') + '>'
+DEFAULT_FROM_EMAIL = ('JETZT IST DIE BESTE ZEIT <'
+                      + config('GMAIL_ACCOUNT') + '>')
 SERVER_EMAIL = 'django@jetztistdiebestezeit.de'
 
 ADMINS = (
@@ -195,16 +195,9 @@ ADMINS = (
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-
 # Paypal
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
-
-
-# Github
-# GITHUB_CLIENT_ID = config('GITHUB_CLIENT_ID')
-# GITHUB_CLIENT_SECRET = config('GITHUB_CLIENT_SECRET')
-
 
 # allauth Provide specific settings:
 ACCOUNT_EMAIL_REQUIRED = True
@@ -223,34 +216,14 @@ SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 1209600
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'facebook': {
-#         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
-#             'key': ''
-#         }
-#     },
-#     # 'paypal': {
-#     #     # 'APP': {
-#     #     #     'client_id': PAYPAL_CLIENT_ID,
-#     #     #     'secret': PAYPAL_CLIENT_SECRET,
-#     #     # },
-#     #     'SCOPE': ['openid', 'email'],
-#     #     'MODE': 'test',
-#     #     # 'redirect_url': 'http://127.0.0.1:8000'
-#     # },
-#     'telegram': {
-#         'TOKEN': config('TELEGRAM_TOKEN')
-#     },
-#     # # 'github': {
-#     # #     # 'APP': {
-#     # #     #     'client_id': GITHUB_CLIENT_ID,
-#     # #     #     'secret': GITHUB_CLIENT_SECRET,
-#     # #     # },
-#     # #     'SCOPE': [
-#     # #         'read:user',
-#     # #         'read:email',
-#     #     ]
-#     # }
-# }
+SOCIALACCOUNT_PROVIDERS = {
+    'paypal': {
+        'APP': {
+            'client_id': config('PAYPAL_CLIENT_ID'),
+            'secret': config('PAYPAL_CLIENT_SECRET'),
+        },
+        'SCOPE': ['openid', 'email'],
+        'MODE': 'test',
+        'redirect_url': 'http://127.0.0.1:8000/en/accounts/paypal/login/callback/'
+    },
+}
