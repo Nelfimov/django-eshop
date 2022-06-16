@@ -1,12 +1,20 @@
 {% extends "base.html" %}
-
 {% load i18n %}
 
 {% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Social Network Login Failure" %}</h1>
-
-<p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
-Code: {{ auth_error.code }}, Error: {{ auth_error.exception }}
+  <main>
+    <div class="container">
+      <section class="mb-4">
+        <div class="row wow fadeIn">
+          <div class="col-6 offset-3">
+            <h2 class="my-5 h2 text-center">{% trans "Social Network Login Failure" %}</h2>
+            <p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
+            Code: {{ auth_error.code }}, Error: {{ auth_error.exception }}
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
 {% endblock %}

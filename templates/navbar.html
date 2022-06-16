@@ -20,8 +20,8 @@
       </button>
       <ul class="dropdown-menu wow fadeIn" data-wow-duration="0.3s">
         {% for language in languages %}
-          <li>
-            <a class="dropdown-item {% if language.code == LANGUAGE_CODE %} active disabled {% endif %}" href="#" onclick="document.ui.language.value='{{ language.code }}'; document.ui.submit();">{{ language.name_local }}</a>
+          <li class="nav-item">
+            <a class="dropdown-item nav-link waves-effect {% if language.code == LANGUAGE_CODE %} active disabled {% endif %}" href="#" onclick="document.ui.language.value='{{ language.code }}'; document.ui.submit();">{{ language.name_local }}</a>
           </li>                                                                    
         {% endfor %}
       </ul>

@@ -7,7 +7,7 @@
 {% block content %}
   <main>
     <div class="container">
-    <h1>{% translate "Request Refund" %}</h1>
+    <h2 class="my-5 h2 text-center">{% translate "Request Refund" %}</h2>
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}

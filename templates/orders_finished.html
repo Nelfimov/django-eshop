@@ -7,7 +7,7 @@
 <main>
   <div class="container">
     <div class="table-responsive text-nowrap">
-      <h2>Your Orders</h2>
+      <h2 class="my-5 h2 text-center">Your Orders</h2>
       <table class="table">
         <thead>
           <tr>
@@ -38,7 +38,7 @@
                 {% elif order.being_delivered %} 
                   {% translate "In delivery" %}
                 {% else %}
-                  {% translate "Draft" %}
+                  {% translate "Preparing for delivery" %}
                 {% endif %}
               </td>
               <td>
