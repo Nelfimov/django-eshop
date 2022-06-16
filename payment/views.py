@@ -30,16 +30,17 @@ def create_ref_code():
 class PaypalView(View):
     def get(self, *args, **kwargs):
         try:
-            if self.request.user.is_authenticated:
-                cart = Cart.objects.get(
-                    user=self.request.user,
-                    checked_out=False
-                )
-            else:
-                cart = Cart.objects.get(
-                    user=None, checked_out=False,
-                    session_key=self.request.session.session_key
-                )
+            cart = Cart.objects.get(
+                checked_out=False,
+                user=(
+                    self.request.user if self.request.user.is_authenticated
+                    else None
+                ),
+                session_key=(
+                    None if self.request.user.is_authenticated
+                    else self.request.session.session_key
+                ),
+            )
             order = Order.objects.get(user=cart.user, ordered=False, cart=cart)
             client_id = config('PAYPAL_CLIENT_ID')
             context = {
@@ -62,16 +63,17 @@ class PaypalView(View):
             client_secret=config('PAYPAL_CLIENT_SECRET')
         )
         client = PayPalHttpClient(environment)
-        if self.request.user.is_authenticated:
-            cart = Cart.objects.get(
-                user=self.request.user,
-                checked_out=False
-            )
-        else:
-            cart = Cart.objects.get(
-                user=None, checked_out=False,
-                session_key=self.request.session.session_key
-            )
+        cart = Cart.objects.get(
+            checked_out=False,
+            user=(
+                self.request.user if self.request.user.is_authenticated
+                else None
+            ),
+            session_key=(
+                None if self.request.user.is_authenticated
+                else self.request.session.session_key
+            ),
+        )
         amount = round(float(cart.get_total()), 2)
         order = Order.objects.get(user=cart.user, ordered=False, cart=cart)
         currency = 'EUR'
@@ -196,13 +198,14 @@ class PaypalView(View):
 # Paypal capture the approved order
 def capture(request, order_id):
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            cart = Cart.objects.get(user=request.user, checked_out=False)
-        else:
-            cart = Cart.objects.get(
-                user=None, checked_out=False,
-                session_key=request.session.session_key
-            )
+        cart = Cart.objects.get(
+            checked_out=False,
+            user=request.user if request.user.is_authenticated else None,
+            session_key=(
+                None if request.user.is_authenticated
+                else request.session.session_key
+            ),
+        )
         order = Order.objects.get(cart=cart, user=cart.user)
         order_items = order.items.all()
         capture_order = OrdersCaptureRequest(order_id)
@@ -216,10 +219,10 @@ def capture(request, order_id):
             response = client.execute(capture_order)
             data = response.result.__dict__['_dict']
             payment = Payment()
-            if request.user.is_authenticated:
-                payment.user = request.user
-            else:
-                payment.user = None
+            payment.user = (
+                request.user if request.user.is_authenticated
+                else None
+            )
             payment.amount = cart.get_total()
             payment.paypal_id = order_id
             payment.save()
@@ -250,8 +253,10 @@ def capture(request, order_id):
             to = order.shipping_address.email
             mail.send_mail(subject, plain_message, from_email,
                            [to], html_message=html_message)
-            subject_admin = (_('New order ') + order.ref_code
-                             + _(' has been paid'))
+
+            subject_admin = (_('New order/Neue Bestellung ')
+                             + order.ref_code
+                             + _(' has been paid/ist bezahlt'))
             mail.mail_admins(
                 subject=subject_admin,
                 message='',

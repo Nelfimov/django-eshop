@@ -1,14 +1,6 @@
-from datetime import datetime
-
-from cart.models import Cart, CartItem
-from django.conf import settings
-from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Sum
-from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import timezone
+from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, ListView, View
+from django.views.generic import DetailView, View
 
 from .models import Carousel, CategoryItem, Item
 
