@@ -16,7 +16,7 @@
               {% csrf_token %}
               <h3>{% translate "Your email" %}</h3>
               <div class="md-form mb-5">
-                <input type='text' placeholder='example@example.com' id='email' name='email' class='form-control' />
+                <input type='text' placeholder='example@example.com' id='email' name='email' class='form-control' {% if request.user.is_authenticated %} value='{{ user.email }}' {% endif%} />
                 <label for="email" class="">Email</label>
               </div>
               <div class='hideable_shipping_form'>
@@ -97,13 +97,13 @@
                     </div>
                   </div>
                 </div>
-                {% if request.user.is_authenticated %}
+              </div>
+              {% if request.user.is_authenticated %}
                 <div class="custom-control custom-checkbox">
                   <input type="checkbox" class="custom-control-input" name="set_default_billing" id="set_default_billing">
                   <label class="custom-control-label" for="set_default_billing">{% translate "Save as default billing address" %}</label>
                 </div>
-                {% endif %}
-              </div>
+              {% endif %}
               <div class="hideable_billing_form_advanced">
                 {% if default_billing_address %}
                   <div class="custom-control custom-checkbox">

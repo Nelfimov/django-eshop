@@ -203,7 +203,7 @@ class CheckoutView(View):
                             country=billing_country,
                             zip=billing_zip,
                             address_type='B',
-                            default=True if set_default_shipping else False,
+                            default=True if set_default_billing else False,
                         )
                         billing_address.save()
                         order.billing_address = billing_address
