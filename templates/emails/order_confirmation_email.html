@@ -6,7 +6,7 @@
     <div class="container">
       <div class="table-responsive text-nowrap">
         <h2 class="my-5 h2 text-center">{{ header }}</h2>
-        {% if order.tracking_number %}
+        {% if order.tracking_number and not order.refund_requested %}
           <p>{% translate "Your order has been sent via " %} {{ order.tracking_company }} 
             {% translate ". You can view the delivery progress by using following tracking number: " %} {{ order.tracking_number }}
             <br>

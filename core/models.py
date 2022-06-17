@@ -1,12 +1,12 @@
 from datetime import date
+from io import BytesIO
 
 from autoslug import AutoSlugField
+from django.core.files import File
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
-from io import BytesIO
 from PIL import Image
-from django.core.files import File
 
 LABEL_CHOICES = (
     ('n', 'NEW'),
@@ -14,6 +14,7 @@ LABEL_CHOICES = (
 )
 
 
+# Image path function
 def item_image_path(instance, filename):
     dt = date.today()
     return f'items/{dt.year}/{dt.month}/{instance.slug}/{filename}'
@@ -110,12 +111,13 @@ class Item(models.Model):
 
 class ItemImage(models.Model):
     item = models.ForeignKey(
-        'Item',
-        related_name='images',
+        'Item', related_name='images',
         on_delete=models.CASCADE,
     )
-    image = models.ImageField(upload_to=item_image_path,
-                              verbose_name=_('Image'))
+    image = models.ImageField(
+        upload_to=item_image_path,
+        verbose_name=_('Image')
+    )
 
     @property
     def slug(self):
@@ -132,9 +134,7 @@ class ItemImage(models.Model):
 
 class Carousel(models.Model):
     img = models.ImageField(upload_to='carousel/images/')
-    title = models.CharField(
-        max_length=120, verbose_name=_('Title')
-    )
+    title = models.CharField(max_length=120, verbose_name=_('Title'))
     body = models.TextField(verbose_name=_('Body text'))
     alt = models.TextField(verbose_name=_('Alt text'))
     index = models.IntegerField(unique=True)

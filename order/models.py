@@ -182,26 +182,3 @@ def hear_signal(sender, instance, **kwargs):
             message='',
             fail_silently=False,
         )
-
-    if instance.refund_requested:
-        subject = _('Your order #') + instance.ref_code
-        header = subject + _(' refund request has been received')
-        html_message = render_to_string(
-            'emails/order_confirmation_email.html',
-            {'order': instance, 'header': header}
-        )
-        plain_message = strip_tags(html_message)
-        from_email = settings.DEFAULT_FROM_EMAIL
-        to = instance.shipping_address.email
-        mail.send_mail(subject, plain_message, from_email,
-                       [to], html_message=html_message)
-        subject_admin = (
-            'Order/Bestellung '
-            + instance.ref_code
-            + ' is requested for refund/Geld zuruck angefragt'
-        )
-        mail.mail_admins(
-            subject=subject_admin,
-            message='',
-            fail_silently=False,
-        )
