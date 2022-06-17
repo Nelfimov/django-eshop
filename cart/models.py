@@ -14,7 +14,7 @@ class CartItem(models.Model):
         verbose_name_plural = _('Cart Items')
 
     def __str__(self):
-        return f"{self.quantity} of {self.item.title}"
+        return f"{self.item.title}: {self.quantity}"
 
     def get_total_item_price(self):
         return self.quantity * self.item.get_final_price()

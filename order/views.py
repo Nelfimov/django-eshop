@@ -257,7 +257,8 @@ class RequestRefundView(View):
             ref_code = self.request.GET['ref_code']
             order = Order.objects.get(ref_code=ref_code)
             if order.user == self.request.user:
-                form = RefundForm(initial={'ref_code': ref_code})
+                form = RefundForm(initial={'ref_code': ref_code,
+                                           'email': self.request.user.email})
                 context = {
                     'form': form,
                 }

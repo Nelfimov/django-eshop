@@ -7,6 +7,12 @@ from .models import Cart, CartItem
 
 
 class CartAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'user',
+        'checked_out',
+        'items',
+        'session_key',
+    ]
     list_display = [
         'user',
         'creation_date',
@@ -24,6 +30,11 @@ class CartAdmin(admin.ModelAdmin):
 
 
 class CartItemAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'item',
+        'quantity',
+        'ordered',
+    ]
     list_display = [
         'id',
         'item',

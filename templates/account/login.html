@@ -4,19 +4,19 @@
 {% load account socialaccount %}
 {% load crispy_forms_tags %}
 
-{% block head_title %}{% trans "Log In" %}{% endblock %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
   <div class="container">
     <section class="mb-4">
       <div class="row wow fadeIn">
         <div class="col-6 offset-3">
-          <h2 class="my-5 h2 text-center">{% trans "Log In" %}</h2>
+          <h2 class="my-5 h2 text-center">{% trans "Sign In" %}</h2>
           {% get_providers as socialaccount_providers %}
           {% if socialaccount_providers %}
-            <p>{% blocktrans with site.name as site_name %}Please log in with one
+            <p>{% blocktrans with site.name as site_name %}Please sign in with one
             of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-            for a {{ site_name }} account and log in below:{% endblocktrans %}</p>
+            for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
             <div class="socialaccount_ballot">
               <ul class="socialaccount_providers">
                 {% include "socialaccount/snippets/provider_list.html" with process="login" %}
@@ -35,34 +35,12 @@
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
           {% endif %}
           <div class='container' style="text-align: center;">
-          <button class="btn btn-primary" type="submit">{% trans "Log in" %}</button>
-          <span id='cwppButton'></span>
-          <a class="btn btn-default" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            <button class="btn btn-primary" type="submit">{% trans "Log in" %}</button>
+            <a class="btn btn-default" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
           </div>
         </form>
         </div>
       </div>
     </section>
   </div>
-{% endblock %}
-
-{% block extra_scripts %}
-  <script src='https://www.paypalobjects.com/js/external/connect/api.js'></script>
-  <script>
-    paypal.use( ['login'], function (login) {
-      login.render ({
-        "appid":"AdTw-Bmde-bo5cKrpyYt-s-yb1sbXTL1DAUQ2Ix82UiiGHgNlXcJjFjPYNEOW0txzHBlIgeBGkxkfFcV",
-        "authend":"sandbox",
-        "scopes":"openid email",
-        "containerid":"cwppButton",
-        "responseType":"code id_Token",
-        "locale":"en-us",
-        "buttonType":"LWP",
-        "buttonShape":"pill",
-        "buttonSize":"lg",
-        "fullPage":"true",
-        "returnurl":"http://127.0.0.1:8000/"
-      });
-    });
-  </script>
 {% endblock %}

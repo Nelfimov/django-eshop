@@ -242,8 +242,8 @@ def capture(request, order_id):
 
             #  Send mail for confirmation of order
             subject = _('Your order #') + order.ref_code
-            header = subject + _(' from ') + str(order.ordered_date) + \
-                _(' has been received and will be processed shortly')
+            header = subject + _(' has been received and ' +
+                                 'will be processed shortly')
             html_message = render_to_string(
                 'emails/order_confirmation_email.html',
                 {'order': order, 'header': header}

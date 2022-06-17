@@ -132,7 +132,7 @@ class Address(models.Model):
     )
 
     def __str__(self):
-        return str(self.id)
+        return str(self.country)
 
     class Meta:
         verbose_name_plural = _('Addresses')
@@ -154,7 +154,7 @@ class Refund(models.Model):
         return f"{self.pk}"
 
 
-#  Send email when status 'Being delivered' is set to True
+#  Send email when status changes
 @receiver(models.signals.post_save, sender=Order)
 def hear_signal(sender, instance, **kwargs):
     if kwargs.get('created'):
@@ -172,3 +172,36 @@ def hear_signal(sender, instance, **kwargs):
         to = instance.shipping_address.email
         mail.send_mail(subject, plain_message, from_email,
                        [to], html_message=html_message)
+        subject_admin = (
+            'Order/Bestellung '
+            + instance.ref_code
+            + ' is sent for delivery/wurde gesendet'
+        )
+        mail.mail_admins(
+            subject=subject_admin,
+            message='',
+            fail_silently=False,
+        )
+
+    if instance.refund_requested:
+        subject = _('Your order #') + instance.ref_code
+        header = subject + _(' refund request has been received')
+        html_message = render_to_string(
+            'emails/order_confirmation_email.html',
+            {'order': instance, 'header': header}
+        )
+        plain_message = strip_tags(html_message)
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to = instance.shipping_address.email
+        mail.send_mail(subject, plain_message, from_email,
+                       [to], html_message=html_message)
+        subject_admin = (
+            'Order/Bestellung '
+            + instance.ref_code
+            + ' is requested for refund/Geld zuruck angefragt'
+        )
+        mail.mail_admins(
+            subject=subject_admin,
+            message='',
+            fail_silently=False,
+        )

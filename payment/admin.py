@@ -3,6 +3,11 @@ from .models import Payment
 
 
 class PaymentAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'paypal_id',
+        'user',
+        'amount',
+    ]
     list_display = [
         'id',
         'user',

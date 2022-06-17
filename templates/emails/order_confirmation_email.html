@@ -5,8 +5,15 @@
   <main>
     <div class="container">
       <div class="table-responsive text-nowrap">
-        <h2>{{ header }}</h2>
-        <p> {% translate "Your order will be delivered at following address" %}:
+        <h2 class="my-5 h2 text-center">{{ header }}</h2>
+        {% if order.tracking_number %}
+          <p>{% translate "Your order has been sent via " %} {{ order.tracking_company }} 
+            {% translate ". You can view the delivery progress by using following tracking number: " %} {{ order.tracking_number }}
+            <br>
+            {% translate "Link to track your order: " %} <a href="{{ order.tracking_company.tracking_link }}{{ order.tracking_number }}">link</a>
+          </p>
+        {% endif %}
+        <p> {% translate "Delivery address" %}:
           <br>
           {{ order.shipping_address.name_for_delivery }}
           <br>

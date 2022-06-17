@@ -86,7 +86,7 @@ class Payment(models.Model):
         verbose_name=_('Timestamp'))
 
     def __str__(self):
-        return str(self.id)
+        return str(self.paypal_id)
 
     class Meta:
         verbose_name = _('Payment')
