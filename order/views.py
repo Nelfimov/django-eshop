@@ -1,8 +1,12 @@
 from cart.models import Cart
 from decouple import config
+from django.conf import settings
 from django.contrib import messages
+from django.core import mail
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.loader import render_to_string
 from django.shortcuts import redirect, render
+from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, View
 from requests import request
@@ -253,7 +257,7 @@ class OrderView(ListView):
 
 class RequestRefundView(View):
     def get(self, *args, **kwargs):
-        if self.request.GET['ref_code']:
+        try:
             ref_code = self.request.GET['ref_code']
             order = Order.objects.get(ref_code=ref_code)
             if order.user == self.request.user:
@@ -268,7 +272,9 @@ class RequestRefundView(View):
                                  _('You are not the user who ordered' +
                                    ' this order'))
                 return redirect('core:home')
-        return redirect('core:home')
+        except ObjectDoesNotExist:
+            messages.warning(self.request, _('Order does not exist'))
+            return redirect('core:home')
 
     def post(self, *args, **kwargs):
         form = RefundForm(self.request.POST)
@@ -282,11 +288,39 @@ class RequestRefundView(View):
                     if not order.refund_requested:
                         order.refund_requested = True
                         order.save()
-                        refund = Refund()
-                        refund.order = order
-                        refund.reason = message
-                        refund.email = email
+                        refund = Refund.objects.create(
+                            order=order, reason=message, email=email,
+                        )
                         refund.save()
+
+                        #  Send mail for confirmation of order
+                        subject = (
+                            _('Refund request for your order #') +
+                            order.ref_code
+                        )
+                        header = (
+                            subject + _(' has been received and ' +
+                                        'will be processed shortly')
+                        )
+                        html_message = render_to_string(
+                            'emails/order_confirmation_email.html',
+                            {'order': order, 'header': header}
+                        )
+                        plain_message = strip_tags(html_message)
+                        from_email = settings.DEFAULT_FROM_EMAIL
+                        to = order.shipping_address.email
+                        mail.send_mail(subject, plain_message, from_email,
+                                       [to], html_message=html_message)
+
+                        subject_admin = (
+                            _('New refund/Neue refund ') +
+                            order.ref_code +
+                            _(' is requested/ist gesendet')
+                        )
+                        mail.mail_admins(
+                            subject=subject_admin, message='',
+                            fail_silently=False,
+                        )
                         messages.info(self.request,
                                       _('Your request was received'))
                         return redirect('order:orders-finished')
