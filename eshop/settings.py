@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'order',
     'core',
     'payment',
+    'embed_video',
     'crispy_forms',
     'django_countries',
     'allauth',
@@ -224,6 +225,7 @@ SOCIALACCOUNT_PROVIDERS = {
         },
         'SCOPE': ['openid', 'email'],
         'MODE': 'test',
-        'redirect_url': 'http://127.0.0.1:8000/en/accounts/paypal/login/callback/'
+        'redirect_url': ('http://127.0.0.1:8000/en/' +
+                         'accounts/paypal/login/callback/')
     },
 }

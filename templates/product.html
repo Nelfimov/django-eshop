@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load embed_video_tags %}
 
 {% block head_title %} {{ object.title }} {% endblock %}
 
@@ -146,28 +147,6 @@
           </div>
         {% endif %}
       </div>
-      <div class="row wow fadeIn">
-        {% if object.additional_information_image1 %}
-          <div class="col-lg-4 col-md-12 mb-4">
-            <img src="{{ object.additional_information_image1.url }}" class="img-fluid" alt="" id="add-img-1">
-            <script>magnify("add-img-1", 2);</script>
-          </div>
-        {% endif %}
-
-        {% if object.additional_information_image2 %}
-          <div class="col-lg-4 col-md-12 mb-4">
-            <img src="{{ object.additional_information_image2.url }}" class="img-fluid" alt="" id="add-img-2">
-            <script>magnify("add-img-2", 2);</script>
-          </div>
-        {% endif %}
-
-        {% if object.additional_information_image3 %}
-          <div class="col-lg-4 col-md-12 mb-4">
-            <img src="{{ object.additional_information_image3.url }}" class="img-fluid" alt="" id="add-img-3">
-            <script>magnify("add-img-3", 2);</script>
-          </div>
-        {% endif %}
-      </div>
       {% if object.images.all %}
         <div class="container">
           <div class="row photos">
@@ -181,6 +160,9 @@
           </div>
         </div>
       {% endif %}
+      <div class="embed-responsive embed-responsive-16by9">
+        {% video object.item_video 'huge' %}
+      </div>
     </div>
   </main>
 {% endblock content %}

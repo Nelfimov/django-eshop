@@ -74,7 +74,22 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ['user', 'street_address', 'apartment_address', 'zip']
 
 
+class RefundAdmin(admin.ModelAdmin):
+    readonly_fields = [
+        'order',
+        'reason',
+        'email',
+    ]
+    list_display = [
+        'order',
+        'email',
+        'accepted',
+    ]
+    list_filter = ['accepted']
+    search_fields = ['email', 'order']
+
+
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(TrackingCompany)
-admin.site.register(Refund)
+admin.site.register(Refund, RefundAdmin)

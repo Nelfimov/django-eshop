@@ -6,6 +6,7 @@ from django.core.files import File
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
+from embed_video.fields import EmbedVideoField
 from PIL import Image
 
 LABEL_CHOICES = (
@@ -46,7 +47,7 @@ class Item(models.Model):
         max_digits=10,
         blank=True,
         null=True,
-        verbose_name=_('Delivery Price'),
+        verbose_name=_('Delivery price'),
     )
     discount = models.DecimalField(
         decimal_places=2,
@@ -66,12 +67,13 @@ class Item(models.Model):
     stock = models.PositiveIntegerField(default='1', verbose_name=_('Stock'))
     slug = AutoSlugField(populate_from='title', unique_with='id')
     title_image = models.ImageField(upload_to=item_image_path,
-                                    verbose_name=_('Title Image'))
+                                    verbose_name=_('Title image'))
+    item_video = EmbedVideoField(verbose_name='Item video', blank=True)
     description = models.TextField(verbose_name=_('Description'))
     additional_information = models.TextField(
         blank=True,
         null=True,
-        verbose_name=_('Additional Information')
+        verbose_name=_('Additional information')
     )
     created_date = models.DateTimeField(
         auto_now_add=True,
@@ -90,7 +92,8 @@ class Item(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.title_image = compress(self.title_image)
+        if self.title_image:
+            self.image = compress(self.title_image)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -128,7 +131,8 @@ class ItemImage(models.Model):
         verbose_name_plural = _('Item images')
 
     def save(self, *args, **kwargs):
-        self.image = compress(self.image)
+        if self.image:
+            self.image = compress(self.image)
         super().save(*args, **kwargs)
 
 

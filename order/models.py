@@ -139,9 +139,9 @@ class Address(models.Model):
 
 
 class Refund(models.Model):
-    order = models.ForeignKey(
+    order = models.OneToOneField(
         'Order', on_delete=models.CASCADE,
-        verbose_name=_('Order')
+        verbose_name=_('Order'), parent_link=False
     )
     reason = models.TextField(verbose_name=_('Reason'))
     accepted = models.BooleanField(
