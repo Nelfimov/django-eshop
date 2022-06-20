@@ -225,10 +225,10 @@ def capture(request, order_id):
             )
             payment.amount = cart.get_total()
             payment.paypal_id = order_id
+            payment.order = order
             payment.save()
             order.ordered = True
             order.ref_code = create_ref_code()
-            order.payment = payment
             order.ordered_date = timezone.now()
             order.save()
             cart.checked_out = True

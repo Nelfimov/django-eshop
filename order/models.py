@@ -27,8 +27,8 @@ class TrackingCompany(models.Model):
 
 
 class Order(models.Model):
-    cart = models.ForeignKey(to='cart.Cart', on_delete=models.SET_NULL,
-                             null=True, verbose_name=_('Cart'))
+    cart = models.OneToOneField(to='cart.Cart', on_delete=models.CASCADE,
+                                null=True, verbose_name=_('Cart'))
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.SET_NULL, null=True, blank=True)
     items = models.ManyToManyField(to='cart.CartItem', verbose_name=_('Items'))
@@ -46,11 +46,6 @@ class Order(models.Model):
         'Address', related_name='shipping_address',
         on_delete=models.SET_NULL, blank=True, null=True,
         verbose_name=_('Shipping address')
-    )
-    payment = models.ForeignKey(
-        'payment.Payment', on_delete=models.SET_NULL,
-        blank=True, null=True,
-        verbose_name=_('Payment')
     )
     ref_code = models.CharField(
         max_length=20,
@@ -139,9 +134,9 @@ class Address(models.Model):
 
 
 class Refund(models.Model):
-    order = models.OneToOneField(
+    order = models.ForeignKey(
         'Order', on_delete=models.CASCADE,
-        verbose_name=_('Order'), parent_link=False
+        verbose_name=_('Order')
     )
     reason = models.TextField(verbose_name=_('Reason'))
     accepted = models.BooleanField(
@@ -176,6 +171,29 @@ def hear_signal(sender, instance, **kwargs):
             'Order/Bestellung '
             + instance.ref_code
             + ' is sent for delivery/wurde gesendet'
+        )
+        mail.mail_admins(
+            subject=subject_admin,
+            message='',
+            fail_silently=False,
+        )
+
+    if instance.refund_granted:
+        subject = _('Your order #') + instance.ref_code
+        header = subject + _(' request for refund has been accepted')
+        html_message = render_to_string(
+            'emails/order_confirmation_email.html',
+            {'order': instance, 'header': header}
+        )
+        plain_message = strip_tags(html_message)
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to = instance.shipping_address.email
+        mail.send_mail(subject, plain_message, from_email,
+                       [to], html_message=html_message)
+        subject_admin = (
+            'Order/Bestellung '
+            + instance.ref_code
+            + ' refund granted/refund akzeptiert'
         )
         mail.mail_admins(
             subject=subject_admin,

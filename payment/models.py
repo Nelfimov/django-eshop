@@ -84,6 +84,10 @@ class Payment(models.Model):
     timestamp = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Timestamp'))
+    order = models.OneToOneField(
+        'order.Order', on_delete=models.SET_NULL,
+        null=True
+    )
 
     def __str__(self):
         return str(self.paypal_id)

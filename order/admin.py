@@ -1,13 +1,39 @@
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from .models import Order, Address, TrackingCompany, Refund
+
+from .models import Address, Order, Refund, TrackingCompany
+from cart.models import Cart
+from payment.models import Payment
 
 
 def make_refund_accepted(modeladmin, request, queryset):
     queryset.update(refund_requested=True, refund_granted=True)
+    short_description = _('Update orders to refund granted')
 
 
-make_refund_accepted.short_description = _('Update orders to refund granted')
+class PaymentAdminInline(admin.TabularInline):
+    model = Payment
+    max_num = 0
+    readonly_fields = [
+        'paypal_id',
+        'amount',
+        'timestamp'
+    ]
+    exclude = ['user']
+    can_delete = False
+
+
+class RefundAdminInline(admin.TabularInline):
+    model = Refund
+    show_change_link = True
+    max_num = 0
+    readonly_fields = [
+        'order',
+        'reason',
+        'email',
+    ]
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -48,6 +74,7 @@ class OrderAdmin(admin.ModelAdmin):
     ]
     search_fields = ['user__email', 'ref_code']
     actions = [make_refund_accepted]
+    inlines = [PaymentAdminInline, RefundAdminInline]
 
     @admin.display(description='Email')
     def get_email(self, obj):
