@@ -27,13 +27,13 @@ class PaymentAdminInline(admin.TabularInline):
 
 class RefundAdminInline(admin.TabularInline):
     model = Refund
-    show_change_link = True
     max_num = 0
     readonly_fields = [
         'order',
         'reason',
-        'email',
+        'image',
     ]
+    can_delete = False
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -105,15 +105,13 @@ class RefundAdmin(admin.ModelAdmin):
     readonly_fields = [
         'order',
         'reason',
-        'email',
     ]
     list_display = [
         'order',
-        'email',
         'accepted',
     ]
     list_filter = ['accepted']
-    search_fields = ['email', 'order']
+    search_fields = ['order']
 
 
 admin.site.register(Order, OrderAdmin)

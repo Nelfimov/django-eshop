@@ -29,7 +29,7 @@
                   {{ order_item.item.title|linebreaks }}
                 {% endfor %}
               </td>
-              <td>{{ order.get_total }} EUR</td>
+              <td>{{ order.cart.get_total }} EUR</td>
               <td>
                 {% if order.refund_granted %} 
                   {% translate "Refund Granted" %} 

@@ -48,4 +48,5 @@ class RefundForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea(attrs={
         'rows': 4,
     }))
+    image = forms.ImageField(required=False)
     email = forms.EmailField()

@@ -281,6 +281,7 @@ class RequestRefundView(View):
             ref_code = form.cleaned_data.get('ref_code')
             message = form.cleaned_data.get('message')
             email = form.cleaned_data.get('email')
+            image = form.cleaned_data.get('image')
             try:
                 order = Order.objects.get(ref_code=ref_code)
                 if order.user == self.request.user:
@@ -288,7 +289,8 @@ class RequestRefundView(View):
                         order.refund_requested = True
                         order.save()
                         refund = Refund.objects.create(
-                            order=order, reason=message, email=email,
+                            order=order, reason=message,
+                            email=email, image=image
                         )
                         refund.save()
 
