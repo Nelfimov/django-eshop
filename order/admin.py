@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.translation import gettext as _
-import nested_admin
 
 from .models import Address, Order, OrderItem, Refund, TrackingCompany
 from payment.models import Payment
