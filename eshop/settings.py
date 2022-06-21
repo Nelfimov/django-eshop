@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'embed_video',
     'crispy_forms',
     'django_countries',
-    'nested_admin',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
