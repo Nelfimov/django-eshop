@@ -56,13 +56,13 @@
   </style>
 </head>
 
-{% load cart_template_tags %}
+{% load order_template_tags %}
 
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
   <div class="container">
     <!-- Brand -->
     <a class="navbar-brand waves-effect" href="/">
-      <strong class="blue-text">JETZT IST DIE BESTE ZEIT</strong>
+      <strong class="blue-text">{{ request|my_site_name }}</strong>
     </a>
   </div>
 </nav>

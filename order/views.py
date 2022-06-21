@@ -1,17 +1,18 @@
-from cart.models import Cart
+from core.models import Item
 from decouple import config
 from django.conf import settings
 from django.contrib import messages
 from django.core import mail
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, View
 
 from .forms import CheckoutForm, RefundForm
-from .models import Address, Order, Refund
+from .models import Address, Order, OrderItem, Refund
 
 
 def is_valid_form(values):
@@ -22,11 +23,158 @@ def is_valid_form(values):
     return valid
 
 
+def add_to_cart(request, slug):
+    item = get_object_or_404(Item, slug=slug)
+    if item.stock <= 0:
+        messages.warning(
+            request, _('Unfortunately we do not have item on stock')
+        )
+        return redirect('core:product', slug=slug)
+    if (not request.user.is_authenticated and
+            not request.session.exists(request.session.session_key)):
+        request.session.create()
+    order_qs = Order.objects.filter(
+        ordered=False,
+        user=(
+            request.user if request.user.is_authenticated
+            else None
+        ),
+        session_key=(
+            None if request.user.is_authenticated
+            else request.session.session_key
+        ),
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        order_item, created = OrderItem.objects.get_or_create(
+            item=item,
+            order=order
+        )
+        if not created:
+            order_item.quantity += 1
+            if order_item.quantity > item.stock:
+                messages.warning(
+                    request,
+                    _('Unfortunately we do not have this ' +
+                      'quantity on stock')
+                )
+                return redirect('order:cart-summary')
+            order_item.save()
+            messages.info(request, _('Quantity was updated'))
+            return redirect('order:cart-summary')
+        messages.info(request, _('Quantity was updated'))
+        return redirect('order:cart-summary')
+    else:
+        order = Order.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            start_date=timezone.now(),
+            session_key=(
+                None if request.user.is_authenticated
+                else request.session.session_key
+            ),
+        )
+        order_item = OrderItem.objects.create(
+            item=item, order=order
+        )
+        messages.info(request, _('Quantity was updated'))
+        return redirect('order:cart-summary')
+
+
+def remove_from_cart(request, slug):
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(
+        ordered=False,
+        user=(
+            request.user if request.user.is_authenticated
+            else None
+        ),
+        session_key=(
+            None if request.user.is_authenticated
+            else request.session.session_key
+        ),
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        order_item_qs = OrderItem.objects.filter(order=order, item=item)
+        if order_item_qs.exists():
+            order_item = order_item_qs[0]
+            order_item.delete()
+            messages.info(
+                request,
+                _('This item was removed from your cart')
+            )
+            return redirect('order:cart-summary')
+        else:
+            messages.warning(request, _('This item was not in your cart'))
+            return redirect('core:product', slug=slug)
+    else:
+        messages.warning(request, _('Your cart is empty'))
+        return redirect('core:product', slug=slug)
+
+
+def remove_single_item_from_cart(request, slug):
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(
+        ordered=False,
+        user=(
+            request.user if request.user.is_authenticated
+            else None
+        ),
+        session_key=(
+            None if request.user.is_authenticated
+            else request.session.session_key
+        ),
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        order_item_qs = OrderItem.objects.filter(order=order, item=item)
+        if order_item_qs.exists():
+            order_item = order_item_qs[0]
+            if order_item.quantity <= 1:
+                order_item.delete()
+            else:
+                order_item.quantity -= 1
+                order_item.save()
+            messages.info(request, _('This item quantity was updated'))
+            return redirect('order:cart-summary')
+        else:
+            messages.info(request, _('This item was not in your cart'))
+            return redirect('core:product', slug=slug)
+    else:
+        messages.info(request, _('You do not have an active cart'))
+        return redirect('core:product', slug=slug)
+
+
+class OrderView(View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(
+                ordered=False,
+                user=(
+                    self.request.user
+                    if self.request.user.is_authenticated
+                    else None
+                ),
+                session_key=(
+                    None if self.request.user.is_authenticated
+                    else self.request.session.session_key
+                ),
+            )
+            order_items = OrderItem.objects.filter(
+                order=order
+            )
+            context = {'order': order, 'order_items': order_items}
+            return render(self.request, 'cart_summary.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, _('Your cart is empty'))
+            return redirect('/')
+
+
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         try:
-            cart = Cart.objects.get(
-                checked_out=False,
+            order = Order.objects.get(
+                ordered=False,
                 user=(self.request.user
                       if self.request.user.is_authenticated
                       else None),
@@ -34,10 +182,12 @@ class CheckoutView(View):
                              if self.request.user.is_authenticated
                              else self.request.session.session_key),
             )
+            order_items = OrderItem.objects.filter(order=order)
             form = CheckoutForm()
             context = {
                 'form': form,
-                'cart': cart,
+                'order': order,
+                'order_items': order_items,
                 'client_id': config('PAYPAL_CLIENT_ID'),
                 'currency': 'EUR',
             }
@@ -67,9 +217,8 @@ class CheckoutView(View):
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         try:
-            shipping_address = Address.objects.create()
-            cart = Cart.objects.get(
-                checked_out=False,
+            order = Order.objects.get(
+                ordered=False,
                 user=(self.request.user
                       if self.request.user.is_authenticated
                       else None),
@@ -78,23 +227,15 @@ class CheckoutView(View):
                              else self.request.session.session_key),
             )
             if form.is_valid():
-                cart_items = cart.items.all()
-                order, created = Order.objects.get_or_create(
-                    cart=cart, user=cart.user
-                )
-                order.items.set(cart_items)
-
                 if self.request.user.is_authenticated:
                     use_default_shipping = form.cleaned_data.get(
                         'use_default_shipping')
-
                     if use_default_shipping:
                         address_qs = Address.objects.filter(
                             user=self.request.user,
                             address_type='S',
                             default=True,
                         )
-
                         if address_qs.exists():
                             shipping_address = address_qs[0]
                             order.shipping_address = shipping_address
@@ -106,30 +247,39 @@ class CheckoutView(View):
                             )
                             return redirect('order:checkout')
 
-                email = form.cleaned_data.get(
-                    'email')
+                shipping_email = form.cleaned_data.get(
+                    'email'
+                )
                 shipping_name = form.cleaned_data.get(
-                    'shipping_name')
+                    'shipping_name'
+                )
                 shipping_address = form.cleaned_data.get(
-                    'shipping_address')
+                    'shipping_address'
+                )
                 shipping_address2 = form.cleaned_data.get(
-                    'shipping_address2')
+                    'shipping_address2'
+                    )
                 shipping_country = form.cleaned_data.get(
-                    'shipping_country')
-                shipping_zip = form.cleaned_data.get('shipping_zip')
+                    'shipping_country'
+                )
+                shipping_zip = form.cleaned_data.get(
+                    'shipping_zip'
+                )
                 set_default_shipping = form.cleaned_data.get(
                     'set_default_shipping'
                 )
 
-                if is_valid_form([email, shipping_address,
-                                  shipping_country, shipping_name,
-                                  shipping_zip]):
-
+                if is_valid_form(
+                    [
+                        shipping_email, shipping_address,
+                        shipping_country, shipping_name, shipping_zip
+                    ]
+                ):
                     shipping_address = Address(
                         user=(self.request.user
                               if self.request.user.is_authenticated
                               else None),
-                        email=email,
+                        email=shipping_email,
                         name_for_delivery=shipping_name,
                         street_address=shipping_address,
                         apartment_address=shipping_address2,
@@ -138,7 +288,6 @@ class CheckoutView(View):
                         address_type='S',
                         default=True if set_default_shipping else False,
                     )
-
                     shipping_address.save()
                     order.shipping_address = shipping_address
                     order.save()
@@ -231,10 +380,10 @@ class CheckoutView(View):
         except ObjectDoesNotExist:
             messages.warning(self.request, _('You do not have an' +
                                              ' active order'))
-            return redirect('cart:cart-summary')
+            return redirect('order:cart-summary')
 
 
-class OrderView(ListView):
+class OrdersFinishedView(ListView):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             try:

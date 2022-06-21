@@ -36,7 +36,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for order_item in order.items.all %}
+            {% for order_item in order_items %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a style='color: blue' href="{{ order_item.item.get_absolute_url }}"> {{ order_item.item.title }} </a></td>              
@@ -47,7 +47,7 @@
             {% endfor %}
             <tr>
               <td colspan="4"><b>{% translate "Order Total" %}</b></td>
-              <td><b>{{ order.cart.get_total }}&euro;</b></td>
+              <td><b>{{ order.get_total }}&euro;</b></td>
             </tr>
             <tr>
               <td colspan="5">

@@ -1,6 +1,6 @@
 import datetime
 
-from cart.models import Cart, CartItem
+from cart.models import Cart, OrderItem
 from core.models import Address, Item, Order
 from django.conf import settings
 from django.core import mail
@@ -17,7 +17,7 @@ class EmailSend(TestCase):
             delivery_price=10, discount=5,
             stock=10, title_image='',
         )
-        cart_item = CartItem.objects.create(
+        cart_item = OrderItem.objects.create(
             item=self.item, quantity=2
         )
         self.session = self.client.session

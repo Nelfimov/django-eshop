@@ -19,26 +19,26 @@
               </tr>
             </thead>
             <tbody>
-              {% for cart_item in object.items.all %}
+              {% for order_item in order_items %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td><a style='color: blue' href="{{ cart_item.item.get_absolute_url }}"> {{ cart_item.item.title }} </a></td>
-                <td>{{ cart_item.item.get_final_price }}&euro;</td>
+                <td><a style='color: blue' href="{{ order_item.item.get_absolute_url }}"> {{ order_item.item.title }} </a></td>
+                <td>{{ order_item.item.get_final_price }}&euro;</td>
                 <td>
-                  <a href="{% url 'cart:remove-single-item-from-cart' cart_item.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
-                  {{ cart_item.quantity }}
-                  {% if cart_item.quantity < cart_item.item.stock %}
-                    <a href="{% url 'cart:add-to-cart' cart_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
+                  <a href="{% url 'order:remove-single-item-from-cart' order_item.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
+                  {{ order_item.quantity }}
+                  {% if order_item.quantity < order_item.item.stock %}
+                    <a href="{% url 'order:add-to-cart' order_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
                   {% endif %}
                 </td>
                 <td>
-                  {% if cart_item.item.discount_price %}
-                    {{ cart_item.item.get_final_price }}&euro;
-                    <span class="badge bg-primary">{% translate "Saving" %} {{ cart_item.get_saving }}&euro;</span>
+                  {% if order_item.item.discount_price %}
+                    {{ order_item.item.get_final_price }}&euro;
+                    <span class="badge bg-primary">{% translate "Saving" %} {{ order_item.get_saving }}&euro;</span>
                   {% else %}
-                    {{ cart_item.get_total_item_price }}&euro;
+                    {{ order_item.get_total_item_price }}&euro;
                   {% endif %}
-                  <a style='color: red;' href="{% url 'cart:remove-from-cart' cart_item.item.slug %}">
+                  <a style='color: red;' href="{% url 'order:remove-from-cart' order_item.item.slug %}">
                     <i class="fas fa-trash-alt float-right"></i>
                   </a>
                 </td>
@@ -53,10 +53,10 @@
                 </td>
               </tr>
               {% endfor %}
-              {% if object.get_total %}
+              {% if order.get_total %}
               <tr>
                 <td colspan="4"><b>{% translate "Cart Total" %}</b></td>
-                <td><b>{{ object.get_total }}&euro;</b></td>
+                <td><b>{{ order.get_total }}&euro;</b></td>
               </tr>
               <tr>
                 <td colspan="5">

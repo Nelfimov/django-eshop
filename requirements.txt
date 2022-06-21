@@ -1,4 +1,5 @@
 asgiref==3.5.1
+autopep8==1.6.0
 certifi==2021.10.8
 cffi==1.15.0
 chardet==4.0.0
@@ -13,6 +14,7 @@ django-countries==7.3.2
 django-crispy-forms==1.14.0
 django-debug-toolbar==3.4.0
 django-embed-video==1.4.4
+django-nested-admin==3.4.0
 gunicorn==20.1.0
 idna==3.3
 oauthlib==3.2.0
@@ -26,6 +28,7 @@ pycparser==2.21
 PyJWT==2.3.0
 pyOpenSSL==22.0.0
 python-decouple==3.6
+python-monkey-business==1.0.0
 python3-openid==3.2.0
 pytz==2022.1
 requests==2.27.1

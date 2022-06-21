@@ -40,6 +40,7 @@ class CategoryItem(models.Model):
 
 class Item(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('Title'))
+    slug = AutoSlugField(populate_from='title', unique_with='id')
     price = models.DecimalField(decimal_places=2, max_digits=10,
                                 verbose_name=_('Price'))
     delivery_price = models.DecimalField(
@@ -65,7 +66,6 @@ class Item(models.Model):
     label = models.CharField(
         choices=LABEL_CHOICES, max_length=1, null=True, blank=True)
     stock = models.PositiveIntegerField(default='1', verbose_name=_('Stock'))
-    slug = AutoSlugField(populate_from='title', unique_with='id')
     title_image = models.ImageField(upload_to=item_image_path,
                                     verbose_name=_('Title image'))
     item_video = EmbedVideoField(verbose_name='Item video', blank=True)
@@ -101,11 +101,11 @@ class Item(models.Model):
             'slug': self.slug})
 
     def get_add_to_cart_url(self):
-        return reverse('cart:add-to-cart', kwargs={
+        return reverse('order:add-to-cart', kwargs={
             'slug': self.slug})
 
     def get_remove_from_cart_url(self):
-        return reverse('cart:remove-from-cart', kwargs={
+        return reverse('order:remove-from-cart', kwargs={
             'slug': self.slug})
 
     def get_final_price(self):

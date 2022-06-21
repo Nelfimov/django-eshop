@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from django_countries import Countries
 from django_countries.fields import CountryField
 
+
 ADDRESS_CHOICES = (
     ('B', _('Billing')),
     ('S', _('Shipping')),
@@ -26,33 +27,52 @@ class TrackingCompany(models.Model):
         verbose_name_plural = _('Tracking companies')
 
 
+class OrderItem(models.Model):
+    item = models.ForeignKey('core.Item', on_delete=models.CASCADE,
+                             verbose_name=_('Item'))
+    quantity = models.IntegerField(default='1', verbose_name=_('Quantity'))
+    order = models.ForeignKey('Order', on_delete=models.CASCADE,
+                              verbose_name=_('Order'))
+
+    class Meta:
+        verbose_name = _('Cart Item')
+        verbose_name_plural = _('Cart Items')
+
+    def __str__(self):
+        return f'{self.item.title}: {self.quantity}'
+
+    def get_total_item_price(self):
+        return self.quantity * self.item.get_final_price()
+
+    def get_saving(self):
+        return self.quantity * self.item.discount
+
+
 class Order(models.Model):
-    cart = models.OneToOneField(to='cart.Cart', on_delete=models.CASCADE,
-                                null=True, verbose_name=_('Cart'))
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.SET_NULL, null=True, blank=True)
-    items = models.ManyToManyField(to='cart.CartItem', verbose_name=_('Items'))
+    session_key = models.CharField(max_length=60, null=True, blank=True)
     start_date = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_('Creation date'))
+    ordered = models.BooleanField(default=False, verbose_name=_('Ordered'))
     ordered_date = models.DateTimeField(null=True, blank=True,
                                         verbose_name=_('Ordered date'))
-    ordered = models.BooleanField(default=False, verbose_name=_('Ordered'))
-    billing_address = models.ForeignKey(
-        'Address', related_name='billing_address',
-        on_delete=models.SET_NULL, blank=True, null=True,
-        verbose_name=_('Billing address')
-    )
-    shipping_address = models.ForeignKey(
-        'Address', related_name='shipping_address',
-        on_delete=models.SET_NULL, blank=True, null=True,
-        verbose_name=_('Shipping address')
-    )
     ref_code = models.CharField(
         max_length=20,
         blank=True,
         null=True,
         default='',
         verbose_name=_('Reference code')
+    )
+    shipping_address = models.ForeignKey(
+        'Address', related_name='shipping_address',
+        on_delete=models.SET_NULL, blank=True, null=True,
+        verbose_name=_('Shipping address')
+    )
+    billing_address = models.ForeignKey(
+        'Address', related_name='billing_address',
+        on_delete=models.SET_NULL, blank=True, null=True,
+        verbose_name=_('Billing address')
     )
     being_delivered = models.BooleanField(
         default=False,
@@ -81,6 +101,14 @@ class Order(models.Model):
     class Meta:
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
+        ordering = ('-start_date',)
+        unique_together = ('user', 'session_key')
+
+    def get_total(self):
+        total = 0
+        for cart_item in OrderItem.objects.filter(order=self.id):
+            total += cart_item.get_total_item_price()
+        return total
 
 
 class EUCountries(Countries):
@@ -143,7 +171,9 @@ class Refund(models.Model):
         default=False,
         verbose_name=_('Accepted')
     )
-    email = models.EmailField()
+    image = models.ImageField(upload_to='refund/', verbose_name='Image',
+                              null=True)
+    email = models.EmailField(null=True)
 
     def __str__(self):
         return f"{self.pk}"

@@ -1,16 +1,25 @@
 from django.contrib import admin
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+import nested_admin
 
-from .models import Address, Order, Refund, TrackingCompany
-from cart.models import Cart
+from .models import Address, Order, OrderItem, Refund, TrackingCompany
 from payment.models import Payment
 
 
 def make_refund_accepted(modeladmin, request, queryset):
     queryset.update(refund_requested=True, refund_granted=True)
     short_description = _('Update orders to refund granted')
+
+
+class OrderItemAdminInline(admin.TabularInline):
+    model = OrderItem
+    max_num = 0
+    readonly_fields = [
+        'item',
+        'quantity',
+    ]
+    can_delete = False
 
 
 class PaymentAdminInline(admin.TabularInline):
@@ -21,8 +30,8 @@ class PaymentAdminInline(admin.TabularInline):
         'amount',
         'timestamp'
     ]
-    exclude = ['user']
     can_delete = False
+    exclude = ['user']
 
 
 class RefundAdminInline(admin.TabularInline):
@@ -38,21 +47,20 @@ class RefundAdminInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = [
-        'items',
-        'cart',
+        'ordered',
+        'start_date',
         'user',
         'get_email',
+        'session_key',
         'ordered_date',
         'ref_code',
-        'payment',
         'shipping_address',
         'billing_address',
     ]
     list_display = [
+        'ordered',
         'ref_code',
         'get_email',
-        'payment',
-        'ordered',
         'shipping_address',
         'being_delivered',
         'refund_requested',
@@ -70,11 +78,14 @@ class OrderAdmin(admin.ModelAdmin):
         'ref_code',
         'get_email',
         'shipping_address',
-        'payment'
     ]
     search_fields = ['user__email', 'ref_code']
     actions = [make_refund_accepted]
-    inlines = [PaymentAdminInline, RefundAdminInline]
+    inlines = [
+        OrderItemAdminInline,
+        PaymentAdminInline,
+        RefundAdminInline,
+    ]
 
     @admin.display(description='Email')
     def get_email(self, obj):
