@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
-{% block head_title%} Payment {% endblock head_title%}
-
+{% block head_title %}
+  Payment
+{% endblock head_title %}
 {% block content %}
   <main >
     <div class="container wow fadeIn">
@@ -11,23 +11,18 @@
       <div class="row">
         <div class="col-md-8 mb-1">
           <div class="card">
-            <div style='text-align:center'>
-              <input id="order-id"  value={{ order.id }} hidden/>
-              <br>
-              <div class="col-md-12 mb-1" id="paypal-button-container"></div>
-            </div>
+            <input id="order-id"  value={{ order.id }} hidden/>
+            <br/>
+            <div class="col-md-12 mb-1" id="paypal-button-container"></div>
           </div>
         </div>
-        <div class="col-md-4 mb-1">
-          {% include "order_snippet.html" %}
-        </div>
+        <div class="col-md-4 mb-1">{% include "order_snippet.html" %}</div>
       </div>
     </div>
   </main>
 {% endblock content %}
-
 {% block extra_scripts %}
-  <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency={{ currency }}"></script> 
+  <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency={{ currency }}"></script>
   <script>
     function getCookie(name) {
       let cookieValue = null;

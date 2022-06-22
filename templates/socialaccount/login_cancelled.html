@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-
 {% load i18n %}
-
-{% block head_title %}{% trans "Login Cancelled" %}{% endblock %}
-
+{% block head_title %}
+  {% trans "Login Cancelled" %}
+{% endblock head_title %}
 {% block content %}
   <main>
     <div class="container">
@@ -11,11 +10,13 @@
         <div class="row wow fadeIn">
           <div class="col-6 offset-3">
             <h2 class="my-5 h2 text-center">{% trans "Login Cancelled" %}</h2>
-            {% url 'account_login' as login_url %} 
-            <p>{% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}</p>
+            {% url 'account_login' as login_url %}
+            <p>
+              {% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}
+            </p>
           </div>
         </div>
       </section>
     </div>
   </main>
-{% endblock %}
+{% endblock content %}

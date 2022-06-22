@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-
 {% load i18n %}
-
-{% block head_title %}{% trans "Sign Out" %}{% endblock %}
-
+{% block head_title %}
+  {% trans "Sign Out" %}
+{% endblock head_title %}
 {% block content %}
   <main>
     <div class="container">
@@ -15,12 +14,15 @@
             <form method="post" action="{% url 'account_logout' %}">
               {% csrf_token %}
               {% if redirect_field_value %}
-              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                <input type="hidden"
+                       name="{{ redirect_field_name }}"
+                       value="{{ redirect_field_value }}"/>
               {% endif %}
               <button class="btn btn-primary" type="submit">{% trans 'Sign Out' %}</button>
             </form>
           </div>
-        </section>
-      </div>
-    </main>
-{% endblock %}
+        </div>
+      </section>
+    </div>
+  </main>
+{% endblock content %}

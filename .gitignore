@@ -4,7 +4,7 @@ __pycache__
 venv
 db.sqlite3
 .env
-/media
-/staticfiles
+/media/
+/staticfiles/
 /*.code-workspace
 /.vscode

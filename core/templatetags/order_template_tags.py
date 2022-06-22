@@ -9,10 +9,10 @@ register = template.Library()
 def order_item_count(request):
     order_qs = Order.objects.filter(
         ordered=False,
-        user=(request.user if request.user.is_authenticated
-              else None),
-        session_key=(None if request.user.is_authenticated
-                     else request.session.session_key)
+        user=(request.user if request.user.is_authenticated else None),
+        session_key=(
+            None if request.user.is_authenticated else request.session.session_key
+        ),
     )
     if order_qs.exists():
         return OrderItem.objects.filter(order=order_qs[0]).count()

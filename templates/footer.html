@@ -1,29 +1,28 @@
 {% load i18n %}
-
 <footer class="page-footer container-fluid text-center font-big mt-4 wow fadeIn">
-  <hr class="my-4">
+  <hr class="my-4"/>
   <div class="row">
     <div class="col-md-4 footer">
-      <a class="footer-link" href="/impressum/">Impressum</a>
-      <br>
-      <a class="footer-link" href="/data-protection/">{% translate "Data Protection" %}</a>
-      <br>
+      <a class="footer-link" href="{% url 'core:impressum' %}">Impressum</a>
+      <br/>
+      <a class="footer-link" href="{% url 'core:data-protection' %}">{% translate "Data Protection" %}</a>
+      <br/>
     </div>
     <div class="col-md-4 footer">
       Jetzt ist die beste Zeit
-      <br>
+      <br/>
       Lustgartenstr. 6
-      <br>
+      <br/>
       68526
-      <br>
+      <br/>
       {% translate "Germany" %}
-      <br>
+      <br/>
     </div>
     <div class="col-md-4 footer">
       Telephone: <a class="text-nowrap" href="tel:+49620313014">+49 (0) 6203 13014</a>
-      <br>
+      <br/>
       Email: <a class="text-nowrap" href="mailto:mail@drantusi@web.de">drantusi@web.de</a>
-      <br>
+      <br/>
     </div>
   </div>
   <!-- Social icons -->
@@ -31,16 +30,16 @@
     <a href="https://www.facebook.com/spielzeugauktion" target="_blank">
       <i class="fab fa-facebook-f mr-3 fa-2x"></i>
     </a>
-    <a href="https://www.instagram.com/ladenburger_spielzeugauktion/" target="_blank">
+    <a href="https://www.instagram.com/ladenburger_spielzeugauktion/"
+       target="_blank">
       <i class="fab fa-instagram mr-3 fa-2x"></i>
     </a>
   </div>
   <!-- Social icons -->
-
   <!--Copyright-->
   <div class="footer-copyright py-3">
     © 2022 Copyright:
-    <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
+    <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank">MDBootstrap.com</a>
   </div>
   <!--/.Copyright-->
 </footer>

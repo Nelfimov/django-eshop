@@ -1,75 +1,79 @@
 {% extends "base.html" %}
 {% load i18n %}
-
-{% block head_title %} {% translate "Your orders" %} {% endblock %}
-
+{% block head_title %}
+  {% translate "Your orders" %}
+{% endblock head_title %}
 {% block content %}
-<main>
-  <div class="container">
-    <div class="table-responsive text-nowrap">
-      <h2 class="my-5 h2 text-center">Your Orders</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">{% translate "Order Ref Code" %}</th>
-            <th scope="col">{% translate "Order Date" %}</th>
-            <th scope="col">{% translate "Ordered Items" %}</th>
-            <th scope="col">{% translate "Total Order Amount" %}</th>
-            <th scope="col">{% translate "Order Status" %}</th>
-            <th scope="col">{% translate "Request Refund" %}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order in object.all %}
+  <main>
+    <div class="container">
+      <div class="table-responsive text-nowrap">
+        <h2 class="my-5 h2 text-center">Your Orders</h2>
+        <table class="table">
+          <thead>
             <tr>
-              <th scope="row">{{ order.ref_code }}</th>
-              <th scope="row">{{ order.ordered_date }}</th>
-              <td>
-                {% for order_item in order.items.all %}
-                  {{ order_item.item.title|linebreaks }}
-                {% endfor %}
-              </td>
-              <td>{{ order.cart.get_total }} EUR</td>
-              <td>
-                {% if order.refund_granted %} 
-                  {% translate "Refund Granted" %} 
-                {% elif order.refund_requested %} 
-                  {% translate "Refund Requested" %}
-                {% elif order.being_delivered %} 
-                  {% translate "In delivery" %}
-                {% else %}
-                  {% translate "Preparing for delivery" %}
-                {% endif %}
-              </td>
-              <td>
-                <a class='btn btn-danger' href="{% url 'order:request-refund' %}?ref_code={{ order.ref_code }}">Refund</a>
-              </td>
+              <th scope="col">{% translate "Order Ref Code" %}</th>
+              <th scope="col">{% translate "Order Date" %}</th>
+              <th scope="col">{% translate "Ordered Items" %}</th>
+              <th scope="col">{% translate "Total Order Amount" %}</th>
+              <th scope="col">{% translate "Order Status" %}</th>
+              <th scope="col">{% translate "Request Refund" %}</th>
             </tr>
-          {% empty %}
-          <tr>
-            <td colspan="6">{% translate "You have no orders" %}</td>
-          </tr>
-          <tr>
-            <td colspan="6">
-              <a class='btn btn-primary float-right' href='/'>{% translate "Continue shopping" %}</a>
-            </td>
-          </tr>
-          {% endfor %}
-          {% if object.get_total %}
-            <tr>
-              <td colspan="4"><b>{% translate "Order Total" %}</b></td>
-              <td><b>{{ object.get_total }}&euro;</b></td>
-            </tr>
-            <tr>
-              <td colspan="5">
-                <a class='btn btn-danger float-right ml-2' href='/checkout/'>{% translate "Proceed to checkout" %}</a>
-                <a class='btn btn-primary float-right' href='/'>{% translate "Continue shopping" %}</a>
-              </td>
-            </tr>
-          {% endif %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for order in object.all %}
+              <tr>
+                <th scope="row">{{ order.ref_code }}</th>
+                <th scope="row">{{ order.ordered_date }}</th>
+                <td>
+                  {% for order_item in order.items.all %}{{ order_item.item.title|linebreaks }}{% endfor %}
+                </td>
+                <td>{{ order.cart.get_total }} EUR</td>
+                <td>
+                  {% if order.refund_granted %}
+                    {% translate "Refund Granted" %}
+                  {% elif order.refund_requested %}
+                    {% translate "Refund Requested" %}
+                  {% elif order.being_delivered %}
+                    {% translate "In delivery" %}
+                  {% else %}
+                    {% translate "Preparing for delivery" %}
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-danger"
+                     href="{% url 'order:request-refund' %}?ref_code={{ order.ref_code }}">Refund</a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6">{% translate "You have no orders" %}</td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <a class="btn btn-primary float-right" href="{% url 'core:home' %}">{% translate "Continue shopping" %}</a>
+                </td>
+              </tr>
+            {% endfor %}
+            {% if object.get_total %}
+              <tr>
+                <td colspan="4">
+                  <b>{% translate "Order Total" %}</b>
+                </td>
+                <td>
+                  <b>{{ object.get_total }}€</b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <a class="btn btn-danger float-right ml-2"
+                     href="{% url 'order:checkout' %}">{% translate "Proceed to checkout" %}</a>
+                  <a class="btn btn-primary float-right" href="{% url 'core:home' %}">{% translate "Continue shopping" %}</a>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 {% endblock content %}

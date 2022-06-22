@@ -1,5 +1,4 @@
 {% load i18n %}
-
 <div class="col-md-12 mb-4">
   <h4 class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted">{% translate "Your cart" %}</span>
@@ -8,14 +7,14 @@
   <ul class="list-group mb-3 z-depth-1">
     {% for order_item in order_items %}
       <li class="list-group-item d-flex justify-content-between lh-condensed">
-          <div>
-          <h6 class="my-0">{{ order_item.quantity }} x {{ order_item.item.title}}</h6>
-          <small class="text-muted">{{ order_item.item.description}}</small>
-          </div>
-          <span class="text-muted">{{ order_item.get_total_item_price }}&euro;</span>
+        <div>
+          <h6 class="my-0">{{ order_item.quantity }} x {{ order_item.item.title }}</h6>
+          <small class="text-muted">{{ order_item.item.description }}</small>
+        </div>
+        <span class="text-muted">{{ order_item.get_total_item_price }}€</span>
       </li>
     {% endfor %}
-      {% comment %} {% if cart.coupon %}
+    {% comment %} {% if cart.coupon %}
       <li class="list-group-item d-flex justify-content-between bg-light">
           <div class="text-success">
           <h6 class="my-0">Promo code</h6>
@@ -23,13 +22,12 @@
           </div>
           <span class="text-success">-${{ cart.coupon.amount }}</span>
       </li>
-      {% endif %} {% endcomment %}
+    {% endif %} {% endcomment %}
     <li class="list-group-item d-flex justify-content-between">
-        <span>{% translate "Total" %} (EUR)</span>
-        <strong>{{ order.get_total }} EUR</strong>
+      <span>{% translate "Total" %} (EUR)</span>
+      <strong>{{ order.get_total }} EUR</strong>
     </li>
   </ul>
-
   {% comment %} {% if DISPLAY_COUPON_FORM %}
   <form class="card p-2" action="{% url 'core:add-coupon' %}" method="POST">
       {% csrf_token %}
@@ -41,5 +39,4 @@
       </div>
   </form>
   {% endif %} {% endcomment %}
-
 </div>

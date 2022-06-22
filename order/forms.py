@@ -6,8 +6,8 @@ from .models import EUCountries
 
 
 PAYMENT_CHOICES = (
-    ('S', 'Stripe'),
-    ('P', 'Paypal'),
+    ("S", "Stripe"),
+    ("P", "Paypal"),
 )
 
 
@@ -16,21 +16,21 @@ class CheckoutForm(forms.Form):
     shipping_address = forms.CharField(required=True)
     shipping_address2 = forms.CharField(required=True)
     shipping_country = CountryField(
-        countries=EUCountries, blank_label='(select country)').formfield(
+        countries=EUCountries, blank_label="(select country)"
+    ).formfield(
         required=True,
-        widget=CountrySelectWidget(attrs={
-            'class': 'custom-select d-block w-100'
-        }))
+        widget=CountrySelectWidget(attrs={"class": "custom-select d-block w-100"}),
+    )
     shipping_zip = forms.CharField(required=True)
     shipping_name = forms.CharField(required=True)
     billing_address = forms.CharField(required=False)
     billing_address2 = forms.CharField(required=False)
     billing_country = CountryField(
-        countries=EUCountries, blank_label='(select country)').formfield(
+        countries=EUCountries, blank_label="(select country)"
+    ).formfield(
         required=False,
-        widget=CountrySelectWidget(attrs={
-            'class': 'custom-select d-block w-100'
-        }))
+        widget=CountrySelectWidget(attrs={"class": "custom-select d-block w-100"}),
+    )
     billing_zip = forms.CharField(required=False)
     billing_name = forms.CharField(required=False)
     same_billing_address = forms.BooleanField(required=False)
@@ -45,8 +45,12 @@ class CheckoutForm(forms.Form):
 
 class RefundForm(forms.Form):
     ref_code = forms.CharField()
-    message = forms.CharField(widget=forms.Textarea(attrs={
-        'rows': 4,
-    }))
+    message = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "rows": 4,
+            }
+        )
+    )
     image = forms.ImageField(required=False)
     email = forms.EmailField()

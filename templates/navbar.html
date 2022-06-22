@@ -3,75 +3,99 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
 {% get_language_info_list for LANGUAGES as languages %}
-
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand waves-effect" href="/">
+    <a class="navbar-brand waves-effect" href="{% url 'core:home' %}">
       <strong class="blue-text">{{ request|my_site_name }}</strong>
     </a>
-    <!--Dropdown for language selection with disable menu -->
-    <form name="ui" action="{% url 'set_language' %}" method="post" class="dropdown">
-      {% csrf_token %}
-      <input name="next" type="hidden" value="{{ redirect_to }}" />
-      <input name="language" type="hidden"/>
-      <button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" href="#" type="button" aria-haspopup="true" aria-expanded="false">
-        {{ LANGUAGE_CODE }}
-      </button>
-      <ul class="dropdown-menu wow fadeIn" data-wow-duration="0.3s">
-        {% for language in languages %}
-          <li class="nav-item">
-            <a class="dropdown-item nav-link waves-effect {% if language.code == LANGUAGE_CODE %} active disabled {% endif %}" href="#" onclick="document.ui.language.value='{{ language.code }}'; document.ui.submit();">{{ language.name_local }}</a>
-          </li>                                                                    
-        {% endfor %}
-      </ul>
-    </form>
     <!-- Collapse -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Links -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Right -->
       <ul class="navbar-nav nav-flex-icons ml-auto">
+        <!-- Dropdown for language selection with disable menu -->
+        <form name="ui"
+              action="{% url 'set_language' %}"
+              method="post"
+              class="dropdown">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ redirect_to }}" />
+          <input name="language" type="hidden"/>
+          <button class="btn btn-link btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  href="#"
+                  type="button"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+            {{ LANGUAGE_CODE }}
+          </button>
+          <ul class="dropdown-menu wow fadeIn" data-wow-duration="0.3s">
+            {% for language in languages %}
+              <li class="nav-item">
+                <a class="dropdown-item nav-link waves-effect {% if language.code == LANGUAGE_CODE %} active disabled{% endif %}"
+                   href="#"
+                   onclick="document.ui.language.value='{{ language.code }}'; document.ui.submit();">{{ language.name_local }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </form>
+        <!-- Dropdown -->
         <li class="nav-item">
           <a href="{% url "order:cart-summary" %}" class="nav-link waves-effect">
             <i class="fas fa-shopping-cart"></i>
-            <span class="clearfix d-none d-sm-inline-block">{% translate "My Cart" %}: </span>
-            <span class="badge red z-depth-1 mr-0"> {{ request|order_item_count }} </span>
+            <span class="clearfix d-none d-sm-inline-block">{% translate "My Cart" %}:</span>
+            <span class="badge red z-depth-1 mr-0">{{ request|order_item_count }}</span>
           </a>
         </li>
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link waves-effect">
-          <i class="fas fa-user"></i>
-            <span class="clearfix d-none d-sm-inline-block"> {% if request.user.email %} {{ request.user.email }} {% else %} {{ request.user.username }} {% endif %} </span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'order:orders-finished' %}" class="nav-link waves-effect">
-            <i class="fas fa-shipping-fast"></i>
-            <span class="clearfix d-none d-sm-inline-block">{% translate "My Orders" %}</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
-            <i class="fas fa-sign-out-alt"></i>
-            <span class="clearfix d-none d-sm-inline-block"> Log Out </span>
-          </a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect">
+              <i class="fas fa-user"></i>
+              <span class="clearfix d-none d-sm-inline-block">
+                {% if request.user.email %}
+                  {{ request.user.email }}
+                {% else %}
+                  {{ request.user.username }}
+                {% endif %}
+              </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'order:orders-finished' %}"
+               class="nav-link waves-effect">
+              <i class="fas fa-shipping-fast"></i>
+              <span class="clearfix d-none d-sm-inline-block">{% translate "My Orders" %}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="clearfix d-none d-sm-inline-block">Log Out</span>
+            </a>
+          </li>
         {% else %}
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'account_login' %}">
-            <span class="clearfix d-none d-sm-inline-block"> Sign In </span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
-            <span class="clearfix d-none d-sm-inline-block"> Sign Up </span>
-          </a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'account_login' %}">
+              <i class="fas fa-sign-in-alt"></i>
+              <span class="clearfix d-none d-sm-inline-block">Sign In</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
+              <i class="fas fa-user-plus"></i>
+              <span class="clearfix d-none d-sm-inline-block">Sign Up</span>
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>

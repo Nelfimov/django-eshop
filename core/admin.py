@@ -10,18 +10,24 @@ class ItemImageAdmin(admin.TabularInline):
 
 class ItemAdmin(admin.ModelAdmin):
     list_display = [
-        'category', 'title', 'price', 'delivery_price',
-        'discount', 'stock', 'ordered_counter',
+        "category",
+        "title",
+        "price",
+        "delivery_price",
+        "discount",
+        "stock",
+        "ordered_counter",
     ]
     list_filter = [
-        'category',
+        "category",
     ]
     inlines = [ItemImageAdmin]
 
 
 class CarouselAdmin(admin.ModelAdmin):
     list_display = [
-        'index', 'title',
+        "index",
+        "title",
     ]
 
 

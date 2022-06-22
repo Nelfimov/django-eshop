@@ -6,19 +6,20 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 urlpatterns = [
-    path('i18n/', include('django.conf.urls.i18n')),  # set_language in Navbar
+    path("i18n/", include("django.conf.urls.i18n")),  # set_language in Navbar
 ]
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path('__debug__', include(debug_toolbar.urls))]
+
+    urlpatterns += [path("__debug__", include(debug_toolbar.urls))]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += i18n_patterns(
-    path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path('', include('core.urls', namespace='core')),
-    path('', include('order.urls', namespace='order')),
-    path('payment/', include('payment.urls', namespace='payment')),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path("", include("core.urls", namespace="core")),
+    path("", include("order.urls", namespace="order")),
+    path("payment/", include("payment.urls", namespace="payment")),
 )

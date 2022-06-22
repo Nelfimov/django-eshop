@@ -1,28 +1,29 @@
 {% extends "emails/base_email.html" %}
 {% load i18n %}
-
 {% block content %}
   <main>
     <div class="container">
       <div class="table-responsive text-nowrap">
         <h2 class="my-5 h2 text-center">{{ header }}</h2>
         {% if order.tracking_number and not order.refund_requested %}
-          <p>{% translate "Your order has been sent via " %} {{ order.tracking_company }} 
+          <p>
+            {% translate "Your order has been sent via " %} {{ order.tracking_company }}
             {% translate ". You can view the delivery progress by using following tracking number: " %} {{ order.tracking_number }}
-            <br>
+            <br/>
             {% translate "Link to track your order: " %} <a href="{{ order.tracking_company.tracking_link }}{{ order.tracking_number }}">link</a>
           </p>
         {% endif %}
-        <p> {% translate "Delivery address" %}:
-          <br>
+        <p>
+          {% translate "Delivery address" %}:
+          <br/>
           {{ order.shipping_address.name_for_delivery }}
-          <br>
+          <br/>
           {{ order.shipping_address.street_address }}
-          <br>
+          <br/>
           {{ order.shipping_address.apartment_address }}
-          <br>
+          <br/>
           {{ order.shipping_address.country }}
-          <br>
+          <br/>
           {{ order.shipping_address.zip }}
         </p>
         <table class="table">
@@ -39,19 +40,25 @@
             {% for order_item in order_items %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td><a style='color: blue' href="{{ order_item.item.get_absolute_url }}"> {{ order_item.item.title }} </a></td>              
-                <td>{{ order_item.item.get_final_price }}&euro;</td>
+                <td>
+                  <a style="color: blue" href="{{ order_item.item.get_absolute_url }}">{{ order_item.item.title }}</a>
+                </td>
+                <td>{{ order_item.item.get_final_price }}€</td>
                 <td>{{ order_item.quantity }}</td>
-                <td>{{ order_item.get_total_item_price }}&euro;</td>
+                <td>{{ order_item.get_total_item_price }}€</td>
               </tr>
             {% endfor %}
             <tr>
-              <td colspan="4"><b>{% translate "Order Total" %}</b></td>
-              <td><b>{{ order.get_total }}&euro;</b></td>
+              <td colspan="4">
+                <b>{% translate "Order Total" %}</b>
+              </td>
+              <td>
+                <b>{{ order.get_total }}€</b>
+              </td>
             </tr>
             <tr>
               <td colspan="5">
-                <a class='btn btn-primary float-right' href='/'>{% translate "Continue shopping" %}</a>
+                <a class="btn btn-primary float-right" href={% url 'core:home' %}>{% translate "Continue shopping" %}</a>
               </td>
             </tr>
           </tbody>

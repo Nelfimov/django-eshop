@@ -1,259 +1,209 @@
 {% extends "base.html" %}
 {% load i18n %}
-
-{% block head_title %} {% trans "Data Protection" %} {% endblock %}
-
+{% block head_title %}
+  {% trans "Data Protection" %}
+{% endblock head_title %}
 {% block content %}
-<main>
-  <div class="container">
-  <h2 class="my-5 h2 text-center">{% trans "Data Protection" %}</h2>
-  <p>Einleitung
-    
-  <br> <br>
-Diese Datenschutzerklärung soll Ihnen einen Überblick über die von uns verarbeiteten personenbezogenen Daten geben und unsere Informationspflichten Ihnen gegenüber erfüllen.
-<br><br>
-Grundsätzlich verwenden wir Ihre Daten nur für die angegeben Zwecke. Wir betreiben keinen Datenhandel, keine Nutzerverfolgung (Tracking) und über unsere Seiten werden keine Daten an Werbenetzwerke geliefert.
-<br>
-Wir achten Ihre Privatspähre und nehmen die Sicherheit Ihrer Daten ernst.<br>
-<br>
-Den gesetzliche Rahmen für die Verarbeitung Ihrer personenbezogenen Daten bilden: die VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES vom 27. April 2016 zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten, zum freien Datenverkehr und zur Aufhebung der Richtlinie 95/46/EG (Datenschutz-Grundverordnung, DS-GVO)
-und das Bundesdatenschutzgesetz (BDSG) sowie die Landesdatenschutzgesetze.<br>
-<br>
-Die nachfolgenden Informationen wurden auf diesen Grundlagen zusammengetragen.<br>
-Verantwortlicher für die Datenverarbeitung<br>
-Ladenburger Spielzeugauktion GmbH<br>
-Vertreten durch: Götz C. Seidel<br>
-Lustgartenstraße 6<br>
-68526 Ladenburg<br>
-<br>
-Telefon: +49-(0)6203-13014
-Telefax: +49-(0)6203-17193
-Email: mail@spielzeugauktion.de
-Zwecke der Verarbeitung und Rechtsgrundlagen
-Nutzerregistrierung und Gebotsabgabe
-Die Daten werden nur mit Ihrer Einwilligung und zur Vertragserfüllung erhoben und für folgende Zwecke verwendet:
-der Erfassung, Übermittlung, Prüfung und Berücksichtigung Ihrer Gebote sowie der Zusendung von Rechnungen und der ersteigerten Ware (Durchführung der Auktion)
-der Kontaktaufnahme per Telefon während der Auktion im Falle von abgegebenen Telefongeboten
-der Kontaktaufnahme im Falle von Rückfragen unsererseits und der Bereitstellung zusätzlicher angefragter Informationen
-dem Zusenden von Zugangsdaten und dem Zurücksetzen des Passwortes, falls Sie diese vergessen haben
-dem Zusenden von der von Ihnen erzielten Auktionsergebnisse
-Neben der Speicherung Ihrer Daten auf unseren Servern im Internet (für die Nutzung der Webseiten durch Sie) erfolgt eine Verarbeitung auf unseren internen Servern zur Durchführung der Auktion (Gebote, Abrechnung, Aufbewahrungspflichten, ...).
-
-Rechtsgrundlage für die Erhebung ist Art. 6(1) lit. b DS-GVO (Vertragserfüllung).
-
-Zusätzlich zu den von Ihnen eingegebenen Daten, erheben wir folgende Daten:
-Zeitpunkt und IP-Adresse Ihrer Registrierung
-Zeitpunkt und IP-Adresse der Abgabe und Übermittlung von Geboten
-Zeitpunkt und IP-Adresse von An- und Abmeldungen (Login/Logout)
-Wir protokollieren die Erfassung und Änderung der Daten.
-Diese Daten erheben wir mit Ihrer Einwilligung (Art. 6 (1) lit. a, DS-GVO), zur Wahrung unserer berechtigten Interessen (Art. 6 (1) lit. f, DS-GVO) und aufgrund der uns gesetzlich auferlegten Pflichten, die sich aus dem Datenschutzgesetzen ergeben (Gewährleistung der Sicherheit der Verarbeitung personenbezogener Daten (Art. 32(1) lit. b, d, DS-GVO), Dokumentationspflichten (Art. 33(5) DS-GVO).
-
-Die Daten werden erhoben, um eine missbräuchliche Nutzung unseres Angebotes zu verhindern, aufzuklären und verfolgen zu können (berechtigtes Interesse).
-
-Darüber hinaus dienen uns diese Daten zur Erfüllung unserer Dokumentationspflicht nach DS-GVO und BDSG.
-
-Katalogbestellung
-Die Daten werden zur Vertragserfüllung erhoben und für den Versand der bestellten Auktionskataloge und der zugehörigen Rechnung verwendet.
-
-Neben der Speicherung Ihrer Daten auf unseren Servern im Internet (für die Nutzung der Webseiten durch Sie) erfolgt eine Verarbeitung auf unseren internen Servern zur Durchführung der Katalogbestellung (Abrechnung, Aufbewahrungspflichten, ...).
-
-Zusätzlich zu den von Ihnen eingegebenen Daten, erheben wir folgende Daten:
-Zeitpunkt und IP-Adresse Ihrer Katalogbestellung
-Diese Daten erheben wir mit Ihrer Einwilligung (Art. 6 (1) lit. a, DS-GVO), zur Wahrung unserer berechtigten Interessen (Art. 6 (1) lit. f, DS-GVO) und aufgrund der uns gesetzlich auferlegten Pflichten, die sich aus dem Datenschutzgesetzen ergeben (Gewährleistung der Sicherheit der Verarbeitung personenbezogener Daten (Art. 32(1) lit. b, d, DS-GVO), Dokumentationspflichten (Art. 33(5) DS-GVO).
-
-Die Daten werden erhoben, um eine missbräuchliche Nutzung unseres Angebotes zu verhindern, aufzuklären und verfolgen zu können (berechtigtes Interesse).
-
-Darüber hinaus dienen uns diese Daten zur Erfüllung unserer Dokumentationspflicht nach DS-GVO und BDSG.
-
-Newsletteranmeldung
-Die Daten werden aufgrund Ihrer Einwilligung erhoben und ausschließlich für den Versand von Newslettern mit Informationen zu unseren Auktionen verwendet.
-Die Newsletteranmeldung erfolgt nach dem Double-Opt-In-Verfahren, d.h. Sie lösen die Anmeldung selbst aus und bestätigen diese über einen Link, den wir Ihnen in einer Email zusenden.
-Dadurch wird sichergestellt, dass ein Dritter Ihre Email-Adresse nicht für eine Nesletteranmeldung nutzen kann.
-Sie können Ihre Einwilligung jederzeit widerrufen. Dies kann über den Abmelden-Link im Newsletter selbst erfolgen, oder per Mail an: mail@spielzeugauktion.de
-Zusätzlich zu den von Ihnen eingegebenen Daten, erheben wir folgende Daten:
-Zeitpunkt und IP-Adresse Ihrer Newsletteranmeldung
-Zeitpunkt und IP-Adresse der Bestätigung Ihrer Newsletteranmeldung
-Zeitpunkt und IP-Adresse Ihrer Newsletterabmeldung
-Zeitpunkt des Versandes eines Newsletters
-Diese Daten erheben wir mit Ihrer Einwilligung (Art. 6 (1) lit. a, DS-GVO), zur Wahrung unserer berechtigten Interessen (Art. 6 (1) lit. f, DS-GVO) und aufgrund der uns gesetzlich auferlegten Pflichten, die sich aus dem Datenschutzgesetzen ergeben (Gewährleistung der Sicherheit der Verarbeitung personenbezogener Daten (Art. 32(1) lit. b, d, DS-GVO), Dokumentationspflichten (Art. 33(5) DS-GVO).
-
-Die Daten werden erhoben, um eine missbräuchliche Nutzung unseres Angebotes zu verhindern, aufzuklären und verfolgen zu können (berechtigtes Interesse).
-
-Darüber hinaus dienen uns diese Daten zur Erfüllung unserer Dokumentationspflicht nach DS-GVO und BDSG.
-
-Watchlist
-Der Zweck der Watchlist ist, das Sie als anonymer Nutzer Objekte, die für Sie von Interesse sind in erneut aufrufen können, z.B. um später Gebote abgeben zu können oder sich die Zuschläge anzusehen. Mit der Archivierung des Kataloges werden die zugehörigen Watchlisteinträge gelöscht (Datenminimierung).
-
-Objekte, die Sie auf die Watchlist setzen, werden auf unseren Servern im Internet gespeichert.
-
-Wir speichern folgende Daten:
-die zufällig gewählte Zeichenfolge, die das Watchlist-Cookie in Ihrem Webbrowser enthält
-die Nummer (ID) des Kataloges (Sie können mehrere Kataloge gleichzeitig mit Watchlisteinträgen versehen)
-die Nummer des Objektes
-den Zeitpunkt der Speicherung, um die Nutzung der Watchlist statistisch auswerten zu können. Die Statistik ist anonym.
-Hierfür wird ein Cookie verwendet, welches auf Ihrem Rechner gespeichert wird und über das die bei uns gepeicherten Objekte mit Ihrem Webbrowser verknüpft werden.
-Durch Löschen des Cookies geht diese Zuordnung verloren, damit sind Ihre Einträge auch nicht mehr abrufbar.
-
-Eine Verknüpfung der Watchlist mit Ihrer Nutzeregistrierung erfolgt nicht.
-
-Die Erhebung der Daten erfolgt aufgrund Ihrer erteilten Einwilligung.
-
-Hinweis zum Recht auf Auskunft, Berichtigung, Löschen, Widerruf
-Da wir Ihre Watchlist Ihnen als Person NICHT zuordnen können, können Sie Ihre Rechte nur selbst über Ihren Browser wahrnehmen (wir haben nicht die Möglichkeit Ihre Watchlist zu finden):
-die Auskunft erfolgt über die gespeicherten Daten über die Website (Menu: Watchlist)
-eine Berichtigung erfolgt, indem Sie das Objekt löschen und ein anderes speichern
-Sie können die gespeicherten Daten nur selbst löschen.
-Dies ist möglich, indem Sie die gespeicherten Objekte über unsere Webseite löschen, oder indem Sie das gespeicherte Cookie löschen (damit löschen Sie gesamte Watchlist für alle Kataloge).
-Mit dem Löschen des Cookies gibt es keine Verbindung zwischen Ihrem Webbrowser und der Watchlist
-Wenn Sie Ihre Einwilligung widerrufen wollen, löschen Sie die Watchlist und tragen keine neuen Objekte ein
-Alternativ können Sie uns kontaktieren (mail@spielzeugauktion.de) und den Inhalt des Cookies mitteilen, wir löschen dann die Daten der Watchlist auf unserem Server.
-
-Automatisiert erfasste Daten (Protokolldaten)
-Wir zählen die Zugriffe auf die Seiten (Statistik), ohne einen Bezug zu dem konkreten Nutzer herzustellen (vollständig anonym).
-
-Bei der Nutzung der Webseiten entstehen Protokolldaten, die z.B. den Zeitpunkt der Nutzung, IP-Adresse des aufrufenden Rechners, die aufgerufene Seite und Informationen zum verwendeten Gerät/Webbrowser enthalten. Diese Daten werden teilweise von Ihrem Webbrowser übermittelt, teilweise ergeben Sie sich aus dem Ablauf der Kommunikation (z.B. IP-Adresse, Zeitpunkt, Übermittlungsstatus).
-
-Ihre IP-Adresse gilt als personenbezogenes Datum. Die Speicherung ohne Einwilligung, auch in Protokolldateien ist rechtlich umstritten.
-
-Wir haben uns daher entschieden, Ihre IP-Adresse nicht ohne konkreten Grund (d.h. anlasslos, verdachtslos) zu speichern.
-D.h. bei Zugriffen auf unsere Server, die bei normaler Nutzung unseres Angebotes zu erwarten sind, wird Ihre IP-Adresse nicht gespeichert.
-
-Ergibt sich aber ein konkreter Grund zur Annahme, dass bestimmte Zugriffe mit dem Ziel erfolgen, z.B. Angriffe auszuführen, Sicherheitslücken auszunutzen, geschützte Daten auszuspähen oder die Verfügbarkeit, Stabilität oder Sicherheit des Servers zu gefährden (Angriffsverdacht, Angriffsmuster), so werden die IP-Adressen, von denen diese Zugriffe ausgehen, gespeichert. Dies erfolgt ausschließlich mit dem Ziel, Angriffe zu erkennen, abzuwehren und gegebenenfalls strafrechtlich zu verfolgen.
-
-Diese Daten werden ausschließlich zur Gewährleistung der Sicherheit des Computersystems und dem Erhalt der Verfügbarkeit verwendet.
-
-Rechtsgrundlagen hierfür sind:
-die Wahrung unserer berechtigten Interessen (Artikel 6(1) lit. f, DS-GVO)
-
-Unser berechtigtes Interesse besteht in folgendem:
-
-der Schutz der auf dem Server gespeicherten Daten vor unberechtigten Zugriffen und Angriffen
-ein störungsfreier Betrieb des Servers
-der Aufklärung von Angriffen und deren Auswirkungen
-die Ermittlung von Angreifern und ggfs. die Strafverfolgung
-
-
-die Gewährleistung der Sicherheit der Verarbeitung, Dokumentationspflicht (Art. 28(3) lit. c, Art. 32(1) b, d, Art. 33(5) DS-GVO)
-Eine Weitergabe der Protokolldaten an Dritte, mit Ausnahme von Strafverfolgungsbehörden im Falle einer mißbräuchlichen Nutzung, Störung oder Sabotage, erfolgt nicht.
-
-Die Protokolldaten werden von uns keiner Person zugeordnet und es erfolgt kein Tracking und keine Weitergabe. Eine Analyse erfolgt ausschliesslich mit dem Ziel Sicherheitsbedrohungen zu erkennen und abzuwehren.
-Weitergabe und Empfänger
-Die erhobenen Daten können an Aufsichts-, Finanz- und Strafverfolgungsbehörden weitergegeben werden, insofern wir dazu gesetzlich verpflichtet sind.
-
-Wir geben Ihre Adress- und Kontaktdaten nur an von beauftrage Unternehmen weiter, wenn dies zur Druchführung des Vertrages notwendig ist (z.B. Versanddienstleister, Zusenden von Rechnungen, Versand ersteigerter Artikel, Kataloge).
-Weitergabe personenbezogener Daten an ein Drittland
-Eine Weitergabe der Daten an ein Drittland ist nicht vorgesehen.
-Dauer der Speicherung
-Nutzerregistrierung
-Die bei der Registrierung als Nutzer erhobenen Daten werden solange gespeichert, bis Sie Ihre Löschung verlangen. In diesem Falle gilt folgendes: Sind keine aufbewahrungspflichtigen Daten entstanden, werden Ihre Nutzerdaten gelöscht, anderenfalls werden diese gesperrt.
-
-Nutzerdaten, die verwendet wurden, mit denen aber 2 Jahre nach der letzten Verwendung keine Anmeldung erfolgte, werden gelöscht, falls keine aufbewahrungspflichtigen Daten vorliegen. Diese Frist kann verkürzt werden, wenn dies technisch erforderlich ist.
-
-Nutzerdaten, mit denen 3 Monate nach Registrierung keine Anmeldung erfolgte, werden gelöscht. Diese Frist kann verkürzt werden, wenn dies technisch erforderlich ist.
-
-Abgegebene Gebote
-Übermittelte Gebote müssen für die Dauer der gesetzlichen Aufbewahrungsfristen aufbewahrt werden, auch wenn diese nicht zu einem Zuschlag führten, da die niedrigeren Gebote als Nachweis für die Höhe des erfolgreichen Gebotes dienen (ordnungsgemäße Auktion).
-
-Ihr Zugriff auf Ihre Gebote über das Internet ist aber nur bis zur Archivierung des Kataloges gewährleistet.
-
-Ihre Gebote werden mit der Archivierung des Kataloges vom Internetserver gelöscht, bleiben aber für die Dauer der Aufbewahrungsfrist auf anderen Systemen gespeichert.
-
-Watchlist
-Einträge, die Sie auf der Watchlist vornehmen, bleiben gespeichert, bis Sie diese löschen.
-
-Mit der Archivierung der Kataloge werden die zugehörigen Watchlisteinträge gelöscht.
-
-Die Archivierung erfolgt nach Ablauf des Nachverkaufs, bzw. mit Erscheinen von neuen Katalogen.
-
-Newsletterregistrierung
-Wenn Sie sich für unseren Newsletter anmelden, werden Ihre Daten gespeichert, bist Sie sich wieder abmelden.
-
-Cookies
-Sie können die bei Ihnen gespeicherten Cookies jederzeit selbst löschen.
-Dabei verlieren Sie aber Informationen wie Ihre Watchlist und Sprachauswahl.
-
-Automatisiert erfasste Daten (Protokolldaten)
-IP-Adressen, die auf Grund eines konkreten Angriffsverdachtes protokolliert wurden, werden gelöscht oder anonymisiert, sobald Sie für den Zweck (Gewährleistung der Verfügbarkeit und Sicherheit) nicht mehr benötigt werden, die Löschung oder Anonymisierung erfolgt spätestens nach 7 Tagen, es sei den, es hat ein konkreter Angriff stattgefunden, und die Daten werden für dessen Aufklärung benötigt oder wurden an Aufsichts- oder Strafverfolgungsbehörden weitergegeben.
-Ihr Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruchsrecht und Datenübertragbarkeit
-Auskunft
-Sie haben das Recht, auf Antrag eine kostenlose Auskunft darüber zu erhalten, ob und welche personenbezogenen Daten über Sie verarbeitet werden. (Artikel 15 DS-GVO)
-
-Berichtigung
-Sie haben das Recht auf unverzügliche Berichtigung unrichtiger oder unvollständiger Daten. (Artikel 16 DS-GVO)
-
-Löschung oder Verarbeitungseinschränkung
-Sie haben das Recht auf Löschung oder Verarbeitungseinschränkung (Sperrung) Ihrer personenbezogenen Daten, wenn die Löschung aufgrund der Rechtsgrundlage oder Aufbewahrungsfristen nicht möglich ist. (Artikel 17, 18 DS-GVO)
-
-Widerspruchsrecht
-Sie haben ein Widerspruchsrecht gegen die Verarbeitung Ihrer personenbezogenen Daten. (Artikel 21 DS-GVO)
-
-Recht auf Datenübertragbarkeit
-Sie haben das Recht, die Sie betreffenden personenbezogenen Daten, die Sie uns bereitgestellt haben, in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten, und Sie haben das Recht, diese Daten einem anderen Verantwortlichen ohne Behinderung durch uns, übermitteln. (Artikel 20 DS-GVO)
-
-Zur Ausübung Ihrer Rechte wenden Sie sich bitte an: mail@spielzeugauktion.de
-Weitergehende Informationen über diese Rechte erhalten Sie hier:
-
-VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES
-vom 27. April 2016 zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten, zum freien Datenverkehr und zur Aufhebung der Richtlinie 95/46/EG (Datenschutz-Grundverordnung) Artikel 15, 16, 17, 18, 20 und 21
-Widerrufsrecht
-Sie können Ihre Einwilligung zur Verarbeitung ihrer personenbezogenen Daten zu jeder Zeit widerrufen. Die Rechtmäßigkeit der aufgrund der Einwilligung bis zum Widerruf erfolgten Verarbeitung wird davon nicht berührt.
-Beschwerderecht bei einer Aufsichtsbehörde
-Sie können eine Beschwerde bei der zuständigen Aufsichtsbehörde einreichen, z.B. wenn Sie annehmen, dass Ihre Daten unrechtmäßig verarbeitet wurden.
-Ist die Bereitstellung der personenbezogenen Daten gesetzlich oder vertraglich vorgeschrieben oder für einen Vertragsabschluss erforderlich?
-Webseiten
-Das Angebot kann teilweise ohne die Bereitstellung personenbezogenen Daten genutzt werden.
-
-Ohne aktivierte Cookies kann die von Ihnen getroffene Sprachauswahl nicht gespeichert werden. Gleiches gilt für das Einverständnis zu Nutzung von Cookies.
-
-Gebotsabgabe
-Ohne die Bereitstellung der angeforderten personenbezogenen Daten ist eine Gebotsabgabe über die Webseiten nicht möglich.
-
-Sie können aber alternativ auf anderen Wegen Gebote abgeben (Fax, Email, Telefon, Post, persönlich).
-
-Watchlist
-Ohne aktivierte Cookies ist eine Nutzung der Watchlist nicht möglich, da wir die gespeicherten Objekte Ihnen ohne Cookie nicht zuordnen können.
-
-Newsletter
-Ohne die Bereitstellung der Emailadresse ist die Nutzung des Newsletter nicht möglich.
-Automatisierte Entscheidungsfindung und Profiling
-Eine automatisierte Entscheidungsfindung und ein Profiling finden nicht statt.
-IP-Adressen
-Die IP-Adresse (Internet-Protokoll-Adresse) ist eindeutige Adresse, die Ihnen dauerhaft oder zeitweise durch Ihren Internetzugangsanbieter zugeordnet wird und über die Sie in Verbindung mit anderen Daten identifizierbar sind. Die IP-Adresse ist notwendig, damit Ihr Gerät mit unseren Servern über das Internet kommunizieren kann.
-Cookies
-Wir verwenden Cookies für folgende Zwecke:
-Cookie zur Speicherung Ihres Einverständnisses zur Cookienutzung
-Cookie zur Speicherung Ihrer Sprachauswahl
-Cookie zur Speicherung der Watchlist
-Session-Cookie für die Nutzeranmeldung (Login)
-Mit der Nutzung der Webseiten erklären Sie sich damit einverstanden, dass wir diese Cookies verwenden. Die Cookies sind technisch notwendig, um die Funktionen der Webseiten zu ermöglichen.
-
-Cookies sind kleine Dateien, in denen Informationen gespeichert werden, die bei jedem Abruf von Daten von Ihrem Webbrowser (Programm, mit dem Sie die Internetseiten betrachten) an den Webserver (Software, die die Seiten bereitstellt) gesendet werden.
-Dadurch kann erkannt werden, dass Anfragen von der selben Quelle stammen.
-Überlicherweise werden Cookies eingesetzt, um Nutzer nach der Anmeldung zu wiederzuerkennen (Session-Cookies: diese werden nach Beendigung der Sitzung automatisch gelöscht), Warenkorbfunktionen zu realisieren, Voreinstellungen (z.B. ausgewählte Sprache) zu speichern.
-Cookies können aber auch verwendet werden, um Nutzer und deren Nutzung von Internetseiten, auch über verschiedene Webseiten hinweg, zu verfolgen, z.B. zur Einblendung von Werbung, aber auch, um Informationen über die Interessen des Nutzers zu gewinnen (Tracking-Cookies).
-Wir verzichten grundsätzlich auf den Einsatz von Tracking-Cookies oder ähnliche Technologien.
-Sicherheit
-Die Übertragung der Daten von und zu unseren Webservern über das Internet erfolgt verschlüsselt, um Vertraulichkeit und Integrität der Daten zu erreichen.
-
-Die Verschlüsselung erschwert das Einsehen und Verändern der übermittelten Daten, ausgeschlossen werden kann dies jedoch nicht, da es Möglichkeiten gibt, die Verschlüsselung aufzubrechen (z.B. Man-in-the-Middle-Angriffe).
-
-Bitte beachten Sie, dass Informationen, die per Email versendet werden NICHT verschlüsselt sind. Versenden Sie daher keine vertraulichen Informationen unverschlüsselt per Email.
-Kontaktmöglichkeiten
-Wenn Sie Auskunft, Berichtigung, Löschung oder Verarbeitungseinschränkung (Sperrung) von Daten, die zu Ihrer Person gespeichert wurden, wünschen oder Fragen bzgl. der Erhebung, Verarbeitung oder Verwendung Ihrer personenbezogenen Daten haben oder erteilte Einwilligungen widerrufen möchten, wenden Sie sich bitte an folgende E-Mail-Adresse:
-
-mail@spielzeugauktion.de
-
-oder nutzen Sie andere Kommunikationswege:
-
-Ladenburger Spielzeugauktion GmbH
-Vertreten durch: Götz C. Seidel
-Lustgartenstraße 6
-68526 Ladenburg
-
-Telefon: +49-(0)6203-13014
-Telefax: +49-(0)6203-17193
-Email: mail@spielzeugauktion.de
-    </p>
-  </div>
-</main>
+  <main>
+    <div class="container">
+      <h2 class="my-5 h2 text-center">{% trans "Data Protection" %}</h2>
+      <p>
+        Einleitung
+        <br/>
+        <br/>
+        Diese Datenschutzerklärung soll Ihnen einen Überblick über die von uns verarbeiteten personenbezogenen Daten geben und unsere Informationspflichten Ihnen gegenüber erfüllen.
+        <br/>
+        <br/>
+        Grundsätzlich verwenden wir Ihre Daten nur für die angegeben Zwecke. Wir betreiben keinen Datenhandel, keine Nutzerverfolgung (Tracking) und über unsere Seiten werden keine Daten an Werbenetzwerke geliefert.
+        <br/>
+        Wir achten Ihre Privatspähre und nehmen die Sicherheit Ihrer Daten ernst.
+        <br/>
+        <br/>
+        Den gesetzliche Rahmen für die Verarbeitung Ihrer personenbezogenen Daten bilden: die VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES vom 27. April 2016 zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten, zum freien Datenverkehr und zur Aufhebung der Richtlinie 95/46/EG (Datenschutz-Grundverordnung, DS-GVO)
+        und das Bundesdatenschutzgesetz (BDSG) sowie die Landesdatenschutzgesetze.
+        <br/>
+        <br/>
+        Die nachfolgenden Informationen wurden auf diesen Grundlagen zusammengetragen.
+        <br/>
+        Verantwortlicher für die Datenverarbeitung
+        <br/>
+        Ladenburger Spielzeugauktion GmbH
+        <br/>
+        Vertreten durch: Götz C. Seidel
+        <br/>
+        Lustgartenstraße 6
+        <br/>
+        68526 Ladenburg
+        <br/>
+        <br/>
+        Telefon: +49-(0)6203-13014
+        Telefax: +49-(0)6203-17193
+        Email: mail@spielzeugauktion.de
+        Zwecke der Verarbeitung und Rechtsgrundlagen
+        Nutzerregistrierung und Gebotsabgabe
+        Die Daten werden nur mit Ihrer Einwilligung und zur Vertragserfüllung erhoben und für folgende Zwecke verwendet:
+        der Erfassung, Übermittlung, Prüfung und Berücksichtigung Ihrer Gebote sowie der Zusendung von Rechnungen und der ersteigerten Ware (Durchführung der Auktion)
+        der Kontaktaufnahme per Telefon während der Auktion im Falle von abgegebenen Telefongeboten
+        der Kontaktaufnahme im Falle von Rückfragen unsererseits und der Bereitstellung zusätzlicher angefragter Informationen
+        dem Zusenden von Zugangsdaten und dem Zurücksetzen des Passwortes, falls Sie diese vergessen haben
+        dem Zusenden von der von Ihnen erzielten Auktionsergebnisse
+        Neben der Speicherung Ihrer Daten auf unseren Servern im Internet (für die Nutzung der Webseiten durch Sie) erfolgt eine Verarbeitung auf unseren internen Servern zur Durchführung der Auktion (Gebote, Abrechnung, Aufbewahrungspflichten, ...).
+        Rechtsgrundlage für die Erhebung ist Art. 6(1) lit. b DS-GVO (Vertragserfüllung).
+        Zusätzlich zu den von Ihnen eingegebenen Daten, erheben wir folgende Daten:
+        Zeitpunkt und IP-Adresse Ihrer Registrierung
+        Zeitpunkt und IP-Adresse der Abgabe und Übermittlung von Geboten
+        Zeitpunkt und IP-Adresse von An- und Abmeldungen (Login/Logout)
+        Wir protokollieren die Erfassung und Änderung der Daten.
+        Diese Daten erheben wir mit Ihrer Einwilligung (Art. 6 (1) lit. a, DS-GVO), zur Wahrung unserer berechtigten Interessen (Art. 6 (1) lit. f, DS-GVO) und aufgrund der uns gesetzlich auferlegten Pflichten, die sich aus dem Datenschutzgesetzen ergeben (Gewährleistung der Sicherheit der Verarbeitung personenbezogener Daten (Art. 32(1) lit. b, d, DS-GVO), Dokumentationspflichten (Art. 33(5) DS-GVO).
+        Die Daten werden erhoben, um eine missbräuchliche Nutzung unseres Angebotes zu verhindern, aufzuklären und verfolgen zu können (berechtigtes Interesse).
+        Darüber hinaus dienen uns diese Daten zur Erfüllung unserer Dokumentationspflicht nach DS-GVO und BDSG.
+        Katalogbestellung
+        Die Daten werden zur Vertragserfüllung erhoben und für den Versand der bestellten Auktionskataloge und der zugehörigen Rechnung verwendet.
+        Neben der Speicherung Ihrer Daten auf unseren Servern im Internet (für die Nutzung der Webseiten durch Sie) erfolgt eine Verarbeitung auf unseren internen Servern zur Durchführung der Katalogbestellung (Abrechnung, Aufbewahrungspflichten, ...).
+        Zusätzlich zu den von Ihnen eingegebenen Daten, erheben wir folgende Daten:
+        Zeitpunkt und IP-Adresse Ihrer Katalogbestellung
+        Diese Daten erheben wir mit Ihrer Einwilligung (Art. 6 (1) lit. a, DS-GVO), zur Wahrung unserer berechtigten Interessen (Art. 6 (1) lit. f, DS-GVO) und aufgrund der uns gesetzlich auferlegten Pflichten, die sich aus dem Datenschutzgesetzen ergeben (Gewährleistung der Sicherheit der Verarbeitung personenbezogener Daten (Art. 32(1) lit. b, d, DS-GVO), Dokumentationspflichten (Art. 33(5) DS-GVO).
+        Die Daten werden erhoben, um eine missbräuchliche Nutzung unseres Angebotes zu verhindern, aufzuklären und verfolgen zu können (berechtigtes Interesse).
+        Darüber hinaus dienen uns diese Daten zur Erfüllung unserer Dokumentationspflicht nach DS-GVO und BDSG.
+        Newsletteranmeldung
+        Die Daten werden aufgrund Ihrer Einwilligung erhoben und ausschließlich für den Versand von Newslettern mit Informationen zu unseren Auktionen verwendet.
+        Die Newsletteranmeldung erfolgt nach dem Double-Opt-In-Verfahren, d.h. Sie lösen die Anmeldung selbst aus und bestätigen diese über einen Link, den wir Ihnen in einer Email zusenden.
+        Dadurch wird sichergestellt, dass ein Dritter Ihre Email-Adresse nicht für eine Nesletteranmeldung nutzen kann.
+        Sie können Ihre Einwilligung jederzeit widerrufen. Dies kann über den Abmelden-Link im Newsletter selbst erfolgen, oder per Mail an: mail@spielzeugauktion.de
+        Zusätzlich zu den von Ihnen eingegebenen Daten, erheben wir folgende Daten:
+        Zeitpunkt und IP-Adresse Ihrer Newsletteranmeldung
+        Zeitpunkt und IP-Adresse der Bestätigung Ihrer Newsletteranmeldung
+        Zeitpunkt und IP-Adresse Ihrer Newsletterabmeldung
+        Zeitpunkt des Versandes eines Newsletters
+        Diese Daten erheben wir mit Ihrer Einwilligung (Art. 6 (1) lit. a, DS-GVO), zur Wahrung unserer berechtigten Interessen (Art. 6 (1) lit. f, DS-GVO) und aufgrund der uns gesetzlich auferlegten Pflichten, die sich aus dem Datenschutzgesetzen ergeben (Gewährleistung der Sicherheit der Verarbeitung personenbezogener Daten (Art. 32(1) lit. b, d, DS-GVO), Dokumentationspflichten (Art. 33(5) DS-GVO).
+        Die Daten werden erhoben, um eine missbräuchliche Nutzung unseres Angebotes zu verhindern, aufzuklären und verfolgen zu können (berechtigtes Interesse).
+        Darüber hinaus dienen uns diese Daten zur Erfüllung unserer Dokumentationspflicht nach DS-GVO und BDSG.
+        Watchlist
+        Der Zweck der Watchlist ist, das Sie als anonymer Nutzer Objekte, die für Sie von Interesse sind in erneut aufrufen können, z.B. um später Gebote abgeben zu können oder sich die Zuschläge anzusehen. Mit der Archivierung des Kataloges werden die zugehörigen Watchlisteinträge gelöscht (Datenminimierung).
+        Objekte, die Sie auf die Watchlist setzen, werden auf unseren Servern im Internet gespeichert.
+        Wir speichern folgende Daten:
+        die zufällig gewählte Zeichenfolge, die das Watchlist-Cookie in Ihrem Webbrowser enthält
+        die Nummer (ID) des Kataloges (Sie können mehrere Kataloge gleichzeitig mit Watchlisteinträgen versehen)
+        die Nummer des Objektes
+        den Zeitpunkt der Speicherung, um die Nutzung der Watchlist statistisch auswerten zu können. Die Statistik ist anonym.
+        Hierfür wird ein Cookie verwendet, welches auf Ihrem Rechner gespeichert wird und über das die bei uns gepeicherten Objekte mit Ihrem Webbrowser verknüpft werden.
+        Durch Löschen des Cookies geht diese Zuordnung verloren, damit sind Ihre Einträge auch nicht mehr abrufbar.
+        Eine Verknüpfung der Watchlist mit Ihrer Nutzeregistrierung erfolgt nicht.
+        Die Erhebung der Daten erfolgt aufgrund Ihrer erteilten Einwilligung.
+        Hinweis zum Recht auf Auskunft, Berichtigung, Löschen, Widerruf
+        Da wir Ihre Watchlist Ihnen als Person NICHT zuordnen können, können Sie Ihre Rechte nur selbst über Ihren Browser wahrnehmen (wir haben nicht die Möglichkeit Ihre Watchlist zu finden):
+        die Auskunft erfolgt über die gespeicherten Daten über die Website (Menu: Watchlist)
+        eine Berichtigung erfolgt, indem Sie das Objekt löschen und ein anderes speichern
+        Sie können die gespeicherten Daten nur selbst löschen.
+        Dies ist möglich, indem Sie die gespeicherten Objekte über unsere Webseite löschen, oder indem Sie das gespeicherte Cookie löschen (damit löschen Sie gesamte Watchlist für alle Kataloge).
+        Mit dem Löschen des Cookies gibt es keine Verbindung zwischen Ihrem Webbrowser und der Watchlist
+        Wenn Sie Ihre Einwilligung widerrufen wollen, löschen Sie die Watchlist und tragen keine neuen Objekte ein
+        Alternativ können Sie uns kontaktieren (mail@spielzeugauktion.de) und den Inhalt des Cookies mitteilen, wir löschen dann die Daten der Watchlist auf unserem Server.
+        Automatisiert erfasste Daten (Protokolldaten)
+        Wir zählen die Zugriffe auf die Seiten (Statistik), ohne einen Bezug zu dem konkreten Nutzer herzustellen (vollständig anonym).
+        Bei der Nutzung der Webseiten entstehen Protokolldaten, die z.B. den Zeitpunkt der Nutzung, IP-Adresse des aufrufenden Rechners, die aufgerufene Seite und Informationen zum verwendeten Gerät/Webbrowser enthalten. Diese Daten werden teilweise von Ihrem Webbrowser übermittelt, teilweise ergeben Sie sich aus dem Ablauf der Kommunikation (z.B. IP-Adresse, Zeitpunkt, Übermittlungsstatus).
+        Ihre IP-Adresse gilt als personenbezogenes Datum. Die Speicherung ohne Einwilligung, auch in Protokolldateien ist rechtlich umstritten.
+        Wir haben uns daher entschieden, Ihre IP-Adresse nicht ohne konkreten Grund (d.h. anlasslos, verdachtslos) zu speichern.
+        D.h. bei Zugriffen auf unsere Server, die bei normaler Nutzung unseres Angebotes zu erwarten sind, wird Ihre IP-Adresse nicht gespeichert.
+        Ergibt sich aber ein konkreter Grund zur Annahme, dass bestimmte Zugriffe mit dem Ziel erfolgen, z.B. Angriffe auszuführen, Sicherheitslücken auszunutzen, geschützte Daten auszuspähen oder die Verfügbarkeit, Stabilität oder Sicherheit des Servers zu gefährden (Angriffsverdacht, Angriffsmuster), so werden die IP-Adressen, von denen diese Zugriffe ausgehen, gespeichert. Dies erfolgt ausschließlich mit dem Ziel, Angriffe zu erkennen, abzuwehren und gegebenenfalls strafrechtlich zu verfolgen.
+        Diese Daten werden ausschließlich zur Gewährleistung der Sicherheit des Computersystems und dem Erhalt der Verfügbarkeit verwendet.
+        Rechtsgrundlagen hierfür sind:
+        die Wahrung unserer berechtigten Interessen (Artikel 6(1) lit. f, DS-GVO)
+        Unser berechtigtes Interesse besteht in folgendem:
+        der Schutz der auf dem Server gespeicherten Daten vor unberechtigten Zugriffen und Angriffen
+        ein störungsfreier Betrieb des Servers
+        der Aufklärung von Angriffen und deren Auswirkungen
+        die Ermittlung von Angreifern und ggfs. die Strafverfolgung
+        die Gewährleistung der Sicherheit der Verarbeitung, Dokumentationspflicht (Art. 28(3) lit. c, Art. 32(1) b, d, Art. 33(5) DS-GVO)
+        Eine Weitergabe der Protokolldaten an Dritte, mit Ausnahme von Strafverfolgungsbehörden im Falle einer mißbräuchlichen Nutzung, Störung oder Sabotage, erfolgt nicht.
+        Die Protokolldaten werden von uns keiner Person zugeordnet und es erfolgt kein Tracking und keine Weitergabe. Eine Analyse erfolgt ausschliesslich mit dem Ziel Sicherheitsbedrohungen zu erkennen und abzuwehren.
+        Weitergabe und Empfänger
+        Die erhobenen Daten können an Aufsichts-, Finanz- und Strafverfolgungsbehörden weitergegeben werden, insofern wir dazu gesetzlich verpflichtet sind.
+        Wir geben Ihre Adress- und Kontaktdaten nur an von beauftrage Unternehmen weiter, wenn dies zur Druchführung des Vertrages notwendig ist (z.B. Versanddienstleister, Zusenden von Rechnungen, Versand ersteigerter Artikel, Kataloge).
+        Weitergabe personenbezogener Daten an ein Drittland
+        Eine Weitergabe der Daten an ein Drittland ist nicht vorgesehen.
+        Dauer der Speicherung
+        Nutzerregistrierung
+        Die bei der Registrierung als Nutzer erhobenen Daten werden solange gespeichert, bis Sie Ihre Löschung verlangen. In diesem Falle gilt folgendes: Sind keine aufbewahrungspflichtigen Daten entstanden, werden Ihre Nutzerdaten gelöscht, anderenfalls werden diese gesperrt.
+        Nutzerdaten, die verwendet wurden, mit denen aber 2 Jahre nach der letzten Verwendung keine Anmeldung erfolgte, werden gelöscht, falls keine aufbewahrungspflichtigen Daten vorliegen. Diese Frist kann verkürzt werden, wenn dies technisch erforderlich ist.
+        Nutzerdaten, mit denen 3 Monate nach Registrierung keine Anmeldung erfolgte, werden gelöscht. Diese Frist kann verkürzt werden, wenn dies technisch erforderlich ist.
+        Abgegebene Gebote
+        Übermittelte Gebote müssen für die Dauer der gesetzlichen Aufbewahrungsfristen aufbewahrt werden, auch wenn diese nicht zu einem Zuschlag führten, da die niedrigeren Gebote als Nachweis für die Höhe des erfolgreichen Gebotes dienen (ordnungsgemäße Auktion).
+        Ihr Zugriff auf Ihre Gebote über das Internet ist aber nur bis zur Archivierung des Kataloges gewährleistet.
+        Ihre Gebote werden mit der Archivierung des Kataloges vom Internetserver gelöscht, bleiben aber für die Dauer der Aufbewahrungsfrist auf anderen Systemen gespeichert.
+        Watchlist
+        Einträge, die Sie auf der Watchlist vornehmen, bleiben gespeichert, bis Sie diese löschen.
+        Mit der Archivierung der Kataloge werden die zugehörigen Watchlisteinträge gelöscht.
+        Die Archivierung erfolgt nach Ablauf des Nachverkaufs, bzw. mit Erscheinen von neuen Katalogen.
+        Newsletterregistrierung
+        Wenn Sie sich für unseren Newsletter anmelden, werden Ihre Daten gespeichert, bist Sie sich wieder abmelden.
+        Cookies
+        Sie können die bei Ihnen gespeicherten Cookies jederzeit selbst löschen.
+        Dabei verlieren Sie aber Informationen wie Ihre Watchlist und Sprachauswahl.
+        Automatisiert erfasste Daten (Protokolldaten)
+        IP-Adressen, die auf Grund eines konkreten Angriffsverdachtes protokolliert wurden, werden gelöscht oder anonymisiert, sobald Sie für den Zweck (Gewährleistung der Verfügbarkeit und Sicherheit) nicht mehr benötigt werden, die Löschung oder Anonymisierung erfolgt spätestens nach 7 Tagen, es sei den, es hat ein konkreter Angriff stattgefunden, und die Daten werden für dessen Aufklärung benötigt oder wurden an Aufsichts- oder Strafverfolgungsbehörden weitergegeben.
+        Ihr Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruchsrecht und Datenübertragbarkeit
+        Auskunft
+        Sie haben das Recht, auf Antrag eine kostenlose Auskunft darüber zu erhalten, ob und welche personenbezogenen Daten über Sie verarbeitet werden. (Artikel 15 DS-GVO)
+        Berichtigung
+        Sie haben das Recht auf unverzügliche Berichtigung unrichtiger oder unvollständiger Daten. (Artikel 16 DS-GVO)
+        Löschung oder Verarbeitungseinschränkung
+        Sie haben das Recht auf Löschung oder Verarbeitungseinschränkung (Sperrung) Ihrer personenbezogenen Daten, wenn die Löschung aufgrund der Rechtsgrundlage oder Aufbewahrungsfristen nicht möglich ist. (Artikel 17, 18 DS-GVO)
+        Widerspruchsrecht
+        Sie haben ein Widerspruchsrecht gegen die Verarbeitung Ihrer personenbezogenen Daten. (Artikel 21 DS-GVO)
+        Recht auf Datenübertragbarkeit
+        Sie haben das Recht, die Sie betreffenden personenbezogenen Daten, die Sie uns bereitgestellt haben, in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten, und Sie haben das Recht, diese Daten einem anderen Verantwortlichen ohne Behinderung durch uns, übermitteln. (Artikel 20 DS-GVO)
+        Zur Ausübung Ihrer Rechte wenden Sie sich bitte an: mail@spielzeugauktion.de
+        Weitergehende Informationen über diese Rechte erhalten Sie hier:
+        VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES
+        vom 27. April 2016 zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten, zum freien Datenverkehr und zur Aufhebung der Richtlinie 95/46/EG (Datenschutz-Grundverordnung) Artikel 15, 16, 17, 18, 20 und 21
+        Widerrufsrecht
+        Sie können Ihre Einwilligung zur Verarbeitung ihrer personenbezogenen Daten zu jeder Zeit widerrufen. Die Rechtmäßigkeit der aufgrund der Einwilligung bis zum Widerruf erfolgten Verarbeitung wird davon nicht berührt.
+        Beschwerderecht bei einer Aufsichtsbehörde
+        Sie können eine Beschwerde bei der zuständigen Aufsichtsbehörde einreichen, z.B. wenn Sie annehmen, dass Ihre Daten unrechtmäßig verarbeitet wurden.
+        Ist die Bereitstellung der personenbezogenen Daten gesetzlich oder vertraglich vorgeschrieben oder für einen Vertragsabschluss erforderlich?
+        Webseiten
+        Das Angebot kann teilweise ohne die Bereitstellung personenbezogenen Daten genutzt werden.
+        Ohne aktivierte Cookies kann die von Ihnen getroffene Sprachauswahl nicht gespeichert werden. Gleiches gilt für das Einverständnis zu Nutzung von Cookies.
+        Gebotsabgabe
+        Ohne die Bereitstellung der angeforderten personenbezogenen Daten ist eine Gebotsabgabe über die Webseiten nicht möglich.
+        Sie können aber alternativ auf anderen Wegen Gebote abgeben (Fax, Email, Telefon, Post, persönlich).
+        Watchlist
+        Ohne aktivierte Cookies ist eine Nutzung der Watchlist nicht möglich, da wir die gespeicherten Objekte Ihnen ohne Cookie nicht zuordnen können.
+        Newsletter
+        Ohne die Bereitstellung der Emailadresse ist die Nutzung des Newsletter nicht möglich.
+        Automatisierte Entscheidungsfindung und Profiling
+        Eine automatisierte Entscheidungsfindung und ein Profiling finden nicht statt.
+        IP-Adressen
+        Die IP-Adresse (Internet-Protokoll-Adresse) ist eindeutige Adresse, die Ihnen dauerhaft oder zeitweise durch Ihren Internetzugangsanbieter zugeordnet wird und über die Sie in Verbindung mit anderen Daten identifizierbar sind. Die IP-Adresse ist notwendig, damit Ihr Gerät mit unseren Servern über das Internet kommunizieren kann.
+        Cookies
+        Wir verwenden Cookies für folgende Zwecke:
+        Cookie zur Speicherung Ihres Einverständnisses zur Cookienutzung
+        Cookie zur Speicherung Ihrer Sprachauswahl
+        Cookie zur Speicherung der Watchlist
+        Session-Cookie für die Nutzeranmeldung (Login)
+        Mit der Nutzung der Webseiten erklären Sie sich damit einverstanden, dass wir diese Cookies verwenden. Die Cookies sind technisch notwendig, um die Funktionen der Webseiten zu ermöglichen.
+        Cookies sind kleine Dateien, in denen Informationen gespeichert werden, die bei jedem Abruf von Daten von Ihrem Webbrowser (Programm, mit dem Sie die Internetseiten betrachten) an den Webserver (Software, die die Seiten bereitstellt) gesendet werden.
+        Dadurch kann erkannt werden, dass Anfragen von der selben Quelle stammen.
+        Überlicherweise werden Cookies eingesetzt, um Nutzer nach der Anmeldung zu wiederzuerkennen (Session-Cookies: diese werden nach Beendigung der Sitzung automatisch gelöscht), Warenkorbfunktionen zu realisieren, Voreinstellungen (z.B. ausgewählte Sprache) zu speichern.
+        Cookies können aber auch verwendet werden, um Nutzer und deren Nutzung von Internetseiten, auch über verschiedene Webseiten hinweg, zu verfolgen, z.B. zur Einblendung von Werbung, aber auch, um Informationen über die Interessen des Nutzers zu gewinnen (Tracking-Cookies).
+        Wir verzichten grundsätzlich auf den Einsatz von Tracking-Cookies oder ähnliche Technologien.
+        Sicherheit
+        Die Übertragung der Daten von und zu unseren Webservern über das Internet erfolgt verschlüsselt, um Vertraulichkeit und Integrität der Daten zu erreichen.
+        Die Verschlüsselung erschwert das Einsehen und Verändern der übermittelten Daten, ausgeschlossen werden kann dies jedoch nicht, da es Möglichkeiten gibt, die Verschlüsselung aufzubrechen (z.B. Man-in-the-Middle-Angriffe).
+        Bitte beachten Sie, dass Informationen, die per Email versendet werden NICHT verschlüsselt sind. Versenden Sie daher keine vertraulichen Informationen unverschlüsselt per Email.
+        Kontaktmöglichkeiten
+        Wenn Sie Auskunft, Berichtigung, Löschung oder Verarbeitungseinschränkung (Sperrung) von Daten, die zu Ihrer Person gespeichert wurden, wünschen oder Fragen bzgl. der Erhebung, Verarbeitung oder Verwendung Ihrer personenbezogenen Daten haben oder erteilte Einwilligungen widerrufen möchten, wenden Sie sich bitte an folgende E-Mail-Adresse:
+        mail@spielzeugauktion.de
+        oder nutzen Sie andere Kommunikationswege:
+        Ladenburger Spielzeugauktion GmbH
+        Vertreten durch: Götz C. Seidel
+        Lustgartenstraße 6
+        68526 Ladenburg
+        Telefon: +49-(0)6203-13014
+        Telefax: +49-(0)6203-17193
+        Email: mail@spielzeugauktion.de
+      </p>
+    </div>
+  </main>
 {% endblock content %}
