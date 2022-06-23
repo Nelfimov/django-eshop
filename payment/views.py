@@ -239,9 +239,9 @@ def capture(request, order_id):
             )
 
             subject_admin = (
-                _("New order/Neue Bestellung ")
+                "New order/Neue Bestellung "
                 + order.ref_code
-                + _(" has been paid/ist bezahlt")
+                + " has been paid/ist bezahlt"
             )
             mail.mail_admins(
                 subject=subject_admin,

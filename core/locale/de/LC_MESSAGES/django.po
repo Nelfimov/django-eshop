@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-02 18:43+0300\n"
+"POT-Creation-Date: 2022-06-23 18:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,242 +18,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/models.py:24
-msgid "Billing"
-msgstr "Abrechnung"
-
-#: core/models.py:25
-msgid "Shipping"
-msgstr "Versand"
-
-#: core/models.py:50
-msgid "Tracking company"
-msgstr "Tracking-Unternehmen"
-
-#: core/models.py:51
-msgid "Tracking companies"
-msgstr "Tracking-Unternehmen"
-
-#: core/models.py:55 core/models.py:255
+#: core/models.py:42 core/models.py:133
 msgid "Title"
 msgstr "Name"
 
-#: core/models.py:57
+#: core/models.py:45
 msgid "Price"
 msgstr "Preis"
 
-#: core/models.py:63
-msgid "Delivery Price"
+#: core/models.py:52
+msgid "Delivery price"
 msgstr "Lieferpreis"
 
-#: core/models.py:70
+#: core/models.py:59
 msgid "Discount"
 msgstr "Rabatt"
 
-#: core/models.py:76
+#: core/models.py:65
 msgid "Category"
 msgstr "Kategorie"
 
-#: core/models.py:80
+#: core/models.py:68
 msgid "Stock"
 msgstr "Lager"
 
-#: core/models.py:83
-msgid "Title Image"
+#: core/models.py:70
+msgid "Title image"
 msgstr "Titelbild"
 
-#: core/models.py:84
+#: core/models.py:73
 msgid "Description"
 msgstr "Beschreibung"
 
-#: core/models.py:88
-msgid "Additional Information"
+#: core/models.py:75
+msgid "Additional information"
 msgstr "Zusätzliche Information"
 
-#: core/models.py:98 core/models.py:135
+#: core/models.py:78
 msgid "Creation date"
 msgstr "Erstellungsdatum"
 
-#: core/models.py:102
+#: core/models.py:81
 msgid "Ordered counter"
 msgstr "Bestellt Zähler"
 
-#: core/models.py:106
+#: core/models.py:85
 msgid "Item"
 msgstr "Artikel"
 
-#: core/models.py:107 core/models.py:133
+#: core/models.py:86
 msgid "Items"
 msgstr "Artikeln"
 
-#: core/models.py:130
-msgid "Cart"
-msgstr "Warenkorb"
+#: core/models.py:115
+msgid "Image"
+msgstr "Titelbild"
 
-#: core/models.py:137
-msgid "Ordered date"
-msgstr "Bestelldatum"
+#: core/models.py:122
+msgid "Item image"
+msgstr "Titelbild"
 
-#: core/models.py:138
-msgid "Ordered"
-msgstr "Bestellt"
+#: core/models.py:123
+msgid "Item images"
+msgstr "Titelbild"
 
-#: core/models.py:142
-msgid "Billing address"
-msgstr "Rechnungsadresse"
-
-#: core/models.py:147
-msgid "Shipping address"
-msgstr "Lieferadresse"
-
-#: core/models.py:152
-msgid "Payment"
-msgstr "Zahlung"
-
-#: core/models.py:159
-msgid "Reference code"
-msgstr "Referenzcode"
-
-#: core/models.py:163
-msgid "Being delivered"
-msgstr "Wird geliefert"
-
-#: core/models.py:167
-msgid "Tracking Company"
-msgstr "Tracking-Unternehmen"
-
-#: core/models.py:171
-msgid "Tracking number"
-msgstr "Sendungscode"
-
-#: core/models.py:175
-msgid "Refund requested"
-msgstr "Rückerstattung beantragt"
-
-#: core/models.py:179
-msgid "Refund granted"
-msgstr "Rückerstattung gewährt"
-
-#: core/models.py:186 core/models.py:239
-msgid "Order"
-msgstr "Bestellung"
-
-#: core/models.py:187
-msgid "Orders"
-msgstr "Bestellung"
-
-#: core/models.py:205
-msgid "Full name"
-msgstr "Vollständiger Name"
-
-#: core/models.py:209
-msgid "Street address"
-msgstr "Adresse"
-
-#: core/models.py:217
-msgid "Country"
-msgstr "Land"
-
-#: core/models.py:222
-msgid "Address Type"
-msgstr "Adresstyp"
-
-#: core/models.py:226
-msgid "Default"
-msgstr "Standard"
-
-#: core/models.py:233
-msgid "Addresses"
-msgstr "Adressen"
-
-#: core/models.py:241
-msgid "Reason"
-msgstr "Grund"
-
-#: core/models.py:244
-msgid "Accepted"
-msgstr "Akzeptiert"
-
-#: core/models.py:257
+#: core/models.py:134
 msgid "Body text"
 msgstr "Hauptteil"
 
-#: core/models.py:258
+#: core/models.py:135
 msgid "Alt text"
 msgstr "Alt text"
-
-#: core/models.py:275
-msgid "Your order #"
-msgstr "Deine Bestellung #"
-
-#: core/models.py:276
-msgid " has been sent out"
-msgstr " wurde ausgesendet"
-
-#: core/views.py:62
-msgid "You do not have anything in cart"
-msgstr "Sie haben nichts im Warenkorb"
-
-#: core/views.py:102
-msgid "No default shipping address available"
-msgstr "Keine Standardlieferadresse verfügbar"
-
-#: core/views.py:155
-msgid "Please fill in the required shipping address"
-msgstr "Bitte geben Sie die gewünschte Lieferadresse ein"
-
-#: core/views.py:175
-msgid "No default billing address available"
-msgstr "Keine Standard-Rechnungsadresse verfügbar"
-
-#: core/views.py:235
-msgid "Please fill in the required billing address"
-msgstr "Bitte geben Sie die erforderliche Rechnungsadresse ein"
-
-#: core/views.py:250
-msgid "You do not have an active order"
-msgstr "Sie haben keine aktive Bestellung"
-
-#: core/views.py:292
-msgid "You do not have any orders"
-msgstr "Sie haben keine Bestellungen"
-
-#: core/views.py:314 core/views.py:356
-msgid "You are not the user who ordered this order"
-msgstr "Sie sind nicht der Benutzer, der diese Bestellung bestellt hat"
-
-#: core/views.py:336
-msgid "Your request was received"
-msgstr "Ihre Anfrage wurde empfangen"
-
-#: core/views.py:342
-msgid "You have already received refund for this order"
-msgstr "Sie haben bereits eine Rückerstattung für diese Bestellung erhalten"
-
-#: core/views.py:348
-msgid "You have already submitted a ticket. Please wait until we contact you"
-msgstr ""
-"Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie "
-"kontaktieren"
-
-#: core/views.py:361
-msgid "This order does not exist"
-msgstr "Diese Bestellung existiert nicht"
-
-#~ msgid "title"
-#~ msgstr "Name"
-
-#~ msgid "price"
-#~ msgstr "Preis"
-
-#~ msgid "delivery_price"
-#~ msgstr "Lieferpreis"
-
-#~ msgid "discount"
-#~ msgstr "Rabatt"
-
-#~ msgid "stock"
-#~ msgstr "Lager"
-
-#~ msgid "ordered_counter"
-#~ msgstr "Bestellt Zähler"

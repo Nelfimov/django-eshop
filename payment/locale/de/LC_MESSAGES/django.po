@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-02 18:43+0300\n"
+"POT-Creation-Date: 2022-06-23 18:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,42 +18,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: payment/models.py:83
+#: payment/models.py:118
 msgid "Amount"
 msgstr "Summe"
 
-#: payment/models.py:86
+#: payment/models.py:119
 msgid "Timestamp"
 msgstr "Zeitstempel"
 
-#: payment/models.py:92
+#: payment/models.py:126
 msgid "Payment"
 msgstr "Zauhlung"
 
-#: payment/models.py:93
+#: payment/models.py:127
 msgid "Payments"
 msgstr "Zahlungen"
 
-#: payment/views.py:55
+#: payment/views.py:52
 msgid "You do not have anything in your cart"
 msgstr "Sie haben nichts in Ihrem Warenkorb"
 
-#: payment/views.py:191
+#: payment/views.py:180
 msgid "You do not have an active order"
 msgstr "Sie haben keine aktive Bestellung"
 
-#: payment/views.py:241
+#: payment/views.py:222
 msgid "Your order #"
 msgstr "Ihre Bestellung #"
 
-#: payment/views.py:242
-msgid " from "
-msgstr " von "
-
-#: payment/views.py:243
+#: payment/views.py:224
 msgid " has been received and will be processed shortly"
 msgstr " ist eingegangen und wird in Kürze bearbeitet"
 
-#: payment/views.py:254
+#: payment/views.py:251
 msgid "Your order was successfull"
 msgstr "Ihre Bestellung war erfolgreich"

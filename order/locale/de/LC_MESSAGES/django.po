@@ -1,0 +1,259 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-23 18:51+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: order/admin.py:10
+msgid "Update orders to refund granted"
+msgstr "Die Bestellungen aktualisieren fur Refund erhalten"
+
+#: order/models.py:13
+msgid "Billing"
+msgstr "Abrechnung"
+
+#: order/models.py:14
+msgid "Shipping"
+msgstr "Versand"
+
+#: order/models.py:26
+msgid "Tracking company"
+msgstr "Tracking company"
+
+#: order/models.py:27
+msgid "Tracking companies"
+msgstr "Tracking companies"
+
+#: order/models.py:32
+msgid "Item"
+msgstr "Artikel"
+
+#: order/models.py:34
+msgid "Quantity"
+msgstr "Menge"
+
+#: order/models.py:36 order/models.py:112 order/models.py:188
+msgid "Order"
+msgstr "Bestellung"
+
+#: order/models.py:40
+msgid "Cart Item"
+msgstr "Warenkorb Artikel"
+
+#: order/models.py:41
+msgid "Cart Items"
+msgstr "Warenkorb Artikeln"
+
+#: order/models.py:59
+msgid "Creation date"
+msgstr "Erstellungsdatum"
+
+#: order/models.py:61
+msgid "Ordered"
+msgstr "Bestellt"
+
+#: order/models.py:63
+msgid "Ordered date"
+msgstr "Bestelldatum"
+
+#: order/models.py:70
+msgid "Reference code"
+msgstr "Referenzcode"
+
+#: order/models.py:78
+msgid "Shipping address"
+msgstr "Versandadresse"
+
+#: order/models.py:86
+msgid "Billing address"
+msgstr "Rechnungsadresse"
+
+#: order/models.py:89
+msgid "Being delivered"
+msgstr "Wird geliefert"
+
+#: order/models.py:96
+msgid "Tracking Company"
+msgstr "Tracking company"
+
+#: order/models.py:99
+msgid "Tracking number"
+msgstr "Sendungscode"
+
+#: order/models.py:102
+msgid "Refund requested"
+msgstr "Refund angefordert"
+
+#: order/models.py:105
+msgid "Refund granted"
+msgstr "Refundgewährt"
+
+#: order/models.py:113
+msgid "Orders"
+msgstr "Aufträge"
+
+#: order/models.py:165
+msgid "Full name"
+msgstr "Vollständiger Name"
+
+#: order/models.py:166
+msgid "Street address"
+msgstr "Strasse"
+
+#: order/models.py:168
+msgid "Apartment address"
+msgstr "Wohnung"
+
+#: order/models.py:171
+msgid "Country"
+msgstr "Land"
+
+#: order/models.py:175
+msgid "Address Type"
+msgstr "Adresstyp"
+
+#: order/models.py:177
+msgid "Default"
+msgstr "Standard"
+
+#: order/models.py:183
+msgid "Addresses"
+msgstr "Adressen"
+
+#: order/models.py:190
+msgid "Reason"
+msgstr "Grund"
+
+#: order/models.py:191
+msgid "Accepted"
+msgstr "Akzeptiert"
+
+#: order/models.py:206 order/models.py:230
+msgid "Your order #"
+msgstr "Ihre Bestellung #"
+
+#: order/models.py:207
+msgid " has been sent out"
+msgstr " ausgeliefert wurde"
+
+#: order/models.py:231
+msgid " request for refund has been accepted"
+msgstr " Refund Anfrage wurde angenommen"
+
+#: order/views.py:29
+msgid "Unfortunately we do not have item on stock"
+msgstr "Artikel haben wir leider nicht auf Lager"
+
+#: order/views.py:50
+msgid "Unfortunately we do not have this quantity on stock"
+msgstr "Leider haben wir diese Menge nicht auf Lager"
+
+#: order/views.py:54 order/views.py:56 order/views.py:67
+msgid "Quantity was updated"
+msgstr "Menge wurde aktualisiert"
+
+#: order/views.py:86
+msgid "This item was removed from your cart"
+msgstr "Dieser Artikel wurde aus Ihrem Einkaufswagen entfernt"
+
+#: order/views.py:89 order/views.py:118
+msgid "This item was not in your cart"
+msgstr "Dieser Artikel war nicht in Ihrem Warenkorb"
+
+#: order/views.py:92 order/views.py:143
+msgid "Your cart is empty"
+msgstr "Ihr Warenkorb ist leer"
+
+#: order/views.py:115
+msgid "This item quantity was updated"
+msgstr "Diese Artikelmenge wurde aktualisiert"
+
+#: order/views.py:121
+msgid "You do not have an active cart"
+msgstr "Sie haben keinen aktiven Warenkorb"
+
+#: order/views.py:184
+msgid "You do not have anything in cart"
+msgstr "Sie haben nichts im Warenkorb"
+
+#: order/views.py:216
+msgid "No default shipping address available"
+msgstr "Keine Standardlieferadresse verfügbar"
+
+#: order/views.py:258
+msgid "Please fill in the required shipping address"
+msgstr "Bitte geben Sie die gewünschte Lieferadresse ein"
+
+#: order/views.py:276
+msgid "No default billing address available"
+msgstr "Keine Standard-Rechnungsadresse verfügbar"
+
+#: order/views.py:318
+msgid "Please fill in the required billing address"
+msgstr "Bitte geben Sie die erforderliche Rechnungsadresse ein"
+
+#: order/views.py:333
+msgid "You do not have an active order"
+msgstr "Sie haben keine aktive Bestellung"
+
+#: order/views.py:345
+msgid "You do not have any orders"
+msgstr "Sie haben keine Bestellungen"
+
+#: order/views.py:348
+msgid "You are not authorized"
+msgstr "Sie sind nicht berechtigt"
+
+#: order/views.py:367 order/views.py:443
+msgid "You are not the user who ordered this order"
+msgstr "Sie sind nicht der Benutzer, der diese Bestellung bestellt hat"
+
+#: order/views.py:371
+msgid "Order does not exist"
+msgstr "Bestellung existiert nicht"
+
+#: order/views.py:393
+msgid "Refund request for your order #"
+msgstr "Refund Anfrage für Ihre Bestellung #"
+
+#: order/views.py:395
+msgid " has been received and will be processed shortly"
+msgstr " ist eingegangen und wird in Kürze bearbeitet"
+
+#: order/views.py:413
+msgid "New refund/Neue refund "
+msgstr ""
+
+#: order/views.py:415
+msgid " is requested/ist gesendet"
+msgstr ""
+
+#: order/views.py:422
+msgid "Your request was received"
+msgstr "Ihre Anfrage wurde empfangen"
+
+#: order/views.py:428
+msgid "You have already received refund for this order"
+msgstr "Sie haben bereits einen Refund für diese Bestellung erhalten"
+
+#: order/views.py:435
+msgid "You have already submitted a ticket. Please wait until we contact you"
+msgstr "Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie kontaktieren"
+
+#: order/views.py:448
+msgid "This order does not exist"
+msgstr "Diese Bestellung existiert nicht"

@@ -425,15 +425,14 @@ class RequestRefundView(View):
                     elif order.refund_granted:
                         messages.info(
                             self.request,
-                            _("You have already received refund" + "for this order"),
+                            _("You have already received refund for this order"),
                         )
 
                     else:
                         messages.info(
                             self.request,
                             _(
-                                "You have already submitted a ticket."
-                                + " Please wait until we contact you"
+                                "You have already submitted a ticket. Please wait until we contact you"
                             ),
                         )
 
