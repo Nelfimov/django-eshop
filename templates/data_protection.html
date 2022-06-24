@@ -7,6 +7,9 @@
   <main>
     <div class="container">
       <h2 class="my-5 h2 text-center">{% trans "Data Protection" %}</h2>
+      <div class="card">
+        <div class="card-body">
+          {% blocktranslate %}
       <p>
         Einleitung
         <br/>
@@ -220,6 +223,9 @@
         <br/>
         Email: mail@spielzeugauktion.de
       </p>
+      {% endblocktranslate %}
+        </div>
+      </div>
     </div>
   </main>
 {% endblock content %}

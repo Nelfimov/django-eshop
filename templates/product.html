@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load embed_video_tags %}
-
-{% block head_title %} {{ object.title }} {% endblock %}
-
+{% block head_title %}
+  {{ object.title }}
+{% endblock head_title %}
 {% block extra_scripts %}
   <script>
     function magnify(imgID, zoom) {
@@ -68,7 +68,6 @@
     })
   </script>
 {% endblock extra_scripts %}
-
 {% block extra_head %}
   <style>
     * {box-sizing: border-box;}
@@ -88,14 +87,17 @@
     }
   </style>
 {% endblock extra_head %}
-
 {% block content %}
   <main class="mt-1 pt-1">
     <div class="container dark-grey-text mt-5">
+      <h2 class="my-5 h2 text-center">{{ object.title }}</h2>
       <div class="row wow fadeIn">
         <div class="col-md-6 mb-4">
           <div class="img-magnifier-container">
-            <img src="{{ object.title_image.url }}" class="img-fluid" alt="" id="title-img">
+            <img src="{{ object.title_image.url }}"
+                 class="img-fluid"
+                 alt="Title image of product"
+                 id="title-img"/>
             <script>magnify("title-img", 2);</script>
           </div>
         </div>
@@ -110,35 +112,37 @@
                   {% if object.discount_price %}
                     <span class="mr-1">
                       <h4 class="font-weight-bold text-danger">
-                        <del>{{ object.price|add:object.delivery_price }}&euro;</del>
+                        <del>{{ object.price|add:object.delivery_price }}€</del>
                       </h4>
                     </span>
-                    <span>{{ object.get_final_price }}&euro;</span>
+                    <span>{{ object.get_final_price }}€</span>
                   {% else %}
-                    <span>{{ object.get_final_price }}&euro;</span>
+                    <span>{{ object.get_final_price }}€</span>
                   {% endif %}
                 </strong>
               </h4>
             </p>
-            <p class="font-italic">{% translate "Including delivery cost" %}: {{ object.delivery_price }}&euro;</p>
+            <p class="font-italic">{% translate "Including delivery cost" %}: {{ object.delivery_price }}€</p>
             <p class="lead font-weight-bold">{% translate "Description" %}</p>
             <p>{{ object.description }}</p>
             {% if object.stock != 0 %}
-              <p class="font-italic">{% translate "On stock left" %}: {{ object.stock }} </p>
-              <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+              <p class="font-italic">{% translate "On stock left" %}: {{ object.stock }}</p>
+              <a href="{{ object.get_add_to_cart_url }}"
+                 class="btn btn-primary btn-md my-0 p">
                 {% translate "Add to cart" %}
                 <i class="fas fa-shopping-cart ml-1"></i>
               </a>
-              <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
+              <a href="{{ object.get_remove_from_cart_url }}"
+                 class="btn btn-danger btn-md my-0 p">
                 {% translate "Remove from cart" %}
               </a>
             {% else %}
-              <p class="font-weight-bold red-text">{% translate "On stock left" %}: {{ object.stock }} </p>
+              <p class="font-weight-bold red-text">{% translate "On stock left" %}: {{ object.stock }}</p>
             {% endif %}
           </div>
         </div>
       </div>
-      <hr>
+      <hr/>
       <div class="row d-flex justify-content-center wow fadeIn">
         {% if object.additional_information %}
           <div class="col-md-6 text-center">
@@ -153,7 +157,9 @@
             {% for image in object.images.all %}
               <div class="col-sm-6 col-md-4 col-lg-3 item">
                 <a href="{{ image.image.url }}" data-lightbox="photos">
-                  <img class="img-fluid" src="{{ image.image.url }}">
+                  <img class="img-fluid"
+                       src="{{ image.image.url }}"
+                       alt="Additional product images"/>
                 </a>
               </div>
             {% endfor %}
@@ -161,10 +167,8 @@
         </div>
       {% endif %}
       {% if object.item_video %}
-      <hr>
-      <div class="embed-responsive embed-responsive-16by9">
-        {% video object.item_video 'huge' %}
-      </div>
+        <hr/>
+        <div class="embed-responsive embed-responsive-16by9">{% video object.item_video 'huge' %}</div>
       {% endif %}
     </div>
   </main>
