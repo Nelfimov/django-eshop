@@ -5,12 +5,6 @@ from django_countries.widgets import CountrySelectWidget
 from .models import EUCountries
 
 
-PAYMENT_CHOICES = (
-    ("S", "Stripe"),
-    ("P", "Paypal"),
-)
-
-
 class CheckoutForm(forms.Form):
     email = forms.EmailField(required=True)
     shipping_address = forms.CharField(required=True)
@@ -39,18 +33,17 @@ class CheckoutForm(forms.Form):
     set_default_billing = forms.BooleanField(required=False)
     use_default_billing = forms.BooleanField(required=False)
     save_info = forms.BooleanField(required=False)
-    # payment_option = forms.ChoiceField(
-    #     widget=forms.RadioSelect(), choices=PAYMENT_CHOICES)
 
 
 class RefundForm(forms.Form):
-    ref_code = forms.CharField()
+    ref_code = forms.CharField(required=True)
     message = forms.CharField(
         widget=forms.Textarea(
             attrs={
                 "rows": 4,
             }
-        )
+        ),
+        required=True,
     )
     image = forms.ImageField(required=False)
-    email = forms.EmailField()
+    email = forms.EmailField(required=True)

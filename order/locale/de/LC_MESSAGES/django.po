@@ -104,7 +104,7 @@ msgstr "Refundgewährt"
 
 #: order/models.py:113
 msgid "Orders"
-msgstr "Aufträge"
+msgstr "Bestellungen"
 
 #: order/models.py:165
 msgid "Full name"
