@@ -6,17 +6,17 @@ from .models import EUCountries
 
 
 class CheckoutForm(forms.Form):
-    email = forms.EmailField(required=True)
-    shipping_address = forms.CharField(required=True)
-    shipping_address2 = forms.CharField(required=True)
+    email = forms.EmailField(required=False)
+    shipping_address = forms.CharField(required=False)
+    shipping_address2 = forms.CharField(required=False)
     shipping_country = CountryField(
         countries=EUCountries, blank_label="(select country)"
     ).formfield(
-        required=True,
+        required=False,
         widget=CountrySelectWidget(attrs={"class": "custom-select d-block w-100"}),
     )
-    shipping_zip = forms.CharField(required=True)
-    shipping_name = forms.CharField(required=True)
+    shipping_zip = forms.CharField(required=False)
+    shipping_name = forms.CharField(required=False)
     billing_address = forms.CharField(required=False)
     billing_address2 = forms.CharField(required=False)
     billing_country = CountryField(

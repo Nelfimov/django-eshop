@@ -21,10 +21,57 @@
                        id="email"
                        name="email"
                        class="form-control"
+                       required
                        {% if request.user.is_authenticated %} value='{{ user.email }}'{% endif %}/>
                 <label for="email">Email</label>
+                <div class="valid-feedback">OK</div>
+                <div class="invalid-feedback">{% translate "Please provide valid email address" %}</div>
               </div>
+              {% if default_shipping_address %}
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox"
+                         class="custom-control-input"
+                         name="use_default_shipping"
+                         id="use_default_shipping"/>
+                  <label class="custom-control-label" for="use_default_shipping">
+                    {% translate "Use default shipping address" %}: {{ default_shipping_address.street_address|truncatechars:20 }}
+                  </label>
+                </div>
+              {% endif %}
+              <div class="hideable_billing_form_advanced">
+                {% if default_billing_address %}
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox"
+                           class="custom-control-input"
+                           name="use_default_billing"
+                           id="use_default_billing"/>
+                    <label class="custom-control-label" for="use_default_billing">
+                      {% translate "Use default billing address" %}: {{ default_billing_address.street_address|truncatechars:20 }}
+                    </label>
+                  </div>
+                {% endif %}
+              </div>
+              {% if request.user.is_authenticated %}
+                <div class="custom-control custom-checkbox hideable_shipping_form">
+                  <hr />
+                  <input type="checkbox"
+                         class="custom-control-input"
+                         name="set_default_shipping"
+                         id="set_default_shipping"/>
+                  <label class="custom-control-label" for="set_default_shipping">
+                    {% translate "Save as default shipping address" %}
+                  </label>
+                </div>
+                <div class="custom-control custom-checkbox hideable_billing_form">
+                  <input type="checkbox"
+                         class="custom-control-input"
+                         name="set_default_billing"
+                         id="set_default_billing"/>
+                  <label class="custom-control-label" for="set_default_billing">{% translate "Save as default billing address" %}</label>
+                </div>
+              {% endif %}
               <div class="hideable_shipping_form">
+                <hr />
                 <h3>{% translate "Shipping address" %}</h3>
                 <div class="md-form mb-5">
                   <input type="text"
@@ -68,6 +115,7 @@
                 </div>
               </div>
               <div class="custom-control custom-checkbox">
+                <hr/>
                 <input type="checkbox"
                        class="custom-control-input"
                        name="same_billing_address"
@@ -76,28 +124,6 @@
                   {% translate "Billing address is the same as my shipping address" %}
                 </label>
               </div>
-              {% if request.user.is_authenticated %}
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox"
-                         class="custom-control-input"
-                         name="set_default_shipping"
-                         id="set_default_shipping"/>
-                  <label class="custom-control-label" for="set_default_shipping">
-                    {% translate "Save as default shipping address" %}
-                  </label>
-                </div>
-              {% endif %}
-              {% if default_shipping_address %}
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox"
-                         class="custom-control-input"
-                         name="use_default_shipping"
-                         id="use_default_shipping"/>
-                  <label class="custom-control-label" for="use_default_shipping">
-                    {% translate "Use default shipping address" %}: {{ default_shipping_address.street_address|truncatechars:20 }}
-                  </label>
-                </div>
-              {% endif %}
               <div class="hideable_billing_form">
                 <hr />
                 <h3>{% translate "Billing address" %}</h3>
@@ -141,28 +167,6 @@
                     <div class="invalid-feedback">{% translate "Zip code required" %}</div>
                   </div>
                 </div>
-              </div>
-              {% if request.user.is_authenticated %}
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox"
-                         class="custom-control-input"
-                         name="set_default_billing"
-                         id="set_default_billing"/>
-                  <label class="custom-control-label" for="set_default_billing">{% translate "Save as default billing address" %}</label>
-                </div>
-              {% endif %}
-              <div class="hideable_billing_form_advanced">
-                {% if default_billing_address %}
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox"
-                           class="custom-control-input"
-                           name="use_default_billing"
-                           id="use_default_billing"/>
-                    <label class="custom-control-label" for="use_default_billing">
-                      {% translate "Use default billing address" %}: {{ default_billing_address.street_address|truncatechars:20 }}
-                    </label>
-                  </div>
-                {% endif %}
               </div>
               {% comment %} <hr> {% endcomment %}
               {% comment %} <h3>Payment option</h3>

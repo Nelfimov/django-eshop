@@ -220,49 +220,6 @@ class CheckoutView(View):
                             )
                             return redirect("order:checkout")
 
-                shipping_email = form.cleaned_data.get("email")
-                shipping_name = form.cleaned_data.get("shipping_name")
-                shipping_address = form.cleaned_data.get("shipping_address")
-                shipping_address2 = form.cleaned_data.get("shipping_address2")
-                shipping_country = form.cleaned_data.get("shipping_country")
-                shipping_zip = form.cleaned_data.get("shipping_zip")
-                set_default_shipping = form.cleaned_data.get("set_default_shipping")
-
-                if is_valid_form(
-                    [
-                        shipping_email,
-                        shipping_address,
-                        shipping_country,
-                        shipping_name,
-                        shipping_zip,
-                    ]
-                ):
-                    shipping_address = Address(
-                        user=(
-                            self.request.user
-                            if self.request.user.is_authenticated
-                            else None
-                        ),
-                        email=shipping_email,
-                        name_for_delivery=shipping_name,
-                        street_address=shipping_address,
-                        apartment_address=shipping_address2,
-                        country=shipping_country,
-                        zip=shipping_zip,
-                        address_type="S",
-                        default=True if set_default_shipping else False,
-                    )
-                    shipping_address.save()
-                    order.shipping_address = shipping_address
-                    order.save()
-                else:
-                    messages.warning(
-                        self.request,
-                        _("Please fill in the" + " required shipping address"),
-                    )
-
-                #  Billing address
-                if self.request.user.is_authenticated:
                     use_default_billing = form.cleaned_data.get("use_default_billing")
                     if use_default_billing:
                         address_qs = Address.objects.filter(
@@ -280,6 +237,54 @@ class CheckoutView(View):
                             )
                             return redirect("order:checkout")
 
+                    if (
+                        order.shipping_address
+                        and use_default_shipping
+                        and order.billing_address
+                        and use_default_billing
+                    ):
+                        return redirect("payment:payment")
+
+                shipping_email = form.cleaned_data.get("email")
+                shipping_name = form.cleaned_data.get("shipping_name")
+                shipping_address = form.cleaned_data.get("shipping_address")
+                shipping_address2 = form.cleaned_data.get("shipping_address2")
+                shipping_country = form.cleaned_data.get("shipping_country")
+                shipping_zip = form.cleaned_data.get("shipping_zip")
+                set_default_shipping = form.cleaned_data.get("set_default_shipping")
+                if is_valid_form(
+                    [
+                        shipping_email,
+                        shipping_address,
+                        shipping_country,
+                        shipping_name,
+                        shipping_zip,
+                    ]
+                ):
+                    shipping_address = Address.objects.create(
+                        user=(
+                            self.request.user
+                            if self.request.user.is_authenticated
+                            else None
+                        ),
+                        email=shipping_email,
+                        name_for_delivery=shipping_name,
+                        street_address=shipping_address,
+                        apartment_address=shipping_address2,
+                        country=shipping_country,
+                        zip=shipping_zip,
+                        address_type="S",
+                        default=bool(set_default_shipping),
+                    )
+                    order.shipping_address = shipping_address
+                    order.save()
+                else:
+                    messages.warning(
+                        self.request,
+                        _("Please fill in the required shipping address"),
+                    )
+
+                #  Billing address
                 same_billing_address = form.cleaned_data.get("same_billing_address")
                 if same_billing_address:
                     billing_address = shipping_address
@@ -298,7 +303,7 @@ class CheckoutView(View):
                     if is_valid_form(
                         [billing_address, billing_name, billing_country, billing_zip]
                     ):
-                        billing_address = Address(
+                        billing_address = Address.objects.create(
                             user=(
                                 self.request.user
                                 if self.request.user.is_authenticated
@@ -310,9 +315,8 @@ class CheckoutView(View):
                             country=billing_country,
                             zip=billing_zip,
                             address_type="B",
-                            default=True if set_default_billing else False,
+                            default=bool(set_default_billing),
                         )
-                        billing_address.save()
                         order.billing_address = billing_address
                         order.save()
                     else:
@@ -321,7 +325,16 @@ class CheckoutView(View):
                             _("Please fill in the required billing address"),
                         )
                         return redirect("order:checkout")
-            return redirect("payment:payment")
+
+            if order.shipping_address and order.billing_address:
+                return redirect("payment:payment")
+
+            messages.warning(
+                self.request,
+                _("Please fill in the required fields"),
+            )
+            return redirect("order:checkout")
+
         except ObjectDoesNotExist:
             messages.warning(self.request, _("You do not have an" + " active order"))
             return redirect("order:cart-summary")
