@@ -69,6 +69,14 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
+    }
+}
+
+
 ROOT_URLCONF = "eshop.urls"
 
 TEMPLATES = [
@@ -213,6 +221,7 @@ SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
 
 
 # Sessions
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 1209600
 
@@ -224,8 +233,6 @@ SOCIALACCOUNT_PROVIDERS = {
         },
         "SCOPE": ["openid", "email"],
         "MODE": "test",
-        "redirect_url": (
-            "http://127.0.0.1:8000/en/" + "accounts/paypal/login/callback/"
-        ),
+        "redirect_url": ("http://127.0.0.1:8000/en/accounts/paypal/login/callback/"),
     },
 }

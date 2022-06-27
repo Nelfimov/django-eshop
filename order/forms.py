@@ -6,7 +6,7 @@ from .models import EUCountries
 
 
 class CheckoutForm(forms.Form):
-    email = forms.EmailField(required=False)
+    email = forms.EmailField(required=True)
     shipping_address = forms.CharField(required=False)
     shipping_address2 = forms.CharField(required=False)
     shipping_country = CountryField(

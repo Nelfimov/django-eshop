@@ -203,8 +203,8 @@ class CheckoutView(View):
             )
             if form.is_valid():
                 if self.request.user.is_authenticated:
-                    use_default_shipping = form.cleaned_data.get("use_default_shipping")
-                    if use_default_shipping:
+
+                    if form.cleaned_data.get("use_default_shipping"):
                         address_qs = Address.objects.filter(
                             user=self.request.user,
                             address_type="S",
@@ -220,8 +220,7 @@ class CheckoutView(View):
                             )
                             return redirect("order:checkout")
 
-                    use_default_billing = form.cleaned_data.get("use_default_billing")
-                    if use_default_billing:
+                    if form.cleaned_data.get("use_default_billing"):
                         address_qs = Address.objects.filter(
                             user=self.request.user,
                             address_type="B",
@@ -239,9 +238,9 @@ class CheckoutView(View):
 
                     if (
                         order.shipping_address
-                        and use_default_shipping
+                        and form.cleaned_data.get("use_default_shipping")
                         and order.billing_address
-                        and use_default_billing
+                        and form.cleaned_data.get("use_default_billing")
                     ):
                         return redirect("payment:payment")
 
@@ -255,9 +254,9 @@ class CheckoutView(View):
                 if is_valid_form(
                     [
                         shipping_email,
+                        shipping_name,
                         shipping_address,
                         shipping_country,
-                        shipping_name,
                         shipping_zip,
                     ]
                 ):
