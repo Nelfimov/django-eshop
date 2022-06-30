@@ -17,15 +17,16 @@ LABEL_CHOICES = (
 
 # Image path function
 def item_image_path(instance, filename):
+    name, ext = filename.split(".")
     dt = date.today()
-    return f"items/{dt.year}/{dt.month}/{instance.slug}/{filename}"
+    return f"items/{dt.year}/{dt.month}/{instance.slug}/{name}.webp"
 
 
 # Image compression method
 def compress(image):
     im = Image.open(image)
     im_io = BytesIO()
-    im.save(im_io, "JPEG", quality=60)
+    im.save(im_io, format="webp", quality=60)
     new_image = File(im_io, name=image.name)
     return new_image
 
@@ -36,6 +37,10 @@ class CategoryItem(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _("Item category")
+        verbose_name_plural = _("Item categories")
 
 
 class Item(models.Model):
@@ -50,6 +55,7 @@ class Item(models.Model):
         blank=True,
         null=True,
         verbose_name=_("Delivery price"),
+        default=0,
     )
     discount = models.DecimalField(
         decimal_places=2,
@@ -57,6 +63,7 @@ class Item(models.Model):
         blank=True,
         null=True,
         verbose_name=_("Discount"),
+        default=0,
     )
     category = models.ForeignKey(
         "CategoryItem",
@@ -88,9 +95,13 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._old_title_image = self.title_image
+
     def save(self, *args, **kwargs):
-        if self.title_image:
-            self.image = compress(self.title_image)
+        if self._old_title_image != self.title_image:
+            self.title_image = compress(self.title_image)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -122,8 +133,12 @@ class ItemImage(models.Model):
         verbose_name = _("Item image")
         verbose_name_plural = _("Item images")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._old_image = self.image
+
     def save(self, *args, **kwargs):
-        if self.image:
+        if self._old_image != self.image:
             self.image = compress(self.image)
         super().save(*args, **kwargs)
 
@@ -137,3 +152,12 @@ class Carousel(models.Model):
 
     def __str__(self):
         return self.title
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._old_img = self.img
+
+    def save(self, *args, **kwargs):
+        if self._old_img != self.img:
+            self.img = compress(self.img)
+        super().save(*args, **kwargs)
