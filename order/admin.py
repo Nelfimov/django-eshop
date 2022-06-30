@@ -83,7 +83,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     @admin.display(description="Email")
     def get_email(self, obj):
-        if obj.shipping_address.email:
+        if obj.shipping_address:
             return obj.shipping_address.email
         return "invalid"
 
