@@ -7,8 +7,10 @@ from .models import Carousel, CategoryItem, Item
 class HomeView(View):
     def get(self, *args, **kwargs):
         paginate_by = 8
-        recently_added_items = Item.objects.all().order_by("created_date")
-        categories = CategoryItem.objects.all()
+        recently_added_items = (
+            Item.objects.select_related("category").all().order_by("created_date")
+        )
+        categories = {i.category for i in recently_added_items}
         if self.request.GET.get("category"):
             category_filter = self.request.GET.get("category")
             recently_added_items = recently_added_items.filter(category=category_filter)
@@ -17,7 +19,7 @@ class HomeView(View):
             search = self.request.GET.get("search")
             recently_added_items = recently_added_items.filter(title__icontains=search)
 
-        bestseller_items = Item.objects.filter(ordered_counter__gt=0).order_by(
+        bestseller_items = recently_added_items.filter(ordered_counter__gt=0).order_by(
             "-ordered_counter"
         )[:8]
         carousel_slides = Carousel.objects.order_by("index").all()
