@@ -87,6 +87,38 @@
     {% endblock content %}
     {% block extra_body %}
     {% endblock extra_body %}
+    {% block cookies_modal %}
+      <!--Modal: modalCookie-->
+      <div class="modal fade bottom"
+           id="modalCookie"
+           tabindex="-1"
+           role="dialog"
+           aria-labelledby="myModalLabel"
+           aria-hidden="true"
+           data-backdrop="true">
+        <div class="modal-dialog modal-frame modal-bottom modal-notify modal-info"
+             role="document">
+          <!--Content-->
+          <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body">
+              <div class="row d-flex justify-content-center align-items-center">
+                <p class="pt-3 pr-2">{% translate "We use cookies to improve your website experience" %}</p>
+                {% comment %} <a type="button" class="btn btn-primary">Learn more <i class="fas fa-book ml-1"></i></a> {% endcomment %}
+                <a type="button"
+                   class="btn btn-outline-primary waves-effect"
+                   data-dismiss="modal">{% translate "Ok, thanks" %}</a>
+                <a type="button"
+                   class="btn btn-primary waves-effect"
+                   href="{% url 'core:data-protection' %}">{% trans "Learn more" %}</a>
+              </div>
+            </div>
+          </div>
+          <!--/.Content-->
+        </div>
+      </div>
+      <!--Modal: modalCookie-->
+    {% endblock cookies_modal %}
     {% include "footer.html" %}
     {% include "scripts.html" %}
   </body>

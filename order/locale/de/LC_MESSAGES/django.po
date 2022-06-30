@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-23 18:51+0300\n"
+"POT-Creation-Date: 2022-06-30 14:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,74 +186,82 @@ msgstr "Diese Artikelmenge wurde aktualisiert"
 msgid "You do not have an active cart"
 msgstr "Sie haben keinen aktiven Warenkorb"
 
-#: order/views.py:184
+#: order/views.py:187
 msgid "You do not have anything in cart"
 msgstr "Sie haben nichts im Warenkorb"
 
-#: order/views.py:216
+#: order/views.py:219
 msgid "No default shipping address available"
 msgstr "Keine Standardlieferadresse verfügbar"
 
-#: order/views.py:258
-msgid "Please fill in the required shipping address"
-msgstr "Bitte geben Sie die gewünschte Lieferadresse ein"
-
-#: order/views.py:276
+#: order/views.py:235
 msgid "No default billing address available"
 msgstr "Keine Standard-Rechnungsadresse verfügbar"
 
-#: order/views.py:318
+#: order/views.py:283
+msgid "Please fill in the required shipping address"
+msgstr "Bitte geben Sie die gewünschte Lieferadresse ein"
+
+#: order/views.py:324
 msgid "Please fill in the required billing address"
 msgstr "Bitte geben Sie die erforderliche Rechnungsadresse ein"
 
 #: order/views.py:333
+#, fuzzy
+#| msgid "Please fill in the required billing address"
+msgid "Please fill in the required fields"
+msgstr "Bitte geben Sie die erforderliche Rechnungsadresse ein"
+
+#: order/views.py:338
 msgid "You do not have an active order"
 msgstr "Sie haben keine aktive Bestellung"
 
-#: order/views.py:345
+#: order/views.py:350
 msgid "You do not have any orders"
 msgstr "Sie haben keine Bestellungen"
 
-#: order/views.py:348
+#: order/views.py:353
 msgid "You are not authorized"
 msgstr "Sie sind nicht berechtigt"
 
-#: order/views.py:367 order/views.py:443
+#: order/views.py:364 order/views.py:387
 msgid "You are not the user who ordered this order"
 msgstr "Sie sind nicht der Benutzer, der diese Bestellung bestellt hat"
 
-#: order/views.py:371
+#: order/views.py:376
 msgid "Order does not exist"
 msgstr "Bestellung existiert nicht"
 
 #: order/views.py:393
-msgid "Refund request for your order #"
-msgstr "Refund Anfrage für Ihre Bestellung #"
-
-#: order/views.py:395
-msgid " has been received and will be processed shortly"
-msgstr " ist eingegangen und wird in Kürze bearbeitet"
-
-#: order/views.py:413
-msgid "New refund/Neue refund "
-msgstr ""
-
-#: order/views.py:415
-msgid " is requested/ist gesendet"
-msgstr ""
-
-#: order/views.py:422
-msgid "Your request was received"
-msgstr "Ihre Anfrage wurde empfangen"
-
-#: order/views.py:428
 msgid "You have already received refund for this order"
 msgstr "Sie haben bereits einen Refund für diese Bestellung erhalten"
 
-#: order/views.py:435
+#: order/views.py:401
 msgid "You have already submitted a ticket. Please wait until we contact you"
-msgstr "Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie kontaktieren"
+msgstr ""
+"Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie "
+"kontaktieren"
 
-#: order/views.py:448
+#: order/views.py:416
+msgid "Refund request for your order #"
+msgstr "Refund Anfrage für Ihre Bestellung #"
+
+#: order/views.py:418
+msgid " has been received and will be processed shortly"
+msgstr " ist eingegangen und wird in Kürze bearbeitet"
+
+#: order/views.py:436
+msgid "New refund/Neue refund "
+msgstr ""
+
+#: order/views.py:438
+msgid " is requested/ist gesendet"
+msgstr ""
+
+#: order/views.py:445
+msgid "Your request was received"
+msgstr "Ihre Anfrage wurde empfangen"
+
+#: order/views.py:449
 msgid "This order does not exist"
 msgstr "Diese Bestellung existiert nicht"
