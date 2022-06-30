@@ -13,13 +13,13 @@
   $( document ).ready(function() {
     new WOW().init()
     //if cookie hasn't been set...
-    if (document.cookie.indexOf("ModalShown=true")<0) {
+    if (document.cookie.indexOf("CookieModalShown=true")<0) {
       $("#modalCookie").modal("show");
       //Modal has been shown, now set a cookie so it never comes back
       $("#modalCookieClose").click(function () {
           $("#modalCookie").modal("hide");
       });
-      document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+      document.cookie = "CookieModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
     }
   });
 </script>
