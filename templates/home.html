@@ -22,13 +22,13 @@
                    class="d-block w-100 h-auto"
                    {% endcomment %}
                    class="d-block w-100"
-                   alt="{{ slide.alt }}"/>
+                   alt="{{ slide.alt|safe }}"/>
               <div class="mask rgba-black-slight"></div>
             </div>
             <div class="carousel-caption">
               <div class="animated fadeInDown">
-                <h3 class="h3-responsive">{{ slide.title }}</h3>
-                <p>{{ slide.body }}</p>
+                <h3 class="h3-responsive">{{ slide.title|safe }}</h3>
+                <p>{{ slide.body|safe }}</p>
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@
                 </a>
                 <h5>
                   <strong>
-                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title|safe }}
                       {% if item.get_label_display == 'NEW' %}
                         <span class="badge badge-pill primary-color">{{ item.get_label_display }}</span>
                       {% elif item.get_label_display == 'HOT' %}
@@ -151,16 +151,14 @@
                 </h5>
                 <h4 class="font-weight-bold blue-text">
                   <strong>
-                    {% if item.discount %}
+                    {% if item.discount|safe %}
                       <span class="mr-1">
                         <h4 class="font-weight-bold text-danger">
                           <del>{{ item.price|add:item.delivery_price }}€</del>
                         </h4>
                       </span>
-                      <span>{{ item.get_final_price }}€</span>
-                    {% else %}
-                      <span>{{ item.get_final_price }}€</span>
                     {% endif %}
+                    <span>{{ item.get_final_price|safe }}€</span>
                   </strong>
                 </h4>
               </div>
@@ -203,6 +201,7 @@
       </nav>
     {% endif %}
     <!--Navbar Bestsellers-->
+    {% cache 500 bestsellers %}
     {% if bestseller_items %}
       <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
         <!-- Navbar brand -->
@@ -231,7 +230,7 @@
                   </a>
                   <h5>
                     <strong>
-                      <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
+                      <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title|safe }}
                         {% if item.get_label_display == 'NEW' %}
                           <span class="badge badge-pill primary-color">{{ item.get_label_display }}</span>
                         {% elif item.get_label_display == 'HOT' %}
@@ -242,16 +241,14 @@
                   </h5>
                   <h4 class="font-weight-bold blue-text">
                     <strong>
-                      {% if item.discount %}
+                      {% if item.discount|safe %}
                         <span class="mr-1">
                           <h4 class="font-weight-bold text-danger">
                             <del>{{ item.price|add:item.delivery_price }}€ </del>
                           </h4>
                         </span>
-                        <span>{{ item.get_final_price }}€</span>
-                      {% else %}
-                        <span>{{ item.get_final_price }}€</span>
                       {% endif %}
+                      <span>{{ item.get_final_price|safe }}€</span>
                     </strong>
                   </h4>
                 </div>
@@ -294,6 +291,7 @@
         </nav>
       {% endif %}
     {% endif %}
-  </div>
+  {% endcache %}
+</div>
 </main>
 {% endblock content %}

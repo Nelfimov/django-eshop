@@ -11,7 +11,8 @@ register = template.Library()
 def order_item_count(request):
     try:
         counter = (
-            Order.objects.filter(
+            Order.objects.only("id")
+            .filter(
                 ordered=False,
                 user=(request.user if request.user.is_authenticated else None),
                 session_key=(
