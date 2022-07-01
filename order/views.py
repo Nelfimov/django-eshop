@@ -140,7 +140,8 @@ class OrderView(View):
                         else self.request.session.session_key
                     ),
                 )
-                .prefetch_related("orderitem_set")[0]
+                .prefetch_related("orderitem_set")
+                .first()
             )
             context = {
                 "order": order,
@@ -148,7 +149,7 @@ class OrderView(View):
                 "order_total": order.get_total(),
             }
             return render(self.request, "cart_summary.html", context)
-        except ObjectDoesNotExist:
+        except:
             messages.warning(self.request, _("Your cart is empty"))
             return redirect("/")
 
