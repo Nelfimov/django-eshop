@@ -21,24 +21,23 @@
           <tbody>
             {% for order_item in order_items %}
               <tr>
-                <th scope="row">{{ forloop.counter }}</th>
+                <th scope="row">{{ forloop.counter|safe }}</th>
                 <td>
-                  <a style="color: blue" href="{{ order_item.item.get_absolute_url }}">{{ order_item.item.title }}</a>
+                  <a style="color: blue"
+                     href="{{ order_item.item.get_absolute_url|safe }}">{{ order_item.item.title|safe }}</a>
                 </td>
-                <td>{{ order_item.item.get_final_price }}€</td>
+                <td>{{ order_item.item.get_final_price|safe }}€</td>
                 <td>
                   <a href="{% url 'order:remove-single-item-from-cart' order_item.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
-                  {{ order_item.quantity }}
+                  {{ order_item.quantity|safe }}
                   {% if order_item.quantity < order_item.item.stock %}
                     <a href="{% url 'order:add-to-cart' order_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
                   {% endif %}
                 </td>
                 <td>
-                  {% if order_item.item.discount_price %}
-                    {{ order_item.item.get_final_price }}€
-                    <span class="badge bg-primary">{% translate "Saving" %} {{ order_item.get_saving }}€</span>
-                  {% else %}
-                    {{ order_item.get_total_item_price }}€
+                  {{ order_item.get_total_item_price|safe }}€
+                  {% if order_item.item.discount_price|safe %}
+                    <span class="badge bg-primary">{% translate "Saving" %} {{ order_item.get_saving|safe }}€</span>
                   {% endif %}
                   <a style="color: red;"
                      href="{% url 'order:remove-from-cart' order_item.item.slug %}">
@@ -56,13 +55,13 @@
                 </td>
               </tr>
             {% endfor %}
-            {% if order.get_total %}
+            {% if order_total %}
               <tr>
                 <td colspan="4">
                   <b>{% translate "Cart Total" %}</b>
                 </td>
                 <td>
-                  <b>{{ order.get_total }}€</b>
+                  <b>{{ order_total|safe }}€</b>
                 </td>
               </tr>
               <tr>

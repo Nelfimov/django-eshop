@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, View
 
-from .models import Carousel, CategoryItem, Item
+from .models import Carousel, Item
 
 
 class HomeView(View):

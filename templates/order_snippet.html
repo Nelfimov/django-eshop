@@ -8,10 +8,10 @@
     {% for order_item in order_items %}
       <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div>
-          <h6 class="my-0">{{ order_item.quantity }} x {{ order_item.item.title }}</h6>
-          <small class="text-muted">{{ order_item.item.description }}</small>
+          <h6 class="my-0">{{ order_item.quantity|safe }} x {{ order_item.item.title|safe }}</h6>
+          <small class="text-muted">{{ order_item.item.description|safe }}</small>
         </div>
-        <span class="text-muted">{{ order_item.get_total_item_price }}€</span>
+        <span class="text-muted">{{ order_item.get_total_item_price|safe }}€</span>
       </li>
     {% endfor %}
     {% comment %} {% if cart.coupon %}
@@ -25,7 +25,7 @@
     {% endif %} {% endcomment %}
     <li class="list-group-item d-flex justify-content-between">
       <span>{% translate "Total" %} (EUR)</span>
-      <strong>{{ order.get_total }} EUR</strong>
+      <strong>{{ order.get_total|safe }} EUR</strong>
     </li>
   </ul>
   {% comment %} {% if DISPLAY_COUPON_FORM %}

@@ -1,5 +1,7 @@
 from datetime import date
 from io import BytesIO
+from functools import cached_property
+
 
 from autoslug import AutoSlugField
 from django.core.files import File
@@ -113,6 +115,7 @@ class Item(models.Model):
     def get_remove_from_cart_url(self):
         return reverse("order:remove-from-cart", kwargs={"slug": self.slug})
 
+    @cached_property
     def get_final_price(self):
         return self.price + self.delivery_price - self.discount
 

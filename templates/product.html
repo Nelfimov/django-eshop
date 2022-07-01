@@ -84,7 +84,7 @@
 {% block content %}
   <main class="mt-1 pt-1">
     <div class="container dark-grey-text mt-5">
-      <h2 class="my-5 h2 text-center">{{ object.title }}</h2>
+      <h2 class="my-5 h2 text-center">{{ object.title|safe }}</h2>
       <div class="row wow fadeIn">
         <div class="col-md-6 mb-4">
           <div class="img-magnifier-container">
@@ -103,24 +103,22 @@
             <p class="lead">
               <h4 class="font-weight-bold blue-text">
                 <strong>
-                  {% if object.discount_price %}
+                  {% if object.discount_price|safe %}
                     <span class="mr-1">
                       <h4 class="font-weight-bold text-danger">
                         <del>{{ object.price|add:object.delivery_price }}€</del>
                       </h4>
                     </span>
-                    <span>{{ object.get_final_price }}€</span>
-                  {% else %}
-                    <span>{{ object.get_final_price }}€</span>
                   {% endif %}
+                  <span>{{ object.get_final_price|safe }}€</span>
                 </strong>
               </h4>
             </p>
-            <p class="font-italic">{% translate "Including delivery cost" %}: {{ object.delivery_price }}€</p>
+            <p class="font-italic">{% translate "Including delivery cost" %}: {{ object.delivery_price|safe }}€</p>
             <p class="lead font-weight-bold">{% translate "Description" %}</p>
-            <p>{{ object.description }}</p>
+            <p>{{ object.description|safe }}</p>
             {% if object.stock != 0 %}
-              <p class="font-italic">{% translate "On stock left" %}: {{ object.stock }}</p>
+              <p class="font-italic">{% translate "On stock left" %}: {{ object.stock|safe }}</p>
               <a href="{{ object.get_add_to_cart_url }}"
                  class="btn btn-primary btn-md my-0 p">
                 {% translate "Add to cart" %}
@@ -131,7 +129,7 @@
                 {% translate "Remove from cart" %}
               </a>
             {% else %}
-              <p class="font-weight-bold red-text">{% translate "On stock left" %}: {{ object.stock }}</p>
+              <p class="font-weight-bold red-text">{% translate "On stock left" %}: {{ object.stock|safe }}</p>
             {% endif %}
           </div>
         </div>
@@ -141,25 +139,23 @@
         {% if object.additional_information %}
           <div class="col-md-6 text-center">
             <h4 class="my-4 h4">{% translate "Additional information" %}</h4>
-            <p>{{ object.additional_information }}</p>
+            <p>{{ object.additional_information|safe }}</p>
           </div>
         {% endif %}
       </div>
-      {% if object.images.all %}
-        <div class="container">
-          <div class="row photos">
-            {% for image in object.images.all %}
-              <div class="col-sm-6 col-md-4 col-lg-3 item">
-                <a href="{{ image.image.url }}" data-lightbox="photos">
-                  <img class="img-fluid"
-                       src="{{ image.image.url }}"
-                       alt="Additional product images"/>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
+      <div class="container">
+        <div class="row photos">
+          {% for image in object.images.all %}
+            <div class="col-sm-6 col-md-4 col-lg-3 item">
+              <a href="{{ image.image.url }}" data-lightbox="photos">
+                <img class="img-fluid"
+                     src="{{ image.image.url }}"
+                     alt="Additional product images"/>
+              </a>
+            </div>
+          {% endfor %}
         </div>
-      {% endif %}
+      </div>
       {% if object.item_video %}
         <hr/>
         <div class="embed-responsive embed-responsive-16by9">{% video object.item_video 'huge' %}</div>

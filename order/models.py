@@ -1,3 +1,5 @@
+from functools import cached_property
+
 from django.conf import settings
 from django.core import mail
 from django.db import models
@@ -7,7 +9,6 @@ from django.utils.html import strip_tags
 from django.utils.translation import gettext as _
 from django_countries import Countries
 from django_countries.fields import CountryField
-
 
 ADDRESS_CHOICES = (
     ("B", _("Billing")),
@@ -43,9 +44,11 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.item.title}: {self.quantity}"
 
+    @cached_property
     def get_total_item_price(self):
-        return self.quantity * self.item.get_final_price()
+        return self.quantity * self.item.get_final_price
 
+    @cached_property
     def get_saving(self):
         return self.quantity * self.item.discount
 
@@ -117,7 +120,7 @@ class Order(models.Model):
     def get_total(self):
         total = 0
         for cart_item in OrderItem.objects.filter(order=self.id):
-            total += cart_item.get_total_item_price()
+            total += cart_item.get_total_item_price
         return total
 
 

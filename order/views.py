@@ -125,19 +125,28 @@ def remove_single_item_from_cart(request, slug):
 class OrderView(View):
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.get(
-                ordered=False,
-                user=(
-                    self.request.user if self.request.user.is_authenticated else None
-                ),
-                session_key=(
-                    None
-                    if self.request.user.is_authenticated
-                    else self.request.session.session_key
-                ),
+            order = (
+                Order.objects.only("ordered", "user", "session_key")
+                .filter(
+                    ordered=False,
+                    user=(
+                        self.request.user
+                        if self.request.user.is_authenticated
+                        else None
+                    ),
+                    session_key=(
+                        None
+                        if self.request.user.is_authenticated
+                        else self.request.session.session_key
+                    ),
+                )
+                .prefetch_related("orderitem_set")[0]
             )
-            order_items = OrderItem.objects.filter(order=order)
-            context = {"order": order, "order_items": order_items}
+            context = {
+                "order": order,
+                "order_items": order.orderitem_set.all(),
+                "order_total": order.get_total(),
+            }
             return render(self.request, "cart_summary.html", context)
         except ObjectDoesNotExist:
             messages.warning(self.request, _("Your cart is empty"))
@@ -147,7 +156,7 @@ class OrderView(View):
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.get(
+            order = Order.objects.filter(
                 ordered=False,
                 user=(
                     self.request.user if self.request.user.is_authenticated else None
@@ -157,13 +166,12 @@ class CheckoutView(View):
                     if self.request.user.is_authenticated
                     else self.request.session.session_key
                 ),
-            )
-            order_items = OrderItem.objects.filter(order=order)
+            ).prefetch_related("orderitem_set")[0]
             form = CheckoutForm()
             context = {
                 "form": form,
                 "order": order,
-                "order_items": order_items,
+                "order_items": order.orderitem_set.all(),
                 "client_id": config("PAYPAL_CLIENT_ID"),
                 "currency": "EUR",
             }
@@ -190,7 +198,7 @@ class CheckoutView(View):
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         try:
-            order = Order.objects.get(
+            order = Order.objects.filter(
                 ordered=False,
                 user=(
                     self.request.user if self.request.user.is_authenticated else None
@@ -200,19 +208,18 @@ class CheckoutView(View):
                     if self.request.user.is_authenticated
                     else self.request.session.session_key
                 ),
-            )
+            )[0]
             if form.is_valid():
                 if self.request.user.is_authenticated:
 
                     if form.cleaned_data.get("use_default_shipping"):
-                        address_qs = Address.objects.filter(
+                        shipping_address_qs = Address.objects.filter(
                             user=self.request.user,
                             address_type="S",
                             default=True,
                         )
-                        if address_qs.exists():
-                            shipping_address = address_qs[0]
-                            order.shipping_address = shipping_address
+                        if shipping_address_qs.exists():
+                            order.shipping_address = shipping_address_qs[0]
                             order.save()
                         else:
                             messages.warning(
@@ -221,14 +228,13 @@ class CheckoutView(View):
                             return redirect("order:checkout")
 
                     if form.cleaned_data.get("use_default_billing"):
-                        address_qs = Address.objects.filter(
+                        billing_address_qs = Address.objects.filter(
                             user=self.request.user,
                             address_type="B",
                             default=True,
                         )
-                        if address_qs.exists():
-                            billing_address = address_qs[0]
-                            order.billing_address = billing_address
+                        if billing_address_qs.exists():
+                            order.billing_address = billing_address_qs[0]
                             order.save()
                         else:
                             messages.warning(
