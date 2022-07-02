@@ -14,10 +14,10 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
-from order.models import Order, OrderItem
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from paypalcheckoutsdk.orders import OrdersCaptureRequest, OrdersCreateRequest
 
+from order.models import Order, OrderItem
 from .models import Payment
 
 
