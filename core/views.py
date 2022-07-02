@@ -10,7 +10,7 @@ class HomeView(View):
         recently_added_items = (
             Item.objects.select_related("category").all().order_by("created_date")
         )
-        categories = {i.category for i in recently_added_items}
+        categories = {item.category for item in recently_added_items}
         if self.request.GET.get("category"):
             category_filter = self.request.GET.get("category")
             recently_added_items = recently_added_items.filter(category=category_filter)
@@ -37,3 +37,10 @@ class HomeView(View):
 class ItemDetailView(DetailView):
     model = Item
     template_name = "product.html"
+
+    def get_object(self):
+        return (
+            self.model.objects.select_related("category")
+            .prefetch_related("images")
+            .get(slug=self.kwargs["slug"])
+        )

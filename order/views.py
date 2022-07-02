@@ -15,14 +15,6 @@ from .forms import CheckoutForm, RefundForm
 from .models import Address, Order, OrderItem, Refund
 
 
-def is_valid_form(values):
-    valid = True
-    for field in values:
-        if field == "":
-            valid = False
-    return valid
-
-
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     if item.stock <= 0:
@@ -32,15 +24,14 @@ def add_to_cart(request, slug):
         request.session.session_key
     ):
         request.session.create()
-    order_qs = Order.objects.filter(
+    order = Order.objects.filter(
         ordered=False,
         user=(request.user if request.user.is_authenticated else None),
         session_key=(
             None if request.user.is_authenticated else request.session.session_key
         ),
-    )
-    if order_qs.exists():
-        order = order_qs[0]
+    ).first()
+    if order is not None:
         order_item, created = OrderItem.objects.get_or_create(item=item, order=order)
         if not created:
             order_item.quantity += 1
@@ -149,25 +140,39 @@ class OrderView(View):
                 "order_total": order.get_total(),
             }
             return render(self.request, "cart_summary.html", context)
-        except:
+        except (IndexError, ObjectDoesNotExist, AttributeError):
             messages.warning(self.request, _("Your cart is empty"))
             return redirect("/")
+
+
+def is_valid_form(values):
+    valid = True
+    for field in values:
+        if field == "":
+            valid = False
+    return valid
 
 
 class CheckoutView(View):
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.filter(
-                ordered=False,
-                user=(
-                    self.request.user if self.request.user.is_authenticated else None
-                ),
-                session_key=(
-                    None
-                    if self.request.user.is_authenticated
-                    else self.request.session.session_key
-                ),
-            ).prefetch_related("orderitem_set")[0]
+            order = (
+                Order.objects.filter(
+                    ordered=False,
+                    user=(
+                        self.request.user
+                        if self.request.user.is_authenticated
+                        else None
+                    ),
+                    session_key=(
+                        None
+                        if self.request.user.is_authenticated
+                        else self.request.session.session_key
+                    ),
+                )
+                .prefetch_related("orderitem_set")
+                .first()
+            )
             form = CheckoutForm()
             context = {
                 "form": form,
@@ -179,20 +184,21 @@ class CheckoutView(View):
             if self.request.user.is_authenticated:
                 shipping_address_qs = Address.objects.filter(
                     user=self.request.user, address_type="S", default=True
-                )
-
-                if shipping_address_qs.exists():
-                    context.update({"default_shipping_address": shipping_address_qs[0]})
-
+                ).first()
                 billing_address_qs = Address.objects.filter(
                     user=self.request.user, address_type="B", default=True
+                ).first()
+
+                context.update(
+                    {
+                        "default_shipping_address": shipping_address_qs,
+                        "default_billing_address": billing_address_qs,
+                    }
                 )
-                if billing_address_qs.exists():
-                    context.update({"default_billing_address": billing_address_qs[0]})
 
             return render(self.request, "checkout.html", context)
 
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, IndexError):
             messages.info(self.request, _("You do not have anything in cart"))
             return redirect("core:home")
 
@@ -209,18 +215,17 @@ class CheckoutView(View):
                     if self.request.user.is_authenticated
                     else self.request.session.session_key
                 ),
-            )[0]
+            ).first()
             if form.is_valid():
                 if self.request.user.is_authenticated:
-
                     if form.cleaned_data.get("use_default_shipping"):
                         shipping_address_qs = Address.objects.filter(
                             user=self.request.user,
                             address_type="S",
                             default=True,
-                        )
-                        if shipping_address_qs.exists():
-                            order.shipping_address = shipping_address_qs[0]
+                        ).first
+                        if shipping_address_qs is not None:
+                            order.shipping_address = shipping_address_qs
                             order.save()
                         else:
                             messages.warning(
@@ -233,9 +238,9 @@ class CheckoutView(View):
                             user=self.request.user,
                             address_type="B",
                             default=True,
-                        )
-                        if billing_address_qs.exists():
-                            order.billing_address = billing_address_qs[0]
+                        ).first()
+                        if billing_address_qs is not None:
+                            order.billing_address = billing_address_qs
                             order.save()
                         else:
                             messages.warning(
@@ -341,7 +346,7 @@ class CheckoutView(View):
             )
             return redirect("order:checkout")
 
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, IndexError):
             messages.warning(self.request, _("You do not have an" + " active order"))
             return redirect("order:cart-summary")
 
@@ -350,8 +355,11 @@ class OrdersFinishedView(ListView):
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             try:
-                orders = Order.objects.filter(user=self.request.user, ordered=True)
-                context = {"object": orders}
+                orders = Order.objects.filter(
+                    user=self.request.user, ordered=True
+                ).select_prefetched("orderitem_set")
+                order_items = orders.orderitem_set.all()
+                context = {"object": orders, "order_items": order_items}
                 return render(self.request, "orders_finished.html", context)
             except ObjectDoesNotExist:
                 messages.warning(self.request, _("You do not have any orders"))

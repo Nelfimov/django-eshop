@@ -25,9 +25,9 @@
                 <th scope="row">{{ order.ref_code }}</th>
                 <th scope="row">{{ order.ordered_date }}</th>
                 <td>
-                  {% for order_item in order.items.all %}{{ order_item.item.title|linebreaks }}{% endfor %}
+                  {% for order_item in order_items %}{{ order_item.item.title|linebreaks }}{% endfor %}
                 </td>
-                <td>{{ order.cart.get_total }} EUR</td>
+                <td>{{ order.get_total }}€</td>
                 <td>
                   {% if order.refund_granted %}
                     {% translate "Refund Granted" %}

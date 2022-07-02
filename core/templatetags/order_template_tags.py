@@ -26,7 +26,7 @@ def order_item_count(request):
             .orderitem__count
         )
         return counter
-    except:
+    except (IndexError, AttributeError):
         return 0
 
 
