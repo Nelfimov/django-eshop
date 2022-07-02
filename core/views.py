@@ -38,7 +38,7 @@ class ItemDetailView(DetailView):
     model = Item
     template_name = "product.html"
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return (
             self.model.objects.select_related("category")
             .prefetch_related("images")

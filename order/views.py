@@ -1,9 +1,10 @@
-from core.models import Item
 from decouple import config
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import mail
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -11,6 +12,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, View
 
+from core.models import Item
 from .forms import CheckoutForm, RefundForm
 from .models import Address, Order, OrderItem, Refund
 
@@ -41,63 +43,73 @@ def add_to_cart(request, slug):
                     _("Unfortunately we do not have this " + "quantity on stock"),
                 )
                 return redirect("order:cart-summary")
+
             order_item.save()
             messages.info(request, _("Quantity was updated"))
             return redirect("order:cart-summary")
         messages.info(request, _("Quantity was updated"))
         return redirect("order:cart-summary")
-    else:
-        order = Order.objects.create(
-            user=request.user if request.user.is_authenticated else None,
-            start_date=timezone.now(),
-            session_key=(
-                None if request.user.is_authenticated else request.session.session_key
-            ),
-        )
-        order_item = OrderItem.objects.create(item=item, order=order)
-        messages.info(request, _("Quantity was updated"))
-        return redirect("order:cart-summary")
+
+    order = Order.objects.create(
+        user=request.user if request.user.is_authenticated else None,
+        start_date=timezone.now(),
+        session_key=(
+            None if request.user.is_authenticated else request.session.session_key
+        ),
+    )
+    order_item = OrderItem.objects.create(item=item, order=order)
+    messages.info(request, _("Quantity was updated"))
+    return redirect("order:cart-summary")
 
 
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        ordered=False,
-        user=(request.user if request.user.is_authenticated else None),
-        session_key=(
-            None if request.user.is_authenticated else request.session.session_key
-        ),
+    order = (
+        Order.objects.filter(
+            ordered=False,
+            user=(request.user if request.user.is_authenticated else None),
+            session_key=(
+                None if request.user.is_authenticated else request.session.session_key
+            ),
+        )
+        .prefetch_related(
+            Prefetch("orderitem_set", queryset=OrderItem.objects.filter(item=item))
+        )
+        .first()
     )
-    if order_qs.exists():
-        order = order_qs[0]
-        order_item_qs = OrderItem.objects.filter(order=order, item=item)
-        if order_item_qs.exists():
-            order_item = order_item_qs[0]
+    if order is not None:
+        order_item = order.orderitem_set.first()
+
+        if order_item is not None:
             order_item.delete()
             messages.info(request, _("This item was removed from your cart"))
             return redirect("order:cart-summary")
-        else:
-            messages.warning(request, _("This item was not in your cart"))
-            return redirect("core:product", slug=slug)
-    else:
-        messages.warning(request, _("Your cart is empty"))
+
+        messages.warning(request, _("This item was not in your cart"))
         return redirect("core:product", slug=slug)
+
+    messages.warning(request, _("Your cart is empty"))
+    return redirect("core:product", slug=slug)
 
 
 def remove_single_item_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
-        ordered=False,
-        user=(request.user if request.user.is_authenticated else None),
-        session_key=(
-            None if request.user.is_authenticated else request.session.session_key
-        ),
+    order = (
+        Order.objects.filter(
+            ordered=False,
+            user=(request.user if request.user.is_authenticated else None),
+            session_key=(
+                None if request.user.is_authenticated else request.session.session_key
+            ),
+        )
+        .prefetch_related(
+            Prefetch("orderitem_set", queryset=OrderItem.objects.filter(item=item))
+        )
+        .first()
     )
-    if order_qs.exists():
-        order = order_qs[0]
-        order_item_qs = OrderItem.objects.filter(order=order, item=item)
-        if order_item_qs.exists():
-            order_item = order_item_qs[0]
+    if order is not None:
+        order_item = order.orderitem_set.all().first()
+        if order_item is not None:
             if order_item.quantity <= 1:
                 order_item.delete()
             else:
@@ -105,12 +117,12 @@ def remove_single_item_from_cart(request, slug):
                 order_item.save()
             messages.info(request, _("This item quantity was updated"))
             return redirect("order:cart-summary")
-        else:
-            messages.info(request, _("This item was not in your cart"))
-            return redirect("core:product", slug=slug)
-    else:
-        messages.info(request, _("You do not have an active cart"))
+
+        messages.info(request, _("This item was not in your cart"))
         return redirect("core:product", slug=slug)
+
+    messages.info(request, _("You do not have an active cart"))
+    return redirect("core:product", slug=slug)
 
 
 class OrderView(View):
@@ -351,22 +363,23 @@ class CheckoutView(View):
             return redirect("order:cart-summary")
 
 
-class OrdersFinishedView(ListView):
-    def get(self, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            try:
-                orders = Order.objects.filter(
-                    user=self.request.user, ordered=True
-                ).select_prefetched("orderitem_set")
-                order_items = orders.orderitem_set.all()
-                context = {"object": orders, "order_items": order_items}
-                return render(self.request, "orders_finished.html", context)
-            except ObjectDoesNotExist:
-                messages.warning(self.request, _("You do not have any orders"))
-                return redirect("/")
+class OrdersFinishedView(LoginRequiredMixin, ListView):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(self.request, _("You have to authorize for this view"))
+        return super().dispatch(request, *args, **kwargs)
 
-        messages.warning(self.request, _("You are not authorized"))
-        return redirect("/")
+    def get(self, *args, **kwargs):
+        try:
+            orders = Order.objects.filter(
+                user=self.request.user, ordered=True
+            ).select_prefetched("orderitem_set")
+            order_items = orders.orderitem_set.all()
+            context = {"object": orders, "order_items": order_items}
+            return render(self.request, "orders_finished.html", context)
+        except (ObjectDoesNotExist, AttributeError):
+            messages.warning(self.request, _("You do not have any orders"))
+            return redirect("/")
 
 
 class RequestRefundView(View):
