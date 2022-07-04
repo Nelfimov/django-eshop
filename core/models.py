@@ -1,17 +1,17 @@
-from datetime import date
 from io import BytesIO
+from datetime import date
 from functools import cached_property
-
 
 from autoslug import AutoSlugField
 from django.core.files import File
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
-from embed_video.fields import EmbedVideoField
 from PIL import Image
 from pillow_heif import register_heif_opener
+from embed_video.fields import EmbedVideoField
 
+#  HEIF/HEIC enable compression in Pillow
 register_heif_opener()
 
 LABEL_CHOICES = (
