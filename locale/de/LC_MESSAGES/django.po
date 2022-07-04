@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-30 15:06+0300\n"
+"POT-Creation-Date: 2022-07-04 20:28+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -475,29 +475,29 @@ msgstr "Menge"
 msgid "Total Item Price"
 msgstr "Gesamtpreis des Artikels"
 
-#: templates/cart_summary.html:39
+#: templates/cart_summary.html:40
 msgid "Saving"
 msgstr "Sie sparen"
 
-#: templates/cart_summary.html:51
+#: templates/cart_summary.html:50
 msgid "Your cart is empty"
 msgstr "Ihr Warenkorb ist leer"
 
-#: templates/cart_summary.html:55 templates/cart_summary.html:72
+#: templates/cart_summary.html:54 templates/cart_summary.html:71
 #: templates/emails/order_confirmation_email.html:61
 #: templates/orders_finished.html:53 templates/orders_finished.html:70
 msgid "Continue shopping"
 msgstr "Weiter shoppen"
 
-#: templates/cart_summary.html:62
+#: templates/cart_summary.html:61
 msgid "Cart Total"
 msgstr "Warenkorb insgesamt"
 
-#: templates/cart_summary.html:71 templates/orders_finished.html:69
+#: templates/cart_summary.html:70 templates/orders_finished.html:69
 msgid "Proceed to checkout"
 msgstr "Zur Kasse"
 
-#: templates/cart_summary.html:79
+#: templates/cart_summary.html:78
 msgid ""
 "Learn more about <a class=\"badge badge-info\" data-toggle=\"modal\" data-"
 "target=\"#shippingModal\">shipping</a> and <a class=\"badge badge-info\" "
@@ -511,17 +511,15 @@ msgstr ""
 "Hier ist unser <a class=\"badge badge-info\" data-toggle=\"modal\" data-"
 "target=\"#refundModal\">Refund Recht.</a>"
 
-#: templates/cart_summary.html:90
+#: templates/cart_summary.html:89
 msgid "Available payment options"
 msgstr "Verfügbare Zahlungsoptionen"
 
-#: templates/cart_summary.html:117
-#, fuzzy
-#| msgid "Shipping address"
-msgid "Shipping cost"
-msgstr "Lieferadresse"
+#: templates/cart_summary.html:116
+msgid "Shipping"
+msgstr "Versand"
 
-#: templates/cart_summary.html:124
+#: templates/cart_summary.html:123
 msgid ""
 "\n"
 "                The prices stated on the product pages include statutory VAT "
@@ -547,151 +545,29 @@ msgstr ""
 " Wir versenden derzeit <u>nur innerhalb der EU</u>.\n"
 "                "
 
-#: templates/cart_summary.html:153
-msgid ""
-"\n"
-"              You have the right to withdraw from this contract within "
-"fourteen days without giving any reason. \n"
-"              The cancellation period is fourteen (14) days from the day on "
-"which you or a third party named by you who is \n"
-"              not the carrier took possession of the goods. The goods must "
-"be new, in their original condition and unused. \n"
-"              In order to exercise your right of withdrawal, you must inform "
-"us of your decision to withdraw from this contract \n"
-"              by means of a clear statement (e.g. a letter sent by post, fax "
-"or e-mail. Or if you are authorized on our website - to use Refund form). \n"
-"              To meet the cancellation deadline, it is sufficient for you to "
-"send the communication regarding your exercise of the right of \n"
-"              cancellation before the cancellation period has expired.\n"
-"              <br/> <br/>\n"
-"              If you revoke this contract, we have to repay all payments "
-"that we have received from you, excluding the delivery costs, \n"
-"              immediately and at the latest within fourteen days from the "
-"day on which we received the notification of your revocation \n"
-"              of this contract. For this repayment, we use the same means of "
-"payment that you used in the original transaction, unless something \n"
-"              else was expressly agreed with you; under no circumstances "
-"will you be charged fees for this repayment. \n"
-"              We may refuse repayment until we have received the goods back "
-"or until you have provided proof that you have returned the goods, \n"
-"              whichever is earlier. You must return or hand over the goods "
-"to us immediately and in any case no later than fourteen (14) days \n"
-"              from the day on which you inform us of the cancellation of "
-"this contract. \n"
-"              The deadline is met if you send back the goods before the "
-"period of fourteen (14) days has expired. \n"
-"              You bear the direct costs of returning the goods.\n"
-"              You are only liable for any diminished value of the goods "
-"resulting from the handling other than what is \n"
-"              necessary to establish the nature, characteristics and "
-"functioning of the goods.\n"
-"              "
-msgstr ""
-"\n"
-"              Sie haben das Recht, diesen Vertrag innerhalb von vierzehn "
-"(14) Tagen zu widerrufen ohne Angabe von Gründen. \n"
-"              Die Widerrufsfrist beträgt vierzehn (14) Tage ab dem Tag die "
-"Sie oder ein von Ihnen benannter Dritter, der \n"
-" ist              nicht der Spediteur die Ware in Besitz genommen hat. Die "
-"Ware muss neu, im Originalzustand und unbenutzt sein. \n"
-"              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns informierenuns "
-"über Ihre Entscheidung, diesen Vertrag zu widerrufen, \n"
-"              durch eine eindeutige Erklärung (z.B. ein mit der Post "
-"versandter Brief, Faxoder E-Mail. Oder wenn Sie auf unserer Website "
-"autorisiert sind - die Refundform zu verwenden). \n"
-"              Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie dies "
-"tunSenden Sie die Mitteilung bezüglich Ihrer Ausübung des Rechts auf \n"
-"              Kündigung vor Ablauf der Kündigungsfrist.\n"
-"              <br/> <br/>\n"
-"              Wenn Sie diesen Vertrag widerrufen, haben wir alle Zahlungen "
-"zurückzuzahlen die wir von Ihnen erhalten haben, ohne Versandkosten, \n"
-"              unverzüglich und spätestens innerhalb von vierzehn (14) Tagen "
-"ab denTag, an dem die Mitteilung über Ihren Widerruf bei uns eingegangen "
-"ist \n"
-"              dieses Vertrages. Für diese Rückzahlung verwenden wir dasselbe "
-"Mittel wie Zahlung, die Sie bei der ursprünglichen Transaktion verwendet "
-"haben, es sei denn, etwas \n"
-"              etwas anderes ausdrücklich mit Ihnen vereinbart wurde; auf "
-"keinen Fall werden Ihnen für diese Rückzahlung Entgelte berechnet. \n"
-"              Wir können die Rückzahlung verweigern, bis wir die Waren "
-"wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass "
-"Sie die Waren zurückgesandt haben, \n"
-"              Was auch immer früher ist. Sie müssen die Ware zurücksenden "
-"oder übergeben uns unverzüglich und in jedem Fall spätestens innerhalb von "
-"vierzehn (14) Tagen \n"
-"              ab dem Tag, an dem Sie uns über den Widerruf unterrichten "
-"dieser Vertrag. \n"
-"              Zur Fristwahrung genügt die rechtzeitige Absendung der "
-"WareFrist von vierzehn (14) Tagen abgelaufen ist. \n"
-"              Sie tragen die unmittelbaren Kosten der Rücksendung der "
-"Waren.\n"
-"              Sie haften nur für einen etwaigen Wertverlust der Ware die "
-"sich aus der Handhabung ergeben, die nicht \n"
-" ist              notwendig, um Art, Eigenschaften und Funktionieren der "
-"Ware.\n"
-"              "
+#: templates/checkout.html:112
+msgid "Continue to checkout"
+msgstr "Weiter zu Checkout"
 
-#: templates/checkout.html:17
-msgid "Your email"
-msgstr "Ihre email"
+#: templates/checkout.html:131
+msgid "Order address"
+msgstr "Versandadresse"
 
-#: templates/checkout.html:28
-#, fuzzy
-#| msgid "Please Confirm Your E-mail Address"
-msgid "Please provide valid email address"
-msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse"
-
-#: templates/checkout.html:37
-msgid "Use default shipping address"
-msgstr "Standardlieferadresse Verwenden"
-
-#: templates/checkout.html:49
-msgid "Use default billing address"
-msgstr "Standard-Rechnungsadresse Verwenden"
-
-#: templates/checkout.html:62
-msgid "Save as default shipping address"
-msgstr "Als Standardlieferadresse speichern"
-
-#: templates/checkout.html:70
-msgid "Save as default billing address"
-msgstr "Als Standard-Rechnungsadresse speichern"
-
-#: templates/checkout.html:75
+#: templates/checkout.html:142
 msgid "Shipping address"
 msgstr "Lieferadresse"
 
-#: templates/checkout.html:98
-msgid "Name for shipping"
-msgstr "Name für den Versand"
-
-#: templates/checkout.html:102 templates/checkout.html:156
-msgid "Country"
-msgstr "Land"
-
-#: templates/checkout.html:104 templates/checkout.html:158
-msgid "Please select a valid country"
-msgstr "Bitte wählen Sie ein gültiges Land aus"
-
-#: templates/checkout.html:113 templates/checkout.html:167
-msgid "Zip code required"
-msgstr "Postleitzahl erforderlich"
-
-#: templates/checkout.html:124
-msgid "Billing address is the same as my shipping address"
-msgstr "Rechnungsadresse ist die gleiche wie Lieferadresse"
-
-#: templates/checkout.html:129
+#: templates/checkout.html:143
 msgid "Billing address"
 msgstr "Rechnungsadresse"
 
-#: templates/checkout.html:152
-msgid "Name for billing"
-msgstr "Name für die Abrechnung"
+#: templates/checkout.html:178
+msgid "Yes, continue to payment"
+msgstr "Ja, zur Kasse fortfahren"
 
-#: templates/checkout.html:185
-msgid "Continue to checkout"
-msgstr "Weiter zu Checkout"
+#: templates/checkout.html:181
+msgid "No, I will give another address"
+msgstr "Nein, Ich werde neue Addresse eingeben"
 
 #: templates/data_protection.html:4 templates/data_protection.html:9
 #: templates/footer.html:8
@@ -1147,35 +1023,123 @@ msgstr "Preis (incl. Auslieferung)"
 msgid "Order Total"
 msgstr "Bestellungsumme"
 
-#: templates/footer.html:11
+#: templates/footer.html:10 templates/footer.html:61
+msgid "Refund policy"
+msgstr "Refund Politik"
+
+#: templates/footer.html:13
 msgid "Source code"
 msgstr ""
 
-#: templates/footer.html:22
+#: templates/footer.html:24
 msgid "Germany"
 msgstr "Deutschland"
 
-#: templates/home.html:43 templates/home.html:181 templates/home.html:272
+#: templates/footer.html:67
+msgid ""
+"\n"
+"   You have the right to withdraw from this contract within fourteen days "
+"without giving any reason. \n"
+"   The cancellation period is fourteen (14) days from the day on which you "
+"or a third party named by you who is \n"
+"   not the carrier took possession of the goods. The goods must be new, in "
+"their original condition and unused. \n"
+"   In order to exercise your right of withdrawal, you must inform us of your "
+"decision to withdraw from this contract \n"
+"   by means of a clear statement (e.g. a letter sent by post, fax or e-mail. "
+"Or if you are authorized on our website - to use Refund form). \n"
+"   To meet the cancellation deadline, it is sufficient for you to send the "
+"communication regarding your exercise of the right of \n"
+"   cancellation before the cancellation period has expired.\n"
+"   <br/> <br/>\n"
+"   If you revoke this contract, we have to repay all payments that we have "
+"received from you, excluding the delivery costs, \n"
+"   immediately and at the latest within fourteen days from the day on which "
+"we received the notification of your revocation \n"
+"   of this contract. For this repayment, we use the same means of payment "
+"that you used in the original transaction, unless something \n"
+"   else was expressly agreed with you; under no circumstances will you be "
+"charged fees for this repayment. \n"
+"   We may refuse repayment until we have received the goods back or until "
+"you have provided proof that you have returned the goods, \n"
+"   whichever is earlier. You must return or hand over the goods to us "
+"immediately and in any case no later than fourteen (14) days \n"
+"   from the day on which you inform us of the cancellation of this "
+"contract. \n"
+"   The deadline is met if you send back the goods before the period of "
+"fourteen (14) days has expired. \n"
+"   You bear the direct costs of returning the goods.\n"
+"   You are only liable for any diminished value of the goods resulting from "
+"the handling other than what is \n"
+"   necessary to establish the nature, characteristics and functioning of the "
+"goods.\n"
+"   "
+msgstr ""
+"\n"
+"              Sie haben das Recht, diesen Vertrag innerhalb von vierzehn "
+"(14) Tagen zu widerrufen ohne Angabe von Gründen. \n"
+"              Die Widerrufsfrist beträgt vierzehn (14) Tage ab dem Tag die "
+"Sie oder ein von Ihnen benannter Dritter, der \n"
+" ist              nicht der Spediteur die Ware in Besitz genommen hat. Die "
+"Ware muss neu, im Originalzustand und unbenutzt sein. \n"
+"              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns informierenuns "
+"über Ihre Entscheidung, diesen Vertrag zu widerrufen, \n"
+"              durch eine eindeutige Erklärung (z.B. ein mit der Post "
+"versandter Brief, Faxoder E-Mail. Oder wenn Sie auf unserer Website "
+"autorisiert sind - die Refundform zu verwenden). \n"
+"              Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie dies "
+"tunSenden Sie die Mitteilung bezüglich Ihrer Ausübung des Rechts auf \n"
+"              Kündigung vor Ablauf der Kündigungsfrist.\n"
+"              <br/> <br/>\n"
+"              Wenn Sie diesen Vertrag widerrufen, haben wir alle Zahlungen "
+"zurückzuzahlen die wir von Ihnen erhalten haben, ohne Versandkosten, \n"
+"              unverzüglich und spätestens innerhalb von vierzehn (14) Tagen "
+"ab denTag, an dem die Mitteilung über Ihren Widerruf bei uns eingegangen "
+"ist \n"
+"              dieses Vertrages. Für diese Rückzahlung verwenden wir dasselbe "
+"Mittel wie Zahlung, die Sie bei der ursprünglichen Transaktion verwendet "
+"haben, es sei denn, etwas \n"
+"              etwas anderes ausdrücklich mit Ihnen vereinbart wurde; auf "
+"keinen Fall werden Ihnen für diese Rückzahlung Entgelte berechnet. \n"
+"              Wir können die Rückzahlung verweigern, bis wir die Waren "
+"wieder zurückerhalten haben oder bis Sie den Nachweis erbracht haben, dass "
+"Sie die Waren zurückgesandt haben, \n"
+"              Was auch immer früher ist. Sie müssen die Ware zurücksenden "
+"oder übergeben uns unverzüglich und in jedem Fall spätestens innerhalb von "
+"vierzehn (14) Tagen \n"
+"              ab dem Tag, an dem Sie uns über den Widerruf unterrichten "
+"dieser Vertrag. \n"
+"              Zur Fristwahrung genügt die rechtzeitige Absendung der "
+"WareFrist von vierzehn (14) Tagen abgelaufen ist. \n"
+"              Sie tragen die unmittelbaren Kosten der Rücksendung der "
+"Waren.\n"
+"              Sie haften nur für einen etwaigen Wertverlust der Ware die "
+"sich aus der Handhabung ergeben, die nicht \n"
+" ist              notwendig, um Art, Eigenschaften und Funktionieren der "
+"Ware.\n"
+"              "
+
+#: templates/home.html:45 templates/home.html:182 templates/home.html:272
 msgid "Previous"
 msgstr "Vorherige"
 
-#: templates/home.html:50 templates/home.html:196 templates/home.html:287
+#: templates/home.html:52 templates/home.html:197 templates/home.html:287
 msgid "Next"
 msgstr "Nächste"
 
-#: templates/home.html:61
+#: templates/home.html:64
 msgid "Recently added"
 msgstr "Kürzlich hinzugefügt"
 
-#: templates/home.html:77
+#: templates/home.html:80
 msgid "All"
 msgstr "Alle"
 
-#: templates/home.html:119
+#: templates/home.html:122
 msgid "Sold out"
 msgstr "Ausverkauft"
 
-#: templates/home.html:207
+#: templates/home.html:209
 msgid "Our Bestsellers"
 msgstr "Unsere Bestseller"
 
@@ -1285,27 +1249,27 @@ msgstr "Sie haben keine Bestellungen"
 msgid "Payment"
 msgstr "Zahlung"
 
-#: templates/product.html:125
+#: templates/product.html:117
 msgid "Including delivery cost"
 msgstr "Inklusive Versandkosten"
 
-#: templates/product.html:126
+#: templates/product.html:118
 msgid "Description"
 msgstr "Beschreibung"
 
-#: templates/product.html:129 templates/product.html:140
+#: templates/product.html:121 templates/product.html:132
 msgid "On stock left"
 msgstr "Auf Lager übrig"
 
-#: templates/product.html:132
+#: templates/product.html:124
 msgid "Add to cart"
 msgstr "In den Warenkorb legen"
 
-#: templates/product.html:137
+#: templates/product.html:129
 msgid "Remove from cart"
 msgstr "Aus dem Warenkorb entfernen"
 
-#: templates/product.html:149
+#: templates/product.html:141
 msgid "Additional information"
 msgstr "Zusätzliche Information"
 
@@ -1419,3 +1383,39 @@ msgstr ""
 "anzumelden bei\n"
 "%(site_name)s. Als letzten Schritt füllen Sie bitte das folgende Formular "
 "aus:"
+
+#~ msgid "Your email"
+#~ msgstr "Ihre email"
+
+#~ msgid "Please provide valid email address"
+#~ msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse"
+
+#~ msgid "Use default shipping address"
+#~ msgstr "Standardlieferadresse Verwenden"
+
+#~ msgid "Use default billing address"
+#~ msgstr "Standard-Rechnungsadresse Verwenden"
+
+#~ msgid "Save as default shipping address"
+#~ msgstr "Als Standardlieferadresse speichern"
+
+#~ msgid "Save as default billing address"
+#~ msgstr "Als Standard-Rechnungsadresse speichern"
+
+#~ msgid "Name for shipping"
+#~ msgstr "Name für den Versand"
+
+#~ msgid "Country"
+#~ msgstr "Land"
+
+#~ msgid "Please select a valid country"
+#~ msgstr "Bitte wählen Sie ein gültiges Land aus"
+
+#~ msgid "Zip code required"
+#~ msgstr "Postleitzahl erforderlich"
+
+#~ msgid "Billing address is the same as my shipping address"
+#~ msgstr "Rechnungsadresse ist die gleiche wie Lieferadresse"
+
+#~ msgid "Name for billing"
+#~ msgstr "Name für die Abrechnung"

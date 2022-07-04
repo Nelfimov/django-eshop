@@ -7,10 +7,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, View
+from django.views.generic import ListView, View, edit
 
 from core.models import Item
 from .forms import CheckoutForm, RefundForm
@@ -157,16 +158,75 @@ class OrderView(View):
             return redirect("/")
 
 
-def is_valid_form(values):
-    valid = True
-    for field in values:
-        if field == "":
-            valid = False
-    return valid
+class CheckoutView(edit.FormView):
+    template_name = "checkout.html"
+    form_class = CheckoutForm
+    success_url = reverse_lazy("payment:payment")
 
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(self.form_class)
+        if not self.request.user.is_authenticated:
+            form.fields.pop("default")
+        return form
 
-class CheckoutView(View):
-    def get(self, *args, **kwargs):
+    def form_valid(self, form):
+        action = form.save(commit=False)
+        if self.request.user.is_authenticated:
+            action.user = self.request.user
+        action.save()
+        order = (
+            Order.objects.filter(
+                ordered=False,
+                user=(
+                    self.request.user if self.request.user.is_authenticated else None
+                ),
+                session_key=(
+                    None
+                    if self.request.user.is_authenticated
+                    else self.request.session.session_key
+                ),
+            )
+            .select_related("address")
+            .first()
+        )
+        order.address = action
+        order.save()
+        return super().form_valid(form)
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.request.user.is_authenticated:
+            default_address = Address.objects.filter(
+                user=self.request.user, default=True
+            ).first()
+            if default_address is not None:
+                initial.update(
+                    {
+                        "email": default_address.email,
+                        "shipping_name": default_address.shipping_name,
+                        "shipping_street_address": default_address.shipping_street_address,
+                        "shipping_apartment_address": default_address.shipping_apartment_address,
+                        "shipping_city": default_address.shipping_city,
+                        "shipping_country": default_address.shipping_country,
+                        "shipping_zip": default_address.shipping_zip,
+                        "billing_name": default_address.billing_name,
+                        "billing_street_address": default_address.billing_street_address,
+                        "billing_apartment_address": default_address.billing_apartment_address,
+                        "billing_city": default_address.billing_city,
+                        "billing_country": default_address.billing_country,
+                        "billing_zip": default_address.billing_zip,
+                    }
+                )
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "client_id": config("PAYPAL_CLIENT_ID"),
+                "currency": "EUR",
+            }
+        )
         try:
             order = (
                 Order.objects.filter(
@@ -182,185 +242,20 @@ class CheckoutView(View):
                         else self.request.session.session_key
                     ),
                 )
+                .select_related("address")
                 .prefetch_related("orderitem_set")
                 .first()
             )
-            form = CheckoutForm()
-            context = {
-                "form": form,
-                "order": order,
-                "order_items": order.orderitem_set.all(),
-                "client_id": config("PAYPAL_CLIENT_ID"),
-                "currency": "EUR",
-            }
-            if self.request.user.is_authenticated:
-                shipping_address_qs = Address.objects.filter(
-                    user=self.request.user, address_type="S", default=True
-                ).first()
-                billing_address_qs = Address.objects.filter(
-                    user=self.request.user, address_type="B", default=True
-                ).first()
-
-                context.update(
-                    {
-                        "default_shipping_address": shipping_address_qs,
-                        "default_billing_address": billing_address_qs,
-                    }
-                )
-
-            return render(self.request, "checkout.html", context)
-
-        except (ObjectDoesNotExist, IndexError):
+            order_items = order.orderitem_set.all()
+            if order is not None:
+                context["order"] = order
+                context["order_items"] = order_items
+                if order.address:
+                    context["order_has_address"] = True
+        except AttributeError:
             messages.info(self.request, _("You do not have anything in cart"))
             return redirect("core:home")
-
-    def post(self, *args, **kwargs):
-        form = CheckoutForm(self.request.POST or None)
-        try:
-            order = Order.objects.filter(
-                ordered=False,
-                user=(
-                    self.request.user if self.request.user.is_authenticated else None
-                ),
-                session_key=(
-                    None
-                    if self.request.user.is_authenticated
-                    else self.request.session.session_key
-                ),
-            ).first()
-            if form.is_valid():
-                if self.request.user.is_authenticated:
-                    if form.cleaned_data.get("use_default_shipping"):
-                        shipping_address_qs = Address.objects.filter(
-                            user=self.request.user,
-                            address_type="S",
-                            default=True,
-                        ).first
-                        if shipping_address_qs is not None:
-                            order.shipping_address = shipping_address_qs
-                            order.save()
-                        else:
-                            messages.warning(
-                                self.request, _("No default shipping address available")
-                            )
-                            return redirect("order:checkout")
-
-                    if form.cleaned_data.get("use_default_billing"):
-                        billing_address_qs = Address.objects.filter(
-                            user=self.request.user,
-                            address_type="B",
-                            default=True,
-                        ).first()
-                        if billing_address_qs is not None:
-                            order.billing_address = billing_address_qs
-                            order.save()
-                        else:
-                            messages.warning(
-                                self.request, _("No default billing address available")
-                            )
-                            return redirect("order:checkout")
-
-                    if (
-                        order.shipping_address
-                        and form.cleaned_data.get("use_default_shipping")
-                        and order.billing_address
-                        and form.cleaned_data.get("use_default_billing")
-                    ):
-                        return redirect("payment:payment")
-
-                shipping_email = form.cleaned_data.get("email")
-                shipping_name = form.cleaned_data.get("shipping_name")
-                shipping_address = form.cleaned_data.get("shipping_address")
-                shipping_address2 = form.cleaned_data.get("shipping_address2")
-                shipping_country = form.cleaned_data.get("shipping_country")
-                shipping_zip = form.cleaned_data.get("shipping_zip")
-                set_default_shipping = form.cleaned_data.get("set_default_shipping")
-                if is_valid_form(
-                    [
-                        shipping_email,
-                        shipping_name,
-                        shipping_address,
-                        shipping_country,
-                        shipping_zip,
-                    ]
-                ):
-                    shipping_address = Address.objects.create(
-                        user=(
-                            self.request.user
-                            if self.request.user.is_authenticated
-                            else None
-                        ),
-                        email=shipping_email,
-                        name_for_delivery=shipping_name,
-                        street_address=shipping_address,
-                        apartment_address=shipping_address2,
-                        country=shipping_country,
-                        zip=shipping_zip,
-                        address_type="S",
-                        default=bool(set_default_shipping),
-                    )
-                    order.shipping_address = shipping_address
-                    order.save()
-                else:
-                    messages.warning(
-                        self.request,
-                        _("Please fill in the required shipping address"),
-                    )
-
-                #  Billing address
-                same_billing_address = form.cleaned_data.get("same_billing_address")
-                if same_billing_address:
-                    billing_address = shipping_address
-                    billing_address.pk = None
-                    billing_address.address_type = "B"
-                    billing_address.save()
-                    order.billing_address = billing_address
-                    order.save()
-                else:
-                    billing_name = form.cleaned_data.get("billing_name")
-                    billing_address = form.cleaned_data.get("billing_address")
-                    billing_address2 = form.cleaned_data.get("billing_address2")
-                    billing_country = form.cleaned_data.get("billing_country")
-                    billing_zip = form.cleaned_data.get("billing_zip")
-                    set_default_billing = form.cleaned_data.get("set_default_billing")
-                    if is_valid_form(
-                        [billing_address, billing_name, billing_country, billing_zip]
-                    ):
-                        billing_address = Address.objects.create(
-                            user=(
-                                self.request.user
-                                if self.request.user.is_authenticated
-                                else None
-                            ),
-                            name_for_delivery=billing_name,
-                            street_address=billing_address,
-                            apartment_address=billing_address2,
-                            country=billing_country,
-                            zip=billing_zip,
-                            address_type="B",
-                            default=bool(set_default_billing),
-                        )
-                        order.billing_address = billing_address
-                        order.save()
-                    else:
-                        messages.warning(
-                            self.request,
-                            _("Please fill in the required billing address"),
-                        )
-                        return redirect("order:checkout")
-
-            if order.shipping_address and order.billing_address:
-                return redirect("payment:payment")
-
-            messages.warning(
-                self.request,
-                _("Please fill in the required fields"),
-            )
-            return redirect("order:checkout")
-
-        except (ObjectDoesNotExist, IndexError):
-            messages.warning(self.request, _("You do not have an" + " active order"))
-            return redirect("order:cart-summary")
+        return context
 
 
 class OrdersFinishedView(LoginRequiredMixin, ListView):

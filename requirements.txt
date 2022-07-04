@@ -37,6 +37,7 @@ pathspec==0.9.0
 paypal-checkout-serversdk==1.0.1
 paypalhttp==1.0.1
 Pillow==9.1.1
+pillow-heif==0.4.0
 pip-upgrader==1.4.15
 platformdirs==2.5.2
 psycopg==3.0.15

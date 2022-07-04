@@ -14,179 +14,173 @@
           <div class="card">
             <form method="post" class="card-body">
               {% csrf_token %}
-              <h3>{% translate "Your email" %}</h3>
-              <div class="md-form mb-5">
-                <input type="text"
-                       placeholder="your@email.com"
-                       id="email"
-                       name="email"
-                       class="form-control"
-                       required
-                       {% if request.user.is_authenticated %} value='{{ user.email }}'{% endif %}/>
-                <label for="email">Email</label>
-                <div class="valid-feedback">OK</div>
-                <div class="invalid-feedback">{% translate "Please provide valid email address" %}</div>
+              <div class="md-form">
+                {{ form.errors }}
+                {{ form.non_field_errors }}
               </div>
-              {% if default_shipping_address %}
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox"
-                         class="custom-control-input"
-                         name="use_default_shipping"
-                         id="use_default_shipping"/>
-                  <label class="custom-control-label" for="use_default_shipping">
-                    {% translate "Use default shipping address" %}: {{ default_shipping_address.street_address|truncatechars:20 }}
-                  </label>
-                </div>
-              {% endif %}
-              <div class="hideable_billing_form_advanced">
-                {% if default_billing_address %}
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox"
-                           class="custom-control-input"
-                           name="use_default_billing"
-                           id="use_default_billing"/>
-                    <label class="custom-control-label" for="use_default_billing">
-                      {% translate "Use default billing address" %}: {{ default_billing_address.street_address|truncatechars:20 }}
-                    </label>
+              <div class="md-form">
+                {{ form.email.errors }}
+                {{ form.email }}
+                {{ form.email.label_tag }}
+              </div>
+              <h3 class="my-5 h3 text-center">Shipping address</h3>
+              <div class="md-form">
+                {{ form.shipping_name.errors }}
+                {{ form.shipping_name }}
+                {{ form.shipping_name.label_tag }}
+              </div>
+              <div class="md-form">
+                {{ form.shipping_street_address.errors }}
+                {{ form.shipping_street_address }}
+                {{ form.shipping_street_address.label_tag }}
+              </div>
+              <div class="md-form">
+                {{ form.shipping_apartment_address.errors }}
+                {{ form.shipping_apartment_address }}
+                {{ form.shipping_apartment_address.label_tag }}
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="md-form">
+                    {{ form.shipping_zip.errors }}
+                    {{ form.shipping_zip }}
+                    {{ form.shipping_zip.label_tag }}
                   </div>
-                {% endif %}
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="md-form">
+                    {{ form.shipping_city.errors }}
+                    {{ form.shipping_city }}
+                    {{ form.shipping_city.label_tag }}
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="md-form">
+                    {{ form.shipping_country.errors }}
+                    {{ form.shipping_country }}
+                    {{ form.shipping_country.label }}
+                  </div>
+                </div>
+              </div>
+              <h3 class="my-5 h3 text-center">Billing address</h3>
+              <div class="md-form">
+                {{ form.billing_name.errors }}
+                {{ form.billing_name }}
+                {{ form.billing_name.label_tag }}
+              </div>
+              <div class="md-form">
+                {{ form.billing_street_address.errors }}
+                {{ form.billing_street_address }}
+                {{ form.billing_street_address.label_tag }}
+              </div>
+              <div class="md-form">
+                {{ form.billing_apartment_address.errors }}
+                {{ form.billing_apartment_address }}
+                {{ form.billing_apartment_address.label_tag }}
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="md-form">
+                    {{ form.billing_zip.errors }}
+                    {{ form.billing_zip }}
+                    {{ form.billing_zip.label_tag }}
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="md-form">
+                    {{ form.billing_city.errors }}
+                    {{ form.billing_city }}
+                    {{ form.billing_city.label_tag }}
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="md-form">
+                    {{ form.billing_country.errors }}
+                    {{ form.billing_country }}
+                    {{ form.billing_country.label }}
+                  </div>
+                </div>
               </div>
               {% if request.user.is_authenticated %}
-                <div class="custom-control custom-checkbox hideable_shipping_form">
-                  <hr />
-                  <input type="checkbox"
-                         class="custom-control-input"
-                         name="set_default_shipping"
-                         id="set_default_shipping"/>
-                  <label class="custom-control-label" for="set_default_shipping">
-                    {% translate "Save as default shipping address" %}
-                  </label>
-                </div>
-                <div class="custom-control custom-checkbox hideable_billing_form">
-                  <input type="checkbox"
-                         class="custom-control-input"
-                         name="set_default_billing"
-                         id="set_default_billing"/>
-                  <label class="custom-control-label" for="set_default_billing">{% translate "Save as default billing address" %}</label>
+                <div class="custom-control custom-checkbox mb-3">
+                  {{ form.default.errors }}
+                  {{ form.default }}
+                  {{ form.default.label_tag }}
                 </div>
               {% endif %}
-              <div class="hideable_shipping_form">
-                <hr />
-                <h3>{% translate "Shipping address" %}</h3>
-                <div class="md-form mb-5">
-                  <input type="text"
-                         placeholder="1234 Main St"
-                         id="shipping_address"
-                         name="shipping_address"
-                         class="form-control"/>
-                  <label for="shipping_address">Address</label>
-                </div>
-                <div class="md-form mb-5">
-                  <input type="text"
-                         placeholder="Apartment or suite"
-                         id="shipping_address2"
-                         name="shipping_address2"
-                         class="form-control"/>
-                  <label for="shipping_address2">Address 2 (optional)</label>
-                </div>
-                <div class="md-form mb-5">
-                  <input type="text"
-                         placeholder="Full name"
-                         id="shipping_name"
-                         name="shipping_name"
-                         class="form-control"/>
-                  <label for="shipping_name">{% translate "Name for shipping" %}</label>
-                </div>
-                <div class="row">
-                  <div class="col-lg-4 col-md-12 mb-4">
-                    <label for="country">{% translate "Country" %}</label>
-                    {{ form.shipping_country }}
-                    <div class="invalid-feedback">{% translate "Please select a valid country" %}</div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <label for="shipping_zip">Zip</label>
-                    <input type="text"
-                           placeholder="Zip code"
-                           id="shipping_zip"
-                           name="shipping_zip"
-                           class="form-control"/>
-                    <div class="invalid-feedback">{% translate "Zip code required" %}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <hr/>
-                <input type="checkbox"
-                       class="custom-control-input"
-                       name="same_billing_address"
-                       id="same_billing_address"/>
-                <label class="custom-control-label" for="same_billing_address">
-                  {% translate "Billing address is the same as my shipping address" %}
-                </label>
-              </div>
-              <div class="hideable_billing_form">
-                <hr />
-                <h3>{% translate "Billing address" %}</h3>
-                <div class="md-form mb-5">
-                  <input type="text"
-                         placeholder="1234 Main St"
-                         id="billing_address"
-                         name="billing_address"
-                         class="form-control"/>
-                  <label for="billing_address">Address</label>
-                </div>
-                <div class="md-form mb-5">
-                  <input type="text"
-                         placeholder="Apartment or suite"
-                         id="billing_address2"
-                         name="billing_address2"
-                         class="form-control"/>
-                  <label for="billing_address2">Address 2 (optional)</label>
-                </div>
-                <div class="md-form mb-5">
-                  <input type="text"
-                         placeholder="Full name"
-                         id="billing_name"
-                         name="billing_name"
-                         class="form-control"/>
-                  <label for="billing_name">{% translate "Name for billing" %}</label>
-                </div>
-                <div class="row">
-                  <div class="col-lg-4 col-md-12 mb-4">
-                    <label for="country">{% translate "Country" %}</label>
-                    {{ form.billing_country }}
-                    <div class="invalid-feedback">{% translate "Please select a valid country" %}</div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <label for="billing_zip">Zip</label>
-                    <input type="text"
-                           placeholder="Zip code"
-                           id="billing_zip"
-                           name="billing_zip"
-                           class="form-control"/>
-                    <div class="invalid-feedback">{% translate "Zip code required" %}</div>
-                  </div>
-                </div>
-              </div>
-              {% comment %} <hr> {% endcomment %}
-              {% comment %} <h3>Payment option</h3>
-              <div class="d-block my-3">
-                {% for value, name in form.fields.payment_option.choices %}
-                <div class="custom-control custom-radio">
-                  <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required>
-                  <label class="custom-control-label" for="{{ name }}">{{ name }}</label>
-                </div>
-                {% endfor %}
-              </div> {% endcomment %}
-              <hr class="mb-4" />
-              <button class="btn btn-primary btn-lg btn-block" type="submit">
+              <button class="btn btn-primary btn-lg btn-block" name="Submit" type="submit">
                 {% translate "Continue to checkout" %}
               </button>
             </form>
           </div>
         </div>
-        <div class="col-md-4 mb-1">
-          {% include "order_snippet.html" %}
+        <div class="col-md-4 mb-1">{% include "order_snippet.html" %}</div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade"
+         id="addressModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+      <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">{% trans "Order address" %}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              You have already indicated your address previously:
+              <table class="table table-hover table-sm">
+                <thead class="blue-text">
+                  <tr>
+                    <th scope="col">{% trans "Shipping address" %}</th>
+                    <th scope="col">{% trans "Billing address" %}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ order.address.shipping_name }}</td>
+                    <td>{{ order.address.billing_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ order.address.shipping_street_address }}</td>
+                    <td>{{ order.address.billing_street_address }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ order.address.shipping_apartment_address }}</td>
+                    <td>{{ order.address.billing_apartment_address }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ order.address.shipping_city }}</td>
+                    <td>{{ order.address.billing_city }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ order.address.shipping_country }}</td>
+                    <td>{{ order.address.billing_country }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ order.address.shipping_zip }}</td>
+                    <td>{{ order.address.billing_zip }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              Do you wish to use it for this order?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <a href="{% url "payment:payment" %}">
+              <button type="button" class="btn btn-primary">{% trans "Yes, continue to payment" %}</button>
+            </a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              {% trans "No, I will give another address" %}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -194,40 +188,14 @@
 {% endblock content %}
 {% block extra_body %}
   <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+  {{ order_has_address|json_script:"address" }}
   <script>
-    var hideable_shipping_form = $(".hideable_shipping_form");
-    var hideable_billing_form = $(".hideable_billing_form");
-    var hideable_billing_form_advanced = $(".hideable_billing_form_advanced");
-
-    var use_default_shipping = document.querySelector("input[name=use_default_shipping]");
-    var use_default_billing = document.querySelector("input[name=use_default_billing]");
-    var same_billing_address = document.querySelector("input[name=same_billing_address]");
-
-    same_billing_address.addEventListener("change", function() {
-      if (this.checked) {
-        hideable_billing_form.hide();
-        hideable_billing_form_advanced.hide();
-      } else {
-        hideable_billing_form.show();
-        hideable_billing_form_advanced.show();
-      }
-    })
-
-    use_default_shipping.addEventListener("change", function() {
-      if (this.checked) {
-        hideable_shipping_form.hide();
-      } else {
-        hideable_shipping_form.show();
-      }
-    })
-
-    use_default_billing.addEventListener("change", function() {
-      if (this.checked) {
-        hideable_billing_form.hide();
-      } else {
-        hideable_billing_form.show();
-      }
-    })
+  $( document ).ready(function() {
+    var address = JSON.parse(document.getElementById("address").textContent);
+    if (address) {
+      $("#addressModal").modal("show");
+    }
+  });
   </script>
   <script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency={{ currency }}" async></script>
 {% endblock extra_body %}

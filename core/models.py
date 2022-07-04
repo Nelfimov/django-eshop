@@ -10,6 +10,9 @@ from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from embed_video.fields import EmbedVideoField
 from PIL import Image
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
 
 LABEL_CHOICES = (
     ("n", "NEW"),

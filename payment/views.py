@@ -39,7 +39,10 @@ class PaypalView(View):
                     else self.request.session.session_key
                 ),
             )
-            order_items = OrderItem.objects.filter(order=order)
+            order_items = order.orderitem_set.all()
+            if not order.address:
+                messages.warning(self.request, _("You have no address for your order"))
+                return redirect("order:checkout")
             client_id = config("PAYPAL_CLIENT_ID")
             context = {
                 "client_id": client_id,
@@ -58,15 +61,21 @@ class PaypalView(View):
             client_secret=config("PAYPAL_CLIENT_SECRET"),
         )
         client = PayPalHttpClient(environment)
-        order = Order.objects.get(
-            ordered=False,
-            user=(self.request.user if self.request.user.is_authenticated else None),
-            session_key=(
-                None
-                if self.request.user.is_authenticated
-                else self.request.session.session_key
-            ),
-        )
+        try:
+            order = Order.objects.get(
+                ordered=False,
+                user=(
+                    self.request.user if self.request.user.is_authenticated else None
+                ),
+                session_key=(
+                    None
+                    if self.request.user.is_authenticated
+                    else self.request.session.session_key
+                ),
+            )
+        except ObjectDoesNotExist:
+            messages.warning(self.request, _("You do not have anything in your cart"))
+            return redirect("core:home")
         amount = round(float(order.get_total()), 2)
         currency = "EUR"
         shipping_value = round(float(0), 2)
@@ -143,22 +152,18 @@ class PaypalView(View):
                         "items": items_in_order,
                         "shipping": {
                             "method": "DHL",
-                            "name": {
-                                "full_name": str(
-                                    order.shipping_address.name_for_delivery
-                                )
-                            },
+                            "name": {"full_name": str(order.address.shipping_name)},
                             "address": {
                                 "address_line_1": str(
-                                    order.shipping_address.street_address
+                                    order.address.shipping_street_address
                                 ),
                                 "address_line_2": str(
-                                    order.shipping_address.apartment_address
+                                    order.address.shipping_apartment_address
                                 ),
-                                "admin_area_2": "asdf",
-                                "admin_area_1": "asdf",
-                                "postal_code": str(order.shipping_address.zip),
-                                "country_code": str(order.shipping_address.country),
+                                "admin_area_2": str(order.address.shipping_city),
+                                # "admin_area_1": ".",
+                                "postal_code": str(order.address.shipping_zip),
+                                "country_code": str(order.address.shipping_country),
                             },
                         },
                     }
@@ -229,7 +234,7 @@ def capture(request, order_id):
             )
             plain_message = strip_tags(html_message)
             from_email = settings.DEFAULT_FROM_EMAIL
-            to_email = order.shipping_address.email
+            to_email = order.address.email
             mail.send_mail(
                 subject,
                 plain_message,

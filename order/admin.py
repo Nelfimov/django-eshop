@@ -48,14 +48,13 @@ class OrderAdmin(admin.ModelAdmin):
         "session_key",
         "ordered_date",
         "ref_code",
-        "shipping_address",
-        "billing_address",
+        "address",
     ]
     list_display = [
         "ordered",
         "ref_code",
         "get_email",
-        "shipping_address",
+        "address",
         "being_delivered",
         "refund_requested",
         "refund_granted",
@@ -71,7 +70,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display_links = [
         "ref_code",
         "get_email",
-        "shipping_address",
+        "address",
     ]
     search_fields = ["user__email", "ref_code"]
     actions = [make_refund_accepted]
@@ -83,29 +82,24 @@ class OrderAdmin(admin.ModelAdmin):
 
     @admin.display(description="Email")
     def get_email(self, obj):
-        if obj.shipping_address:
-            return obj.shipping_address.email
-        return "invalid"
+        if obj.address:
+            return obj.address.email
+        return "-"
 
 
 class AddressAdmin(admin.ModelAdmin):
-    readonly_fields = [
-        "user",
-        "address_type",
-        "default",
-    ]
     list_display = [
         "user",
         "email",
-        "street_address",
-        "apartment_address",
-        "country",
-        "zip",
-        "address_type",
+        "shipping_name",
+        "shipping_street_address",
+        "shipping_apartment_address",
+        "shipping_country",
         "default",
     ]
-    list_filter = ["default", "address_type", "country"]
-    search_fields = ["user", "street_address", "apartment_address", "zip"]
+    list_display_links = ["email", "user", "shipping_name"]
+    list_filter = ["user", "default", "shipping_country"]
+    search_fields = ["user", "email", "shipping_country"]
 
 
 class RefundAdmin(admin.ModelAdmin):

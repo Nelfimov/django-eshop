@@ -10,11 +10,6 @@ from django.utils.translation import gettext as _
 from django_countries import Countries
 from django_countries.fields import CountryField
 
-ADDRESS_CHOICES = (
-    ("B", _("Billing")),
-    ("S", _("Shipping")),
-)
-
 
 class TrackingCompany(models.Model):
     name = models.CharField(max_length=120)
@@ -72,21 +67,13 @@ class Order(models.Model):
         default="",
         verbose_name=_("Reference code"),
     )
-    shipping_address = models.ForeignKey(
+    address = models.ForeignKey(
         "Address",
-        related_name="shipping_address",
+        related_name="address",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        verbose_name=_("Shipping address"),
-    )
-    billing_address = models.ForeignKey(
-        "Address",
-        related_name="billing_address",
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name=_("Billing address"),
+        verbose_name=_("Address"),
     )
     being_delivered = models.BooleanField(
         default=False, verbose_name=_("Being delivered")
@@ -162,25 +149,45 @@ class EUCountries(Countries):
 
 class Address(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        default=None,
     )
     email = models.EmailField()
-    name_for_delivery = models.CharField(max_length=120, verbose_name=_("Full name"))
-    street_address = models.CharField(max_length=100, verbose_name=_("Street address"))
-    apartment_address = models.CharField(
-        max_length=100, verbose_name=_("Apartment address")
+    shipping_name = models.CharField(
+        max_length=120, verbose_name=_("Shipping full name")
     )
-    country = CountryField(
-        multiple=False, countries=EUCountries, verbose_name=_("Country")
+    shipping_street_address = models.CharField(
+        max_length=100, verbose_name=_("Shipping street address")
     )
-    zip = models.CharField(max_length=100)
-    address_type = models.CharField(
-        max_length=1, choices=ADDRESS_CHOICES, verbose_name=_("Address Type")
+    shipping_apartment_address = models.CharField(
+        max_length=100, verbose_name=_("Shipping apartment address")
     )
-    default = models.BooleanField(default=False, verbose_name=_("Default"))
+    shipping_city = models.CharField(max_length=100, verbose_name=_("Shipping city"))
+    shipping_country = CountryField(
+        multiple=False, countries=EUCountries, verbose_name=_("Shipping country")
+    )
+    shipping_zip = models.CharField(max_length=10)
+    billing_name = models.CharField(max_length=120, verbose_name=_("Billing full name"))
+    billing_street_address = models.CharField(
+        max_length=100, verbose_name=_("Billing street address")
+    )
+    billing_apartment_address = models.CharField(
+        max_length=100, verbose_name=_("Billing apartment address")
+    )
+    billing_city = models.CharField(max_length=100, verbose_name=_("Billing city"))
+    billing_country = CountryField(
+        multiple=False, countries=EUCountries, verbose_name=_("Billing country")
+    )
+    billing_zip = models.CharField(max_length=10)
+    default = models.BooleanField(
+        default=False, verbose_name=_("Save for future usage"), blank=True
+    )
 
     def __str__(self):
-        return str(self.country)
+        return str(self.shipping_country)
 
     class Meta:
         verbose_name_plural = _("Addresses")
