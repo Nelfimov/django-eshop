@@ -7,7 +7,7 @@ from django.core.files import File
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
-from PIL import Image
+from PIL import Image, ImageOps
 from pillow_heif import register_heif_opener
 from embed_video.fields import EmbedVideoField
 
@@ -22,14 +22,21 @@ LABEL_CHOICES = (
 
 # Image path function
 def item_image_path(instance, filename):
-    name, ext = filename.split(".")
-    dt = date.today()
-    return f"items/{dt.year}/{dt.month}/{instance.slug}/{name}.webp"
+    name, ext = filename.split(".")  # pylint: disable=unused-variable
+    current_date = date.today()
+    return f"items/{current_date.year}/{current_date.month}/{instance.slug}/{name}.webp"
+
+
+# Carousel item path
+def carousel_image_path(instance, filename):
+    name, ext = filename.split(".")  # pylint: disable=unused-variable
+    return f"carousel/images/{instance.index}/{name}.webp"
 
 
 # Image compression method
 def compress(image):
     im = Image.open(image)
+    im = ImageOps.exif_transpose(image)  #  Autorotate based on rotation Metadata
     im_io = BytesIO()
     im.save(im_io, format="webp", quality=60)
     new_image = File(im_io, name=image.name)
@@ -58,7 +65,6 @@ class Item(models.Model):
         decimal_places=2,
         max_digits=10,
         blank=True,
-        null=True,
         verbose_name=_("Delivery price"),
         default=0,
     )
@@ -66,7 +72,6 @@ class Item(models.Model):
         decimal_places=2,
         max_digits=10,
         blank=True,
-        null=True,
         verbose_name=_("Discount"),
         default=0,
     )
@@ -150,11 +155,15 @@ class ItemImage(models.Model):
 
 
 class Carousel(models.Model):
-    img = models.ImageField(upload_to="carousel/images/")
+    img = models.ImageField(upload_to=carousel_image_path)
     title = models.CharField(max_length=120, verbose_name=_("Title"))
     body = models.TextField(verbose_name=_("Body text"))
     alt = models.TextField(verbose_name=_("Alt text"))
     index = models.IntegerField(unique=True)
+
+    class Meta:
+        verbose_name = _("Carousel")
+        verbose_name_plural = _("Carousels")
 
     def __str__(self):
         return self.title
