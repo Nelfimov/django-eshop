@@ -41,7 +41,7 @@
                 </td>
                 <td>
                   <a class="btn btn-danger"
-                     href="{% url 'order:request-refund' %}?ref_code={{ order.ref_code }}">Refund</a>
+                     href="{% url 'refund:request-refund' %}?ref_code={{ order.ref_code }}">Refund</a>
                 </td>
               </tr>
             {% empty %}

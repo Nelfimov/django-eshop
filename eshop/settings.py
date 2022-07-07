@@ -28,13 +28,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "order",
+    "common",
     "core",
+    "checkout",
+    "order",
     "payment",
+    "refund",
     "embed_video",
-    "crispy_forms",
     "django_countries",
     "debug_toolbar",
+    "rest_framework",
+    "crispy_forms",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -76,6 +80,11 @@ CACHES = {
     }
 }
 
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "DEFAULT_PARSER_CLASSES": ["rest_framework.parsers.JSONParser"],
+}
 
 ROOT_URLCONF = "eshop.urls"
 

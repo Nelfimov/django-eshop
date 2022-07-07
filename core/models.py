@@ -1,46 +1,18 @@
-from io import BytesIO
-from datetime import date
 from functools import cached_property
 
 from autoslug import AutoSlugField
-from django.core.files import File
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
-from PIL import Image, ImageOps
-from pillow_heif import register_heif_opener
 from embed_video.fields import EmbedVideoField
 
-#  HEIF/HEIC enable compression in Pillow
-register_heif_opener()
+from common.models import compress, item_image_path, carousel_image_path
+
 
 LABEL_CHOICES = (
     ("n", "NEW"),
     ("h", "HOT"),
 )
-
-
-# Image path function
-def item_image_path(instance, filename):
-    name, ext = filename.split(".")  # pylint: disable=unused-variable
-    current_date = date.today()
-    return f"items/{current_date.year}/{current_date.month}/{instance.slug}/{name}.webp"
-
-
-# Carousel item path
-def carousel_image_path(instance, filename):
-    name, ext = filename.split(".")  # pylint: disable=unused-variable
-    return f"carousel/images/{instance.index}/{name}.webp"
-
-
-# Image compression method
-def compress(image):
-    im = Image.open(image)
-    im = ImageOps.exif_transpose(image)  #  Autorotate based on rotation Metadata
-    im_io = BytesIO()
-    im.save(im_io, format="webp", quality=60)
-    new_image = File(im_io, name=image.name)
-    return new_image
 
 
 class CategoryItem(models.Model):

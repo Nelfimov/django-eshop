@@ -1,14 +1,8 @@
 from django.urls import path
 
-from .views import (
-    CheckoutView,
-    OrdersFinishedView,
-    OrderView,
-    RequestRefundView,
-    add_to_cart,
-    remove_from_cart,
-    remove_single_item_from_cart,
-)
+from .cart import add_to_cart, remove_from_cart, remove_single_item_from_cart
+from .views import OrdersFinishedView, OrderView
+
 
 app_name = "order"
 
@@ -22,7 +16,5 @@ urlpatterns = [
         remove_single_item_from_cart,
         name="remove-single-item-from-cart",
     ),
-    path("checkout/", CheckoutView.as_view(), name="checkout"),
     path("orders/", OrdersFinishedView.as_view(), name="orders-finished"),
-    path("request-refund/", RequestRefundView.as_view(), name="request-refund"),
 ]

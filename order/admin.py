@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.utils.translation import gettext as _
 from payment.models import Payment
 
-from .models import Address, Order, OrderItem, Refund, TrackingCompany
+from .models import Order, OrderItem, TrackingCompany
+from refund.admin import RefundAdminInline
 
 
 def make_refund_accepted(modeladmin, request, queryset):
@@ -26,17 +27,6 @@ class PaymentAdminInline(admin.TabularInline):
     readonly_fields = ["paypal_id", "amount", "timestamp"]
     can_delete = False
     exclude = ["user"]
-
-
-class RefundAdminInline(admin.TabularInline):
-    model = Refund
-    max_num = 0
-    readonly_fields = [
-        "order",
-        "reason",
-        "image",
-    ]
-    can_delete = False
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -87,35 +77,5 @@ class OrderAdmin(admin.ModelAdmin):
         return "-"
 
 
-class AddressAdmin(admin.ModelAdmin):
-    list_display = [
-        "user",
-        "email",
-        "shipping_name",
-        "shipping_street_address",
-        "shipping_apartment_address",
-        "shipping_country",
-        "default",
-    ]
-    list_display_links = ["email", "user", "shipping_name"]
-    list_filter = ["user", "default", "shipping_country"]
-    search_fields = ["user", "email", "shipping_country"]
-
-
-class RefundAdmin(admin.ModelAdmin):
-    readonly_fields = [
-        "order",
-        "reason",
-    ]
-    list_display = [
-        "order",
-        "accepted",
-    ]
-    list_filter = ["accepted"]
-    search_fields = ["order"]
-
-
 admin.site.register(Order, OrderAdmin)
-admin.site.register(Address, AddressAdmin)
 admin.site.register(TrackingCompany)
-admin.site.register(Refund, RefundAdmin)

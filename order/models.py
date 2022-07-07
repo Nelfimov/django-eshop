@@ -7,8 +7,6 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.utils.translation import gettext as _
-from django_countries import Countries
-from django_countries.fields import CountryField
 
 
 class TrackingCompany(models.Model):
@@ -68,7 +66,7 @@ class Order(models.Model):
         verbose_name=_("Reference code"),
     )
     address = models.ForeignKey(
-        "Address",
+        "checkout.Address",
         related_name="address",
         on_delete=models.SET_NULL,
         blank=True,
@@ -109,101 +107,6 @@ class Order(models.Model):
         for cart_item in OrderItem.objects.filter(order=self.id):
             total += cart_item.get_total_item_price
         return total
-
-
-class EUCountries(Countries):
-    only = [
-        "BE",
-        "BG",
-        "CZ",
-        "DK",
-        "DE",
-        "EE",
-        "IE",
-        "GR",
-        "ES",
-        "FR",
-        "HR",
-        "IT",
-        "CY",
-        "LV",
-        "LT",
-        "LU",
-        "HU",
-        "MT",
-        "NL",
-        "AT",
-        "PL",
-        "PT",
-        "RO",
-        "SI",
-        "SK",
-        "FI",
-        "SE",
-        "NO",
-        "LI",
-        "CH",
-        "GB",
-    ]
-
-
-class Address(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        default=None,
-    )
-    email = models.EmailField()
-    shipping_name = models.CharField(
-        max_length=120, verbose_name=_("Shipping full name")
-    )
-    shipping_street_address = models.CharField(
-        max_length=100, verbose_name=_("Shipping street address")
-    )
-    shipping_apartment_address = models.CharField(
-        max_length=100, verbose_name=_("Shipping apartment address")
-    )
-    shipping_city = models.CharField(max_length=100, verbose_name=_("Shipping city"))
-    shipping_country = CountryField(
-        multiple=False, countries=EUCountries, verbose_name=_("Shipping country")
-    )
-    shipping_zip = models.CharField(max_length=10)
-    billing_name = models.CharField(max_length=120, verbose_name=_("Billing full name"))
-    billing_street_address = models.CharField(
-        max_length=100, verbose_name=_("Billing street address")
-    )
-    billing_apartment_address = models.CharField(
-        max_length=100, verbose_name=_("Billing apartment address")
-    )
-    billing_city = models.CharField(max_length=100, verbose_name=_("Billing city"))
-    billing_country = CountryField(
-        multiple=False, countries=EUCountries, verbose_name=_("Billing country")
-    )
-    billing_zip = models.CharField(max_length=10)
-    default = models.BooleanField(
-        default=False, verbose_name=_("Save for future usage"), blank=True
-    )
-
-    def __str__(self):
-        return str(self.shipping_country)
-
-    class Meta:
-        verbose_name_plural = _("Addresses")
-
-
-class Refund(models.Model):
-    order = models.ForeignKey(
-        "Order", on_delete=models.CASCADE, verbose_name=_("Order")
-    )
-    reason = models.TextField(verbose_name=_("Reason"))
-    accepted = models.BooleanField(default=False, verbose_name=_("Accepted"))
-    image = models.ImageField(upload_to="refund/", verbose_name="Image", null=True)
-    email = models.EmailField(null=True)
-
-    def __str__(self):
-        return f"{self.pk}"
 
 
 #  Send email when status changes

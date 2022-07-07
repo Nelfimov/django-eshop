@@ -21,5 +21,6 @@ urlpatterns += i18n_patterns(
     path("accounts/", include("allauth.urls")),
     path("", include("core.urls", namespace="core")),
     path("", include("order.urls", namespace="order")),
+    path("", include("checkout.urls", namespace="checkout")),
     path("payment/", include("payment.urls", namespace="payment")),
 )
