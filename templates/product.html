@@ -30,11 +30,11 @@
                   {% if object.discount_price|safe %}
                     <span class="mr-1">
                       <h4 class="font-weight-bold text-danger">
-                        <del>{{ object.price|add:object.delivery_price }}€</del>
+                        <del>{{ object.get_price_no_discount }}€</del>
                       </h4>
                     </span>
                   {% endif %}
-                  <span>{{ object.get_final_price|safe }}€</span>
+                  <span class="font-weight-bold text-blue">{{ object.get_final_price|safe }}€</span>
                 </strong>
               </h4>
             </p>

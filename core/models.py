@@ -96,6 +96,10 @@ class Item(models.Model):
         return reverse("order:remove-from-cart", kwargs={"slug": self.slug})
 
     @cached_property
+    def get_price_no_discount(self):
+        return self.price + self.delivery_price
+
+    @cached_property
     def get_final_price(self):
         return self.price + self.delivery_price - self.discount
 
