@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 20:28+0300\n"
+"POT-Creation-Date: 2022-07-07 17:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,265 +18,130 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: order/admin.py:10
+#: order/admin.py:11
 msgid "Update orders to refund granted"
 msgstr "Die Bestellungen aktualisieren fur Refund erhalten"
 
-#: order/models.py:22
-msgid "Tracking company"
-msgstr "Tracking company"
-
-#: order/models.py:23
-msgid "Tracking companies"
-msgstr "Tracking companies"
-
-#: order/models.py:28
-msgid "Item"
-msgstr "Artikel"
-
-#: order/models.py:30
-msgid "Quantity"
-msgstr "Menge"
-
-#: order/models.py:32 order/models.py:102 order/models.py:198
-msgid "Order"
-msgstr "Bestellung"
-
-#: order/models.py:36
-msgid "Cart Item"
-msgstr "Warenkorb Artikel"
-
-#: order/models.py:37
-msgid "Cart Items"
-msgstr "Warenkorb Artikeln"
-
-#: order/models.py:57
-msgid "Creation date"
-msgstr "Erstellungsdatum"
-
-#: order/models.py:59
-msgid "Ordered"
-msgstr "Bestellt"
-
-#: order/models.py:61
-msgid "Ordered date"
-msgstr "Bestelldatum"
-
-#: order/models.py:68
-msgid "Reference code"
-msgstr "Referenzcode"
-
-#: order/models.py:76
-msgid "Address"
-msgstr "Adresse"
-
-#: order/models.py:79
-msgid "Being delivered"
-msgstr "Wird geliefert"
-
-#: order/models.py:86
-msgid "Tracking Company"
-msgstr "Tracking company"
-
-#: order/models.py:89
-msgid "Tracking number"
-msgstr "Sendungscode"
-
-#: order/models.py:92
-msgid "Refund requested"
-msgstr "Refund angefordert"
-
-#: order/models.py:95
-msgid "Refund granted"
-msgstr "Refundgewährt"
-
-#: order/models.py:103
-msgid "Orders"
-msgstr "Bestellungen"
-
-#: order/models.py:160
-msgid "Shipping full name"
-msgstr "Versand voller Name"
-
-#: order/models.py:163
-msgid "Shipping street address"
-msgstr "Versand Strasse, Hausnummer"
-
-#: order/models.py:166
-msgid "Shipping apartment address"
-msgstr "Versand Wohnung, Firma, Empfanger"
-
-#: order/models.py:168
-msgid "Shipping city"
-msgstr "Versand Stadt"
-
-#: order/models.py:170
-msgid "Shipping country"
-msgstr "Versand Land"
-
-#: order/models.py:173
-msgid "Billing full name"
-msgstr "Rechnungs voller Name"
-
-#: order/models.py:175
-msgid "Billing street address"
-msgstr "Rechnungs Strasse, Hausnummer"
-
-#: order/models.py:178
-msgid "Billing apartment address"
-msgstr "Rechnungs Wohnung, Firma, Empfanger"
-
-#: order/models.py:180
-msgid "Billing city"
-msgstr "Rechnungs Stadt"
-
-#: order/models.py:182
-msgid "Billing country"
-msgstr "Rechnungs Land"
-
-#: order/models.py:186
-msgid "Save for future usage"
-msgstr "Fur zukunft speichern"
-
-#: order/models.py:193
-msgid "Addresses"
-msgstr "Adressen"
-
-#: order/models.py:200
-msgid "Reason"
-msgstr "Grund"
-
-#: order/models.py:201
-msgid "Accepted"
-msgstr "Akzeptiert"
-
-#: order/models.py:216 order/models.py:240
-msgid "Your order #"
-msgstr "Ihre Bestellung #"
-
-#: order/models.py:217
-msgid " has been sent out"
-msgstr " ausgeliefert wurde"
-
-#: order/models.py:241
-msgid " request for refund has been accepted"
-msgstr " Refund Anfrage wurde angenommen"
-
-#: order/views.py:24
+#: order/cart.py:14
 msgid "Unfortunately we do not have item on stock"
 msgstr "Artikel haben wir leider nicht auf Lager"
 
-#: order/views.py:44
+#: order/cart.py:34
 msgid "Unfortunately we do not have this quantity on stock"
 msgstr "Leider haben wir diese Menge nicht auf Lager"
 
-#: order/views.py:49 order/views.py:51 order/views.py:62
+#: order/cart.py:39 order/cart.py:41 order/cart.py:52
 msgid "Quantity was updated"
 msgstr "Menge wurde aktualisiert"
 
-#: order/views.py:86
+#: order/cart.py:76
 msgid "This item was removed from your cart"
 msgstr "Dieser Artikel wurde aus Ihrem Einkaufswagen entfernt"
 
-#: order/views.py:89 order/views.py:122
+#: order/cart.py:79 order/cart.py:112
 msgid "This item was not in your cart"
 msgstr "Dieser Artikel war nicht in Ihrem Warenkorb"
 
-#: order/views.py:92 order/views.py:157
+#: order/cart.py:82 order/views.py:39
 msgid "Your cart is empty"
 msgstr "Ihr Warenkorb ist leer"
 
-#: order/views.py:119
+#: order/cart.py:109
 msgid "This item quantity was updated"
 msgstr "Diese Artikelmenge wurde aktualisiert"
 
-#: order/views.py:125
+#: order/cart.py:115
 msgid "You do not have an active cart"
 msgstr "Sie haben keinen aktiven Warenkorb"
 
-#: order/views.py:256
-msgid "You do not have anything in cart"
-msgstr "Sie haben nichts im Warenkorb"
+#: order/models.py:20
+msgid "Tracking company"
+msgstr "Tracking company"
 
-#: order/views.py:264
+#: order/models.py:21
+msgid "Tracking companies"
+msgstr "Tracking companies"
+
+#: order/models.py:26
+msgid "Item"
+msgstr "Artikel"
+
+#: order/models.py:28
+msgid "Quantity"
+msgstr "Menge"
+
+#: order/models.py:30 order/models.py:100
+msgid "Order"
+msgstr "Bestellung"
+
+#: order/models.py:34
+msgid "Cart Item"
+msgstr "Warenkorb Artikel"
+
+#: order/models.py:35
+msgid "Cart Items"
+msgstr "Warenkorb Artikeln"
+
+#: order/models.py:55
+msgid "Creation date"
+msgstr "Erstellungsdatum"
+
+#: order/models.py:57
+msgid "Ordered"
+msgstr "Bestellt"
+
+#: order/models.py:59
+msgid "Ordered date"
+msgstr "Bestelldatum"
+
+#: order/models.py:66
+msgid "Reference code"
+msgstr "Referenzcode"
+
+#: order/models.py:74
+msgid "Address"
+msgstr "Adresse"
+
+#: order/models.py:77
+msgid "Being delivered"
+msgstr "Wird geliefert"
+
+#: order/models.py:84
+msgid "Tracking Company"
+msgstr "Tracking company"
+
+#: order/models.py:87
+msgid "Tracking number"
+msgstr "Sendungscode"
+
+#: order/models.py:90
+msgid "Refund requested"
+msgstr "Refund angefordert"
+
+#: order/models.py:93
+msgid "Refund granted"
+msgstr "Refundgewährt"
+
+#: order/models.py:101
+msgid "Orders"
+msgstr "Bestellungen"
+
+#: order/models.py:119 order/models.py:143
+msgid "Your order #"
+msgstr "Ihre Bestellung #"
+
+#: order/models.py:120
+msgid " has been sent out"
+msgstr " ausgeliefert wurde"
+
+#: order/models.py:144
+msgid " request for refund has been accepted"
+msgstr " Refund Anfrage wurde angenommen"
+
+#: order/views.py:46
 msgid "You have to authorize for this view"
 msgstr "Sie mussen sich authorisieren"
 
-#: order/views.py:276
+#: order/views.py:58
 msgid "You do not have any orders"
 msgstr "Sie haben keine Bestellungen"
-
-#: order/views.py:287 order/views.py:310
-msgid "You are not the user who ordered this order"
-msgstr "Sie sind nicht der Benutzer, der diese Bestellung bestellt hat"
-
-#: order/views.py:299
-msgid "Order does not exist"
-msgstr "Bestellung existiert nicht"
-
-#: order/views.py:316
-msgid "You have already received refund for this order"
-msgstr "Sie haben bereits einen Refund für diese Bestellung erhalten"
-
-#: order/views.py:324
-msgid "You have already submitted a ticket. Please wait until we contact you"
-msgstr ""
-"Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie "
-"kontaktieren"
-
-#: order/views.py:339
-msgid "Refund request for your order #"
-msgstr "Refund Anfrage für Ihre Bestellung #"
-
-#: order/views.py:341
-msgid " has been received and will be processed shortly"
-msgstr " ist eingegangen und wird in Kürze bearbeitet"
-
-#: order/views.py:359
-msgid "New refund/Neue refund "
-msgstr ""
-
-#: order/views.py:361
-msgid " is requested/ist gesendet"
-msgstr ""
-
-#: order/views.py:368
-msgid "Your request was received"
-msgstr "Ihre Anfrage wurde empfangen"
-
-#: order/views.py:372
-msgid "This order does not exist"
-msgstr "Diese Bestellung existiert nicht"
-
-#~ msgid "Full name"
-#~ msgstr "Vollständiger Name"
-
-#~ msgid "Street address"
-#~ msgstr "Strasse"
-
-#~ msgid "Country"
-#~ msgstr "Land"
-
-#~ msgid "Address Type"
-#~ msgstr "Adresstyp"
-
-#~ msgid "Default"
-#~ msgstr "Standard"
-
-#~ msgid "No default shipping address available"
-#~ msgstr "Keine Standardlieferadresse verfügbar"
-
-#~ msgid "No default billing address available"
-#~ msgstr "Keine Standard-Rechnungsadresse verfügbar"
-
-#~ msgid "Please fill in the required shipping address"
-#~ msgstr "Bitte geben Sie die gewünschte Lieferadresse ein"
-
-#~ msgid "Please fill in the required billing address"
-#~ msgstr "Bitte geben Sie die erforderliche Rechnungsadresse ein"
-
-#~ msgid "Please fill in the required fields"
-#~ msgstr "Bitte geben Sie die erforderliche Rechnungsadresse ein"
-
-#~ msgid "You do not have an active order"
-#~ msgstr "Sie haben keine aktive Bestellung"

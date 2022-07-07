@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-07 17:25+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: checkout/models.py:54
+msgid "Shipping full name"
+msgstr "Versand voller Name"
+
+#: checkout/models.py:57
+msgid "Shipping street address"
+msgstr "Versand Strasse, Hausnummer"
+
+#: checkout/models.py:60
+msgid "Shipping apartment address"
+msgstr "Versand Wohnung/Firma"
+
+#: checkout/models.py:62
+msgid "Shipping city"
+msgstr "Versand Stadt"
+
+#: checkout/models.py:64
+msgid "Shipping country"
+msgstr "Versand Land"
+
+#: checkout/models.py:67
+msgid "Billing full name"
+msgstr "Abrechnung voller Name"
+
+#: checkout/models.py:69
+msgid "Billing street address"
+msgstr "Abrechnung Strasse, Hausnummer"
+
+#: checkout/models.py:72
+msgid "Billing apartment address"
+msgstr "Abrechnung Wohnung/Firma"
+
+#: checkout/models.py:74
+msgid "Billing city"
+msgstr "Abrechnung Stadt"
+
+#: checkout/models.py:76
+msgid "Billing country"
+msgstr "Abrechnung Land"
+
+#: checkout/models.py:80
+msgid "Save for future usage"
+msgstr "Speichern"
+
+#: checkout/models.py:87
+msgid "Addresses"
+msgstr "Addressen"
+
+#: checkout/views.py:108
+msgid "You do not have anything in cart"
+msgstr "Ihr Warenkorb ist leer"

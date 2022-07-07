@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-07 17:25+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: refund/models.py:9
+msgid "Order"
+msgstr "Bestellung"
+
+#: refund/models.py:11
+msgid "Reason"
+msgstr "Grund"
+
+#: refund/models.py:12
+msgid "Accepted"
+msgstr "Akzeptiert"
+
+#: refund/views.py:24 refund/views.py:47
+msgid "You are not the user who ordered this order"
+msgstr "Sie sind nicht der Benutzer, der diese Bestellung bestellt hat"
+
+#: refund/views.py:36
+msgid "Order does not exist"
+msgstr "Bestellung existiert nicht"
+
+#: refund/views.py:53
+msgid "You have already received refund for this order"
+msgstr "Sie haben bereits einen Refund für diese Bestellung erhalten"
+
+#: refund/views.py:61
+msgid "You have already submitted a ticket. Please wait until we contact you"
+msgstr "Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie kontaktieren"
+
+#: refund/views.py:76
+msgid "Refund request for your order #"
+msgstr "Refund für Ihre Bestellung #"
+
+#: refund/views.py:78
+msgid " has been received and will be processed shortly"
+msgstr " ist eingegangen und wird in Kürze bearbeitet"
+
+#: refund/views.py:96
+msgid "New refund/Neue refund "
+msgstr ""
+
+#: refund/views.py:98
+msgid " is requested/ist gesendet"
+msgstr ""
+
+#: refund/views.py:105
+msgid "Your request was received"
+msgstr "Ihre Anfrage wurde empfangen"
+
+#: refund/views.py:109
+msgid "This order does not exist"
+msgstr "Diese Bestellung existiert nicht"

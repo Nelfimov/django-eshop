@@ -148,11 +148,14 @@ LANGUAGES = [
 USE_I18N = True
 USE_L10N = True
 LOCALE_PATHS = [
-    BASE_DIR / "locale",
+    BASE_DIR / "checkout" / "locale",
+    BASE_DIR / "common" / "locale",
     BASE_DIR / "core" / "locale",
-    BASE_DIR / "payment" / "locale",
     BASE_DIR / "eshop" / "locale",
+    BASE_DIR / "locale",
     BASE_DIR / "order" / "locale",
+    BASE_DIR / "payment" / "locale",
+    BASE_DIR / "refund" / "locale",
 ]
 
 TIME_ZONE = "Europe/Moscow"

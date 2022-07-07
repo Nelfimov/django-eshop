@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 20:28+0300\n"
+"POT-Creation-Date: 2022-07-07 17:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,82 +18,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/models.py:47
+#: core/models.py:26
 msgid "Item category"
 msgstr "Kategorie"
 
-#: core/models.py:48
+#: core/models.py:27
 msgid "Item categories"
 msgstr "Kategorien"
 
-#: core/models.py:52 core/models.py:154
+#: core/models.py:31 core/models.py:131
 msgid "Title"
 msgstr "Name"
 
-#: core/models.py:55
+#: core/models.py:34
 msgid "Price"
 msgstr "Preis"
 
-#: core/models.py:62
+#: core/models.py:40
 msgid "Delivery price"
 msgstr "Lieferpreis"
 
-#: core/models.py:70
+#: core/models.py:47
 msgid "Discount"
 msgstr "Rabatt"
 
-#: core/models.py:77
+#: core/models.py:54
 msgid "Category"
 msgstr "Kategorie"
 
-#: core/models.py:80
+#: core/models.py:57
 msgid "Stock"
 msgstr "Lager"
 
-#: core/models.py:82
+#: core/models.py:59
 msgid "Title image"
 msgstr "Titelbild"
 
-#: core/models.py:85
+#: core/models.py:62
 msgid "Description"
 msgstr "Beschreibung"
 
-#: core/models.py:87
+#: core/models.py:64
 msgid "Additional information"
 msgstr "Zusätzliche Information"
 
-#: core/models.py:90
+#: core/models.py:67
 msgid "Creation date"
 msgstr "Erstellungsdatum"
 
-#: core/models.py:93
+#: core/models.py:70
 msgid "Ordered counter"
 msgstr "Bestellt Zähler"
 
-#: core/models.py:97
+#: core/models.py:74
 msgid "Item"
 msgstr "Artikel"
 
-#: core/models.py:98
+#: core/models.py:75
 msgid "Items"
 msgstr "Artikeln"
 
-#: core/models.py:132
+#: core/models.py:109
 msgid "Image"
 msgstr "Titelbild"
 
-#: core/models.py:139
+#: core/models.py:116
 msgid "Item image"
 msgstr "Titelbild"
 
-#: core/models.py:140
+#: core/models.py:117
 msgid "Item images"
 msgstr "Titelbild"
 
-#: core/models.py:155
+#: core/models.py:132
 msgid "Body text"
 msgstr "Hauptteil"
 
-#: core/models.py:156
+#: core/models.py:133
 msgid "Alt text"
 msgstr "Alt text"
+
+#: core/models.py:137
+msgid "Carousel"
+msgstr "Karussell"
+
+#: core/models.py:138
+msgid "Carousels"
+msgstr "Karussellen"

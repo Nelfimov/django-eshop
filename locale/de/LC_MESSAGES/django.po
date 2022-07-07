@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 20:28+0300\n"
+"POT-Creation-Date: 2022-07-07 17:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -188,9 +188,6 @@ msgstr "oder"
 
 #: templates/account/login.html:30
 #, fuzzy, python-format
-#| msgid ""
-#| "If you have not created an account yet, then please\n"
-#| "          <a href=\"%(signup_url)s\">sign up</a> first."
 msgid ""
 "If you have not created an account yet, then please\n"
 "            <a href=\"%(signup_url)s\">sign up</a> first."
@@ -1249,27 +1246,27 @@ msgstr "Sie haben keine Bestellungen"
 msgid "Payment"
 msgstr "Zahlung"
 
-#: templates/product.html:117
+#: templates/product.html:41
 msgid "Including delivery cost"
 msgstr "Inklusive Versandkosten"
 
-#: templates/product.html:118
+#: templates/product.html:42
 msgid "Description"
 msgstr "Beschreibung"
 
-#: templates/product.html:121 templates/product.html:132
+#: templates/product.html:45 templates/product.html:56
 msgid "On stock left"
 msgstr "Auf Lager übrig"
 
-#: templates/product.html:124
+#: templates/product.html:48
 msgid "Add to cart"
 msgstr "In den Warenkorb legen"
 
-#: templates/product.html:129
+#: templates/product.html:53
 msgid "Remove from cart"
 msgstr "Aus dem Warenkorb entfernen"
 
-#: templates/product.html:141
+#: templates/product.html:65
 msgid "Additional information"
 msgstr "Zusätzliche Information"
 
@@ -1383,39 +1380,3 @@ msgstr ""
 "anzumelden bei\n"
 "%(site_name)s. Als letzten Schritt füllen Sie bitte das folgende Formular "
 "aus:"
-
-#~ msgid "Your email"
-#~ msgstr "Ihre email"
-
-#~ msgid "Please provide valid email address"
-#~ msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse"
-
-#~ msgid "Use default shipping address"
-#~ msgstr "Standardlieferadresse Verwenden"
-
-#~ msgid "Use default billing address"
-#~ msgstr "Standard-Rechnungsadresse Verwenden"
-
-#~ msgid "Save as default shipping address"
-#~ msgstr "Als Standardlieferadresse speichern"
-
-#~ msgid "Save as default billing address"
-#~ msgstr "Als Standard-Rechnungsadresse speichern"
-
-#~ msgid "Name for shipping"
-#~ msgstr "Name für den Versand"
-
-#~ msgid "Country"
-#~ msgstr "Land"
-
-#~ msgid "Please select a valid country"
-#~ msgstr "Bitte wählen Sie ein gültiges Land aus"
-
-#~ msgid "Zip code required"
-#~ msgstr "Postleitzahl erforderlich"
-
-#~ msgid "Billing address is the same as my shipping address"
-#~ msgstr "Rechnungsadresse ist die gleiche wie Lieferadresse"
-
-#~ msgid "Name for billing"
-#~ msgstr "Name für die Abrechnung"
