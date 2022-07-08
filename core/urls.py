@@ -19,4 +19,5 @@ urlpatterns = [
         TemplateView.as_view(template_name="impressum.html"),
         name="impressum",
     ),
+    path("api-doc/", TemplateView.as_view(template_name="api.html"), name="api-doc"),
 ]

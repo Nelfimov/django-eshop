@@ -1,5 +1,6 @@
 from functools import cached_property
 
+from decimal import Decimal
 from django.conf import settings
 from django.core import mail
 from django.db import models
@@ -102,16 +103,35 @@ class Order(models.Model):
         ordering = ("-start_date",)
         unique_together = ("user", "session_key")
 
+    @cached_property
+    def get_delivery_total(self):
+        order_items = OrderItem.objects.filter(order=self.id).select_related("item")
+        if order_items.count() > 1:
+            item_delivery = []
+            for item in order_items:
+                item_delivery.append(item.item.delivery_price)
+            delivery = round(Decimal(max(item_delivery)) * Decimal(1.2), 2)
+        else:
+            delivery = order_items[0].item.delivery_price
+        return delivery
+
+    @cached_property
     def get_total(self):
+        order_items = OrderItem.objects.filter(order=self.id).select_related("item")
         total = 0
-        for cart_item in OrderItem.objects.filter(order=self.id):
-            total += cart_item.get_total_item_price
+        for item in order_items:
+            total += item.item.get_price_no_delivery
+        total += self.get_delivery_total
         return total
+
+    @cached_property
+    def get_price_no_delivery(self):
+        return self.get_total - self.get_delivery_total
 
 
 #  Send email when status changes
 @receiver(models.signals.post_save, sender=Order)
-def hear_signal(sender, instance, **kwargs):
+def hear_signal(sender, instance, **kwargs):  # pylint: disable=unused-argument
     if kwargs.get("created"):
         return
 

@@ -6,6 +6,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 urlpatterns = [
+    path("api/v1/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/v1/", include("core.api_core.urls")),
     path("i18n/", include("django.conf.urls.i18n")),  # set_language in Navbar
 ]
 

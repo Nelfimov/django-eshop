@@ -76,12 +76,11 @@ class PaypalView(View):
         except ObjectDoesNotExist:
             messages.warning(self.request, _("You do not have anything in your cart"))
             return redirect("core:home")
-        amount = round(float(order.get_total()), 2)
         currency = "EUR"
-        shipping_value = round(float(0), 2)
+        # shipping_value = round(float(0), 2)
         items_in_order = []
-        for i in OrderItem.objects.filter(order=order):
-            shipping_value += round(float(i.item.delivery_price * i.quantity), 2)
+        for i in order.orderitem_set.all().select_related("item"):
+            # shipping_value += round(float(i.item.delivery_price * i.quantity), 2)
             items_in_order.append(
                 {
                     "name": str(i.item.title),
@@ -126,18 +125,26 @@ class PaypalView(View):
                         "soft_descriptor": "Antique Toys",
                         "amount": {
                             "currency_code": currency,
-                            "value": amount,  # Сумма заказа с НДС и доставкой
+                            "value": round(
+                                float(order.get_total), 2
+                            ),  # Сумма заказа с НДС и доставкой
                             "breakdown": {
                                 "item_total": {
                                     "currency_code": currency,
                                     # Сумма только товаров без доставки и налогов
-                                    # "value":round((amount-shipping_value)/1.19,2)
-                                    "value": round((amount - shipping_value), 2),
+                                    # "value": round((amount - shipping_value), 2),
+                                    "value": round(
+                                        (
+                                            float(order.get_total)
+                                            - float(order.get_delivery_total)
+                                        ),
+                                        2,
+                                    ),
                                 },
                                 "shipping": {
                                     "currency_code": currency,
                                     # Сумма только доставки
-                                    "value": round(shipping_value, 2),
+                                    "value": round(float(order.get_delivery_total), 2),
                                 },
                                 "tax_total": {
                                     "currency_code": currency,
@@ -196,7 +203,7 @@ def capture(request, order_id):
                 None if request.user.is_authenticated else request.session.session_key
             ),
         )
-        order_items = OrderItem.objects.filter(order=order)
+        order_items = order.orderitem_set.all()
         capture_order = OrdersCaptureRequest(order_id)
         environment = SandboxEnvironment(
             client_id=config("PAYPAL_CLIENT_ID"),
@@ -209,7 +216,7 @@ def capture(request, order_id):
             data = response.result.__dict__["_dict"]
             payment = Payment(
                 user=(request.user if request.user.is_authenticated else None),
-                amount=order.get_total(),
+                amount=round(float(order.get_total), 2),
                 paypal_id=order_id,
                 order=order,
             )

@@ -36,7 +36,7 @@
                 </td>
                 <td>
                   {{ order_item.get_total_item_price|safe }}€
-                  {% if order_item.item.discount_price|safe %}
+                  {% if order_item.item.discount_price|safe > 0 %}
                     <span class="badge bg-primary">{% translate "Saving" %} {{ order_item.get_saving|safe }}€</span>
                   {% endif %}
                   <a style="color: red;"
@@ -62,6 +62,22 @@
                 </td>
                 <td>
                   <b>{{ order_total|safe }}€</b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <b>{% translate "Delivery total" %}</b>
+                </td>
+                <td>
+                  <b>{{ order_delivery|safe }}€</b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <b>{% translate "Items total" %}</b>
+                </td>
+                <td>
+                  <b>{{ order.get_price_no_delivery|safe }}€</b>
                 </td>
               </tr>
               <tr>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-07 17:25+0300\n"
+"POT-Creation-Date: 2022-07-08 10:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -542,6 +542,14 @@ msgstr ""
 " Wir versenden derzeit <u>nur innerhalb der EU</u>.\n"
 "                "
 
+#: templates/checkout.html:26 templates/checkout.html:142
+msgid "Shipping address"
+msgstr "Versandadresse"
+
+#: templates/checkout.html:65 templates/checkout.html:143
+msgid "Billing address"
+msgstr "Abechnungsadresse"
+
 #: templates/checkout.html:112
 msgid "Continue to checkout"
 msgstr "Weiter zu Checkout"
@@ -549,14 +557,6 @@ msgstr "Weiter zu Checkout"
 #: templates/checkout.html:131
 msgid "Order address"
 msgstr "Versandadresse"
-
-#: templates/checkout.html:142
-msgid "Shipping address"
-msgstr "Lieferadresse"
-
-#: templates/checkout.html:143
-msgid "Billing address"
-msgstr "Rechnungsadresse"
 
 #: templates/checkout.html:178
 msgid "Yes, continue to payment"

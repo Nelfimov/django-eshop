@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-07 17:25+0300\n"
+"POT-Creation-Date: 2022-07-08 10:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,9 @@ msgstr "Sie haben bereits einen Refund für diese Bestellung erhalten"
 
 #: refund/views.py:61
 msgid "You have already submitted a ticket. Please wait until we contact you"
-msgstr "Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie kontaktieren"
+msgstr ""
+"Sie haben bereits ein Ticket eingereicht. Bitte warten Sie, bis wir Sie "
+"kontaktieren"
 
 #: refund/views.py:76
 msgid "Refund request for your order #"

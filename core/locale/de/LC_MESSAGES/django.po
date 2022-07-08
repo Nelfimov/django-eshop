@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-07 17:25+0300\n"
+"POT-Creation-Date: 2022-07-08 10:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Kategorie"
 msgid "Item categories"
 msgstr "Kategorien"
 
-#: core/models.py:31 core/models.py:131
+#: core/models.py:31 core/models.py:135
 msgid "Title"
 msgstr "Name"
 
@@ -78,30 +78,30 @@ msgstr "Artikel"
 msgid "Items"
 msgstr "Artikeln"
 
-#: core/models.py:109
+#: core/models.py:113
 msgid "Image"
 msgstr "Titelbild"
 
-#: core/models.py:116
+#: core/models.py:120
 msgid "Item image"
 msgstr "Titelbild"
 
-#: core/models.py:117
+#: core/models.py:121
 msgid "Item images"
 msgstr "Titelbild"
 
-#: core/models.py:132
+#: core/models.py:136
 msgid "Body text"
 msgstr "Hauptteil"
 
-#: core/models.py:133
+#: core/models.py:137
 msgid "Alt text"
 msgstr "Alt text"
 
-#: core/models.py:137
+#: core/models.py:141
 msgid "Carousel"
 msgstr "Karussell"
 
-#: core/models.py:138
+#: core/models.py:142
 msgid "Carousels"
 msgstr "Karussellen"

@@ -32,7 +32,8 @@ class OrderView(View):
             context = {
                 "order": order,
                 "order_items": order.orderitem_set.all(),
-                "order_total": order.get_total(),
+                "order_total": order.get_total,
+                "order_delivery": order.get_delivery_total,
             }
             return render(self.request, "cart_summary.html", context)
         except (IndexError, ObjectDoesNotExist, AttributeError):

@@ -24,6 +24,14 @@
       </li>
     {% endif %} {% endcomment %}
     <li class="list-group-item d-flex justify-content-between">
+      <span>{% translate "Item cost" %} (EUR)</span>
+      <strong>{{ order.get_price_no_delivery|safe }} EUR</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+      <span>{% translate "Delivery cost" %} (EUR)</span>
+      <strong>{{ order.get_delivery_total|safe }} EUR</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
       <span>{% translate "Total" %} (EUR)</span>
       <strong>{{ order.get_total|safe }} EUR</strong>
     </li>

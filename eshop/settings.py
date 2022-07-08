@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "common",
     "core",
+    "core.api_core",
     "checkout",
     "order",
     "payment",

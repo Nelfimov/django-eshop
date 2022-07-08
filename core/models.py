@@ -103,6 +103,10 @@ class Item(models.Model):
     def get_final_price(self):
         return self.price + self.delivery_price - self.discount
 
+    @cached_property
+    def get_price_no_delivery(self):
+        return self.price - self.discount
+
 
 class ItemImage(models.Model):
     item = models.ForeignKey(

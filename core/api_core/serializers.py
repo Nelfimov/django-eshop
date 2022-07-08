@@ -1,12 +1,12 @@
+from core.models import Item, CategoryItem
 from rest_framework import serializers
-
-from ..models import Item
 
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields = [
+            "slug",
             "title",
             "price",
             "delivery_price",
@@ -15,4 +15,13 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
             "stock",
             "description",
             "created_date",
+        ]
+
+
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CategoryItem
+        fields = [
+            "name",
+            "slug",
         ]
