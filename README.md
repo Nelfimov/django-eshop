@@ -23,12 +23,12 @@ Built from scratch shop for personal usage:
 > `python manage.py migrate`
 5. Create superuser (admin) `python manage.py createsuperuser`
 6. Create `.env` file in root directory with fields:
-> DJANGO_SECRET_KEY = "YOUR DJANGO SECRET. CAN BE GENERATED VIA [GENERATION](https://humberto.io/blog/tldr-generate-django-secret-key/)"
-> HOST = "YOUR EXTERNAL IP ON WHICH YOU WOULD LIKE TO SERVE YOUR APP"
-> PAYPAL_CLIENT_ID = "TO BE OBTAINED IN develope.paypal.com"
-> PAYPAL_CLIENT_SECRET = "TO BE OBTAINED IN develope.paypal.com"
-> GMAIL_ACCOUNT = "YOUR GMAIL ADDRESS"
-> GMAIL_PASSWORD = "YOUR GMAIL APP PASSWORD"
+> DJANGO_SECRET_KEY = "YOUR DJANGO SECRET. CAN BE GENERATED VIA [GENERATION](https://humberto.io/blog/tldr-generate-django-secret-key/)"\
+> HOST = "YOUR EXTERNAL IP ON WHICH YOU WOULD LIKE TO SERVE YOUR APP"\
+> PAYPAL_CLIENT_ID = "TO BE OBTAINED IN develope.paypal.com"\
+> PAYPAL_CLIENT_SECRET = "TO BE OBTAINED IN develope.paypal.com"\
+> GMAIL_ACCOUNT = "YOUR GMAIL ADDRESS"\
+> GMAIL_PASSWORD = "YOUR GMAIL APP PASSWORD"\
 7. App uses memcached. Either install memcached on your machine or change settings.py "CACHES"
 8. Run local server `python manage.py runserver` 
 9. In the admin panel `127.0.0.1/admin` change domain name of your website
