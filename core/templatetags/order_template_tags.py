@@ -9,6 +9,7 @@ register = template.Library()
 
 @register.filter
 def order_item_count(request):
+    """Getting order item count in order/cart"""
     try:
         counter = (
             Order.objects.only("id")
@@ -33,4 +34,5 @@ def order_item_count(request):
 @cache_page(60 * 60)
 @register.filter
 def my_site_name(request):
+    """Getting site name for navbar"""
     return get_current_site(request).name

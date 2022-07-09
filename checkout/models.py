@@ -6,6 +6,8 @@ from django.utils.translation import gettext as _
 
 
 class EUCountries(Countries):
+    """Defining only countries to be available in checkout form"""
+
     only = [
         "BE",
         "BG",
@@ -78,7 +80,7 @@ class Address(models.Model):
     billing_zip = models.CharField(max_length=10)
     default = models.BooleanField(
         default=False, verbose_name=_("Save for future usage"), blank=True
-    )
+    )  # If True, address will be offered to user in future checkouts as initials
 
     def __str__(self):
         return str(self.shipping_country)

@@ -82,6 +82,9 @@ class Item(models.Model):
         self._old_title_image = self.title_image
 
     def save(self, *args, **kwargs):
+        """
+        Checking if the image has been changed. If changed, apply compression and converse to webp
+        """
         if self._old_title_image != self.title_image:
             self.title_image = compress(self.title_image)
         super().save(*args, **kwargs)
@@ -109,6 +112,8 @@ class Item(models.Model):
 
 
 class ItemImage(models.Model):
+    """Images of item"""
+
     item = models.ForeignKey(
         "Item",
         related_name="images",
@@ -129,12 +134,17 @@ class ItemImage(models.Model):
         self._old_image = self.image
 
     def save(self, *args, **kwargs):
+        """
+        Checking if the image has been changed. If changed, apply compression and converse to webp
+        """
         if self._old_image != self.image:
             self.image = compress(self.image)
         super().save(*args, **kwargs)
 
 
 class Carousel(models.Model):
+    """Carousel on home page"""
+
     img = models.ImageField(upload_to=carousel_image_path)
     title = models.CharField(max_length=120, verbose_name=_("Title"))
     body = models.TextField(verbose_name=_("Body text"))
@@ -153,6 +163,9 @@ class Carousel(models.Model):
         self._old_img = self.img
 
     def save(self, *args, **kwargs):
+        """
+        Checking if the image has been changed. If changed, apply compression and converse to webp
+        """
         if self._old_img != self.img:
             self.img = compress(self.img)
         super().save(*args, **kwargs)

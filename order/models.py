@@ -55,7 +55,9 @@ class Order(models.Model):
     start_date = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Creation date")
     )
-    ordered = models.BooleanField(default=False, verbose_name=_("Ordered"))
+    ordered = models.BooleanField(
+        default=False, verbose_name=_("Ordered")
+    )  # if False, the model acts as cart
     ordered_date = models.DateTimeField(
         null=True, blank=True, verbose_name=_("Ordered date")
     )
@@ -105,6 +107,10 @@ class Order(models.Model):
 
     @cached_property
     def get_delivery_total(self):
+        """
+        Delivery cost is not simply added, but rather
+        the max of the order items is taken with additional 20%
+        """
         order_items = OrderItem.objects.filter(order=self.id).select_related("item")
         if order_items.count() > 1:
             item_delivery = []
@@ -129,9 +135,9 @@ class Order(models.Model):
         return self.get_total - self.get_delivery_total
 
 
-#  Send email when status changes
 @receiver(models.signals.post_save, sender=Order)
 def hear_signal(sender, instance, **kwargs):  # pylint: disable=unused-argument
+    #  Send email when status changes
     if kwargs.get("created"):
         return
 

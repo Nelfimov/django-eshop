@@ -5,9 +5,9 @@ from django.urls import reverse_lazy
 from django.views.generic import edit
 from django.utils.translation import gettext_lazy as _
 
-from .forms import CheckoutForm
-from .models import Address
 from order.models import Order
+from .models import Address
+from .forms import CheckoutForm
 
 
 class CheckoutView(edit.FormView):
@@ -16,12 +16,14 @@ class CheckoutView(edit.FormView):
     success_url = reverse_lazy("payment:payment")
 
     def get_form(self, *args, **kwargs):
+        """If user is not authenticated, exclude field "Default" from form"""
         form = super().get_form(self.form_class)
         if not self.request.user.is_authenticated:
             form.fields.pop("default")
         return form
 
     def form_valid(self, form):
+        """If form is valid, save form and model, add address to order"""
         action = form.save(commit=False)
         if self.request.user.is_authenticated:
             action.user = self.request.user
@@ -46,6 +48,10 @@ class CheckoutView(edit.FormView):
         return super().form_valid(form)
 
     def get_initial(self):
+        """
+        If user is authenticated and has saved
+        address previously, get this address as initials for form
+        """
         initial = super().get_initial()
         if self.request.user.is_authenticated:
             default_address = Address.objects.filter(
@@ -72,6 +78,9 @@ class CheckoutView(edit.FormView):
         return initial
 
     def get_context_data(self, **kwargs):
+        """
+        Getting context: paypal id, order and items
+        """
         context = super().get_context_data(**kwargs)
         context.update(
             {
