@@ -1,8 +1,8 @@
 # Small Ecommerce shop, built with Django
 
 Built from scratch shop for personal usage:
-* Templates built on [Material Design Bootstrap 4] (https://mdbootstrap.com/docs/b4/jquery/);
-* Anonymous checkout and payment through [Django Sessions] (https://docs.djangoproject.com/en/4.0/topics/http/sessions/);
+* Templates built on [Material Design Bootstrap 4](https://mdbootstrap.com/docs/b4/jquery/);
+* Anonymous checkout and payment through [Django Sessions](https://docs.djangoproject.com/en/4.0/topics/http/sessions/);
 * Internalization for EN and DE;
 * Integrated [Paypal Server Side Checkout](https://github.com/paypal/Checkout-Python-SDK);
 * Email notification of User and Admins about succesfull order, refunds, deliveries;
@@ -22,8 +22,16 @@ Built from scratch shop for personal usage:
 > `python manage.py makemigrations`
 > `python manage.py migrate`
 5. Create superuser (admin) `python manage.py createsuperuser`
-6. Run local server `python manage.py runserver`
-7. In the admin panel `127.0.0.1/admin` change domain name of your website
+6. Create `.env` file in root directory with fields:
+> DJANGO_SECRET_KEY = "YOUR DJANGO SECRET. CAN BE GENERATED VIA [GENERATION](https://humberto.io/blog/tldr-generate-django-secret-key/)"
+> HOST = "YOUR EXTERNAL IP ON WHICH YOU WOULD LIKE TO SERVE YOUR APP"
+> PAYPAL_CLIENT_ID = "TO BE OBTAINED IN develope.paypal.com"
+> PAYPAL_CLIENT_SECRET = "TO BE OBTAINED IN develope.paypal.com"
+> GMAIL_ACCOUNT = "YOUR GMAIL ADDRESS"
+> GMAIL_PASSWORD = "YOUR GMAIL APP PASSWORD"
+7. App uses memcached. Either install memcached on your machine or change settings.py "CACHES"
+8. Run local server `python manage.py runserver` 
+9. In the admin panel `127.0.0.1/admin` change domain name of your website
 
 ## Usual ordering process:
 1. User enters site;
