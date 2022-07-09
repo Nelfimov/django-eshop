@@ -13,19 +13,19 @@ Built from scratch shop for personal usage:
 
 
 ## Installation
-1. Create virtual environment inside downloaded folder `python -m venv venv`
+1. Create virtual environment in root folder `python -m venv venv`
 2. Switch to virtual environment: 
-> *nix `source venv/bin/activate`
+> *nix `source venv/bin/activate`\
 > Windows `venv/bin/activate`
 3. Install all dependencies from requirements.txt `pip install -r requirements.txt`
 4. Migrate everything, create database 
-> `python manage.py makemigrations`
+> `python manage.py makemigrations`\
 > `python manage.py migrate`
 5. Create superuser (admin) `python manage.py createsuperuser`
 6. Create `.env` file in root directory with fields:
 > DJANGO_SECRET_KEY = "YOUR DJANGO SECRET. CAN BE GENERATED VIA [GENERATION](https://humberto.io/blog/tldr-generate-django-secret-key/)"\
 > HOST = "YOUR EXTERNAL IP ON WHICH YOU WOULD LIKE TO SERVE YOUR APP"\
-> PAYPAL_CLIENT_ID = "TO BE OBTAINED IN develope.paypal.com"\
+> PAYPAL_CLIENT_ID = "TO BE OBTAINED IN developer.paypal.com"\
 > PAYPAL_CLIENT_SECRET = "TO BE OBTAINED IN develope.paypal.com"\
 > GMAIL_ACCOUNT = "YOUR GMAIL ADDRESS"\
 > GMAIL_PASSWORD = "YOUR GMAIL APP PASSWORD"\
@@ -36,7 +36,7 @@ Built from scratch shop for personal usage:
 ## Usual ordering process:
 1. User enters site;
 2. User places item in the order with `ordered = False` which is a workaround for cart implementation:
-> if not logged in - Order with `session_key` is created for this user;
+> if not logged in - Order with `session_key` is created for this user;\
 > if logged in - Order for this user is created, `session_key` remains empty;
 3. User proceeds to checkout;
 4. User proceeds for payment procedure. As of now it is only PayPal server side;
