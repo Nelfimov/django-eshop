@@ -1,12 +1,13 @@
-from functools import cached_property
+"""Core models: Item, CategoryItem, Carousel"""
 
+from functools import cached_property
 from autoslug import AutoSlugField
 from django.db import models
-from django.shortcuts import reverse
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from embed_video.fields import EmbedVideoField
 
-from common.models import compress, item_image_path, carousel_image_path
+from common.models import carousel_image_path, compress, item_image_path
 
 
 LABEL_CHOICES = (
@@ -16,11 +17,13 @@ LABEL_CHOICES = (
 
 
 class CategoryItem(models.Model):
+    """Category for items"""
+
     name = models.CharField(max_length=20)
     slug = AutoSlugField(populate_from="name", unique_with="id")
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name = _("Item category")
@@ -28,6 +31,8 @@ class CategoryItem(models.Model):
 
 
 class Item(models.Model):
+    """Item model for creating new items for purchase"""
+
     title = models.CharField(max_length=100, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", unique_with="id")
     price = models.DecimalField(
@@ -75,7 +80,7 @@ class Item(models.Model):
         verbose_name_plural = _("Items")
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,24 +95,30 @@ class Item(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
+        """Absolute URL to item"""
         return reverse("core:product", kwargs={"slug": self.slug})
 
     def get_add_to_cart_url(self):
+        """URL to add item to cart i.e. create new Order Item"""
         return reverse("order:add-to-cart", kwargs={"slug": self.slug})
 
     def get_remove_from_cart_url(self):
+        """URL to remove Order Item from cart"""
         return reverse("order:remove-from-cart", kwargs={"slug": self.slug})
 
     @cached_property
     def get_price_no_discount(self):
+        """Price + delivery without discount"""
         return self.price + self.delivery_price
 
     @cached_property
     def get_final_price(self):
+        """Final price - including delivery and discount"""
         return self.price + self.delivery_price - self.discount
 
     @cached_property
     def get_price_no_delivery(self):
+        """Price + discount without delivery"""
         return self.price - self.discount
 
 
@@ -115,7 +126,7 @@ class ItemImage(models.Model):
     """Images of item"""
 
     item = models.ForeignKey(
-        "Item",
+        Item,
         related_name="images",
         on_delete=models.CASCADE,
     )
@@ -123,7 +134,8 @@ class ItemImage(models.Model):
 
     @property
     def slug(self):
-        return self.item.slug
+        """Getting slug of Item for usage in file upload path"""
+        return self.item.slug  # pylint: disable=E1101
 
     class Meta:
         verbose_name = _("Item image")
@@ -151,12 +163,12 @@ class Carousel(models.Model):
     alt = models.TextField(verbose_name=_("Alt text"))
     index = models.IntegerField(unique=True)
 
-    class Meta:
+    class Meta:  # pylint: disable=missing-class-docstring
         verbose_name = _("Carousel")
         verbose_name_plural = _("Carousels")
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

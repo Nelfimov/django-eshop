@@ -22,6 +22,7 @@
                 {{ form.email.errors }}
                 {{ form.email }}
                 {{ form.email.label_tag }}
+                <small class="form-text text-muted">{% trans "Your email will only be used for notification about your order" %}</small>
               </div>
               <h3 class="my-5 h3 text-center">{% trans "Shipping address" %}</h3>
               <div class="md-form">
@@ -58,46 +59,56 @@
                   <div class="md-form">
                     {{ form.shipping_country.errors }}
                     {{ form.shipping_country }}
-                    <label for="id_shipping_country">{% trans "Country" %}</label>
+                    <small class="form-text text-muted">{% trans "We currently work only inside EU" %}</small>
                   </div>
                 </div>
               </div>
+              <button class="btn btn-secondary btn-lg btn-block"
+                      name="Copy"
+                      type="button"
+                      onclick="copyShipping()">
+                <i class="far fa-clone"></i>
+                {% trans "Copy from shipping to billing" %}
+              </button>
               <h3 class="my-5 h3 text-center">{% trans "Billing address" %}</h3>
               <div class="md-form">
                 {{ form.billing_name.errors }}
                 {{ form.billing_name }}
-                <label for="id_billing_name">{% trans "Full name" %}</label>
+                <label id="id_billing_name_label" for="id_billing_name">{% trans "Full name" %}</label>
               </div>
               <div class="md-form">
                 {{ form.billing_street_address.errors }}
                 {{ form.billing_street_address }}
-                <label for="id_billing_street_address">{% trans "Street, house number" %}</label>
+                <label id="id_billing_street_address_label" for="id_billing_street_address">{% trans "Street, house number" %}</label>
               </div>
               <div class="md-form">
                 {{ form.billing_apartment_address.errors }}
                 {{ form.billing_apartment_address }}
-                <label for="id_billing_apartment_address">{% trans "Apartment/company" %}</label>
+                <label id="id_billing_apartment_address_label"
+                       for="id_billing_apartment_address">
+                  {% trans "Apartment/company" %}
+                </label>
               </div>
               <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="md-form">
                     {{ form.billing_zip.errors }}
                     {{ form.billing_zip }}
-                    <label for="id_billing_zip">{% trans "Zip code" %}</label>
+                    <label id="id_billing_zip_label" for="id_billing_zip">{% trans "Zip code" %}</label>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="md-form">
                     {{ form.billing_city.errors }}
                     {{ form.billing_city }}
-                    <label for="id_billing_city">{% trans "City" %}</label>
+                    <label id="id_billing_city_label" for="id_billing_city">{% trans "City" %}</label>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="md-form">
                     {{ form.billing_country.errors }}
                     {{ form.billing_country }}
-                    <label for="id_billing_country">{% trans "Country" %}</label>
+                    <small class="form-text text-muted">{% trans "We currently work only inside EU" %}</small>
                   </div>
                 </div>
               </div>
@@ -108,7 +119,9 @@
                   <label for="id_default">{% trans "Save for future use" %}</label>
                 </div>
               {% endif %}
-              <button class="btn btn-primary btn-lg btn-block" name="Submit" type="submit">{% trans "Continue to payment" %}</button>
+              <button class="btn btn-primary btn-lg btn-block" name="Submit" type="submit">
+                <i class="fas fa-angle-double-right"></i> {% trans "Continue to payment" %}
+              </button>
             </form>
           </div>
         </div>
@@ -203,6 +216,38 @@
   </main>
 {% endblock content %}
 {% block extra_body %}
+  <script>
+    function copyShipping() {
+      var shipping_name = document.getElementById("id_shipping_name"),
+          shipping_street_address = document.getElementById("id_shipping_street_address"),
+          shipping_apartment_address = document.getElementById("id_shipping_apartment_address"),
+          shipping_zip = document.getElementById("id_shipping_zip"),
+          shipping_city = document.getElementById("id_shipping_city"),
+          shipping_country = document.getElementById("id_shipping_country"),
+          billing_name = document.getElementById("id_billing_name");
+          billing_name_label = document.getElementById("id_billing_name_label"),
+          billing_street_address = document.getElementById("id_billing_street_address"),
+          billing_street_address_label = document.getElementById("id_billing_street_address_label"),
+          billing_apartment_address = document.getElementById("id_billing_apartment_address"),
+          billing_apartment_address_label = document.getElementById("id_billing_apartment_address_label"),
+          billing_zip = document.getElementById("id_billing_zip"),
+          billing_zip_label = document.getElementById("id_billing_zip_label"),
+          billing_city = document.getElementById("id_billing_city"),
+          billing_city_label = document.getElementById("id_billing_city_label"),
+          billing_country = document.getElementById("id_billing_country"),
+      billing_name.value = shipping_name.value;
+      billing_name_label.className += " active";
+      billing_street_address.value = shipping_street_address.value;
+      billing_street_address_label.className += " active";
+      billing_apartment_address.value = shipping_apartment_address.value;
+      billing_apartment_address_label.className += " active";
+      billing_zip.value = shipping_zip.value;
+      billing_zip_label.className += " active";
+      billing_city.value = shipping_city.value;
+      billing_city_label.className += " active";
+      billing_country.value = shipping_country.value;
+      };
+  </script>
   <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
   {{ order_has_address|json_script:"address" }}
   <script>

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "core.api_core",
     "checkout",
     "order",
+    "order.api_order",
     "payment",
     "refund",
     "embed_video",

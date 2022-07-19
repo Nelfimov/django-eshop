@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-08 10:32+0300\n"
+"POT-Creation-Date: 2022-07-19 11:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,126 +22,127 @@ msgstr ""
 msgid "Update orders to refund granted"
 msgstr "Die Bestellungen aktualisieren fur Refund erhalten"
 
-#: order/cart.py:14
-msgid "Unfortunately we do not have item on stock"
-msgstr "Artikel haben wir leider nicht auf Lager"
-
-#: order/cart.py:34
-msgid "Unfortunately we do not have this quantity on stock"
-msgstr "Leider haben wir diese Menge nicht auf Lager"
-
-#: order/cart.py:39 order/cart.py:41 order/cart.py:52
+#: order/api_order/views.py:53 order/cart.py:44 order/cart.py:46
+#: order/cart.py:57
 msgid "Quantity was updated"
 msgstr "Menge wurde aktualisiert"
 
-#: order/cart.py:76
+#: order/cart.py:19
+msgid "Unfortunately we do not have item on stock"
+msgstr "Artikel haben wir leider nicht auf Lager"
+
+#: order/cart.py:39
+msgid "Unfortunately we do not have this quantity on stock"
+msgstr "Leider haben wir diese Menge nicht auf Lager"
+
+#: order/cart.py:81
 msgid "This item was removed from your cart"
 msgstr "Dieser Artikel wurde aus Ihrem Einkaufswagen entfernt"
 
-#: order/cart.py:79 order/cart.py:112
+#: order/cart.py:84 order/cart.py:117
 msgid "This item was not in your cart"
 msgstr "Dieser Artikel war nicht in Ihrem Warenkorb"
 
-#: order/cart.py:82 order/views.py:39
+#: order/cart.py:87 order/views.py:40
 msgid "Your cart is empty"
 msgstr "Ihr Warenkorb ist leer"
 
-#: order/cart.py:109
+#: order/cart.py:114
 msgid "This item quantity was updated"
 msgstr "Diese Artikelmenge wurde aktualisiert"
 
-#: order/cart.py:115
+#: order/cart.py:120
 msgid "You do not have an active cart"
 msgstr "Sie haben keinen aktiven Warenkorb"
 
-#: order/models.py:20
+#: order/models.py:21
 msgid "Tracking company"
 msgstr "Tracking company"
 
-#: order/models.py:21
+#: order/models.py:22
 msgid "Tracking companies"
 msgstr "Tracking companies"
 
-#: order/models.py:26
+#: order/models.py:27
 msgid "Item"
 msgstr "Artikel"
 
-#: order/models.py:28
+#: order/models.py:29
 msgid "Quantity"
 msgstr "Menge"
 
-#: order/models.py:30 order/models.py:100
+#: order/models.py:31 order/models.py:103
 msgid "Order"
 msgstr "Bestellung"
 
-#: order/models.py:34
+#: order/models.py:35
 msgid "Cart Item"
 msgstr "Warenkorb Artikel"
 
-#: order/models.py:35
+#: order/models.py:36
 msgid "Cart Items"
 msgstr "Warenkorb Artikeln"
 
-#: order/models.py:55
+#: order/models.py:56
 msgid "Creation date"
 msgstr "Erstellungsdatum"
 
-#: order/models.py:57
+#: order/models.py:59
 msgid "Ordered"
 msgstr "Bestellt"
 
-#: order/models.py:59
+#: order/models.py:62
 msgid "Ordered date"
 msgstr "Bestelldatum"
 
-#: order/models.py:66
+#: order/models.py:69
 msgid "Reference code"
 msgstr "Referenzcode"
 
-#: order/models.py:74
+#: order/models.py:77
 msgid "Address"
 msgstr "Adresse"
 
-#: order/models.py:77
+#: order/models.py:80
 msgid "Being delivered"
 msgstr "Wird geliefert"
 
-#: order/models.py:84
+#: order/models.py:87
 msgid "Tracking Company"
 msgstr "Tracking company"
 
-#: order/models.py:87
+#: order/models.py:90
 msgid "Tracking number"
 msgstr "Sendungscode"
 
-#: order/models.py:90
+#: order/models.py:93
 msgid "Refund requested"
 msgstr "Refund angefordert"
 
-#: order/models.py:93
+#: order/models.py:96
 msgid "Refund granted"
 msgstr "Refundgewährt"
 
-#: order/models.py:101
+#: order/models.py:104
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: order/models.py:119 order/models.py:143
+#: order/models.py:145 order/models.py:169
 msgid "Your order #"
 msgstr "Ihre Bestellung #"
 
-#: order/models.py:120
+#: order/models.py:146
 msgid " has been sent out"
 msgstr " ausgeliefert wurde"
 
-#: order/models.py:144
+#: order/models.py:170
 msgid " request for refund has been accepted"
 msgstr " Refund Anfrage wurde angenommen"
 
-#: order/views.py:46
+#: order/views.py:47
 msgid "You have to authorize for this view"
 msgstr "Sie mussen sich authorisieren"
 
-#: order/views.py:58
+#: order/views.py:59
 msgid "You do not have any orders"
 msgstr "Sie haben keine Bestellungen"

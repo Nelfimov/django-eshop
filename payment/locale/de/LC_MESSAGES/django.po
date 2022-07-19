@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-08 10:32+0300\n"
+"POT-Creation-Date: 2022-07-19 11:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,26 +34,26 @@ msgstr "Zauhlung"
 msgid "Payments"
 msgstr "Zahlungen"
 
-#: payment/views.py:44
+#: payment/views.py:48
 msgid "You have no address for your order"
 msgstr "Sie haben keine Adresse fur die Bestellung eingegeben"
 
-#: payment/views.py:55 payment/views.py:77
+#: payment/views.py:59 payment/views.py:82
 msgid "You do not have anything in your cart"
 msgstr "Sie haben nichts in Ihrem Warenkorb"
 
-#: payment/views.py:185
+#: payment/views.py:197
 msgid "You do not have an active order"
 msgstr "Sie haben keine aktive Bestellung"
 
-#: payment/views.py:227
+#: payment/views.py:239
 msgid "Your order #"
 msgstr "Ihre Bestellung #"
 
-#: payment/views.py:229
+#: payment/views.py:241
 msgid " has been received and will be processed shortly"
 msgstr " ist eingegangen und wird in Kürze bearbeitet"
 
-#: payment/views.py:256
+#: payment/views.py:268
 msgid "Your order was successfull"
 msgstr "Ihre Bestellung war erfolgreich"

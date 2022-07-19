@@ -1,8 +1,9 @@
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext as _
+
 from django_countries import Countries
 from django_countries.fields import CountryField
-from django.utils.translation import gettext as _
 
 
 class EUCountries(Countries):
@@ -44,6 +45,8 @@ class EUCountries(Countries):
 
 
 class Address(models.Model):
+    """Address for order placement"""
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -59,7 +62,7 @@ class Address(models.Model):
         max_length=100, verbose_name=_("Shipping street address")
     )
     shipping_apartment_address = models.CharField(
-        max_length=100, verbose_name=_("Shipping apartment address")
+        max_length=100, verbose_name=_("Shipping apartment address"), blank=True
     )
     shipping_city = models.CharField(max_length=100, verbose_name=_("Shipping city"))
     shipping_country = CountryField(
@@ -71,7 +74,7 @@ class Address(models.Model):
         max_length=100, verbose_name=_("Billing street address")
     )
     billing_apartment_address = models.CharField(
-        max_length=100, verbose_name=_("Billing apartment address")
+        max_length=100, verbose_name=_("Billing apartment address"), blank=True
     )
     billing_city = models.CharField(max_length=100, verbose_name=_("Billing city"))
     billing_country = CountryField(

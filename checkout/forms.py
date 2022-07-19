@@ -5,6 +5,8 @@ from .models import Address
 
 
 class CheckoutForm(forms.ModelForm):
+    """Checkout form with attrs for Material Design"""
+
     class Meta:
         model = Address
         fields = "__all__"

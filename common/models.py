@@ -25,7 +25,6 @@ def carousel_image_path(instance, filename):
 def compress(image):
     """Image compression method and conversion to webp"""
     im = Image.open(image)  # pylint: disable=invalid-name
-    """Image auto rotation if metadata is available"""
     im = ImageOps.exif_transpose(im)  # pylint: disable=invalid-name
     im_io = BytesIO()
     im.save(im_io, format="webp", quality=60)

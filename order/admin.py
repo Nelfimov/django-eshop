@@ -43,6 +43,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = [
         "ordered",
         "ref_code",
+        "user",
         "get_email",
         "address",
         "being_delivered",

@@ -17,16 +17,20 @@ from django.views.generic import View
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 from paypalcheckoutsdk.orders import OrdersCaptureRequest, OrdersCreateRequest
 
-from order.models import Order, OrderItem
+from order.models import Order
 from .models import Payment
 
 
 def create_ref_code():
+    """Creation of unique reference code for order upon succesfull payment"""
     return "".join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
 class PaypalView(View):
+    """Payment via Paypal"""
+
     def get(self, *args, **kwargs):
+        """Get view"""
         try:
             order = Order.objects.get(
                 ordered=False,
@@ -56,6 +60,7 @@ class PaypalView(View):
             return redirect("core:home")
 
     def post(self, *args, **kwargs):
+        """Post view"""
         environment = SandboxEnvironment(
             client_id=config("PAYPAL_CLIENT_ID"),
             client_secret=config("PAYPAL_CLIENT_SECRET"),
@@ -193,8 +198,8 @@ class PaypalView(View):
             return redirect("core:home")
 
 
-# Paypal capture the approved order
 def capture(request, order_id):
+    """Capturing PayPal order for succesfull transfer of cash + sending email to admins and customer"""
     if request.method == "POST":
         order = Order.objects.get(
             ordered=False,

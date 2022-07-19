@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-08 10:32+0300\n"
+"POT-Creation-Date: 2022-07-19 11:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,54 +18,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: checkout/models.py:54
+#: checkout/models.py:59
 msgid "Shipping full name"
 msgstr "Versand voller Name"
 
-#: checkout/models.py:57
+#: checkout/models.py:62
 msgid "Shipping street address"
 msgstr "Versand Strasse, Hausnummer"
 
-#: checkout/models.py:60
+#: checkout/models.py:65
 msgid "Shipping apartment address"
 msgstr "Versand Wohnung/Firma"
 
-#: checkout/models.py:62
+#: checkout/models.py:67
 msgid "Shipping city"
 msgstr "Versand Stadt"
 
-#: checkout/models.py:64
+#: checkout/models.py:69
 msgid "Shipping country"
 msgstr "Versand Land"
 
-#: checkout/models.py:67
+#: checkout/models.py:72
 msgid "Billing full name"
 msgstr "Abrechnung voller Name"
 
-#: checkout/models.py:69
+#: checkout/models.py:74
 msgid "Billing street address"
 msgstr "Abrechnung Strasse, Hausnummer"
 
-#: checkout/models.py:72
+#: checkout/models.py:77
 msgid "Billing apartment address"
 msgstr "Abrechnung Wohnung/Firma"
 
-#: checkout/models.py:74
+#: checkout/models.py:79
 msgid "Billing city"
 msgstr "Abrechnung Stadt"
 
-#: checkout/models.py:76
+#: checkout/models.py:81
 msgid "Billing country"
 msgstr "Abrechnung Land"
 
-#: checkout/models.py:80
+#: checkout/models.py:85
 msgid "Save for future usage"
 msgstr "Speichern"
 
-#: checkout/models.py:87
+#: checkout/models.py:92
 msgid "Addresses"
 msgstr "Addressen"
 
-#: checkout/views.py:108
+#: checkout/views.py:117
 msgid "You do not have anything in cart"
 msgstr "Ihr Warenkorb ist leer"

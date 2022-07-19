@@ -9,6 +9,11 @@ from .models import Order, OrderItem
 
 
 def add_to_cart(request, slug):
+    """
+    Add item to order. If order does not exist, create new one.
+    If user is authenticated, order.user will be filled.
+    If user is anon, order.session_key will be used
+    """
     item = get_object_or_404(Item, slug=slug)
     if item.stock <= 0:
         messages.warning(request, _("Unfortunately we do not have item on stock"))
