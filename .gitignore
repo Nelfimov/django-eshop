@@ -9,3 +9,4 @@ db.sqlite3
 /*.code-workspace
 /.vscode
 /.idea/
+debug.log

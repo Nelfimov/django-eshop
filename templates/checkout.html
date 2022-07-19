@@ -28,12 +28,12 @@
               <div class="md-form">
                 {{ form.shipping_name.errors }}
                 {{ form.shipping_name }}
-                <label for="id_shipping_name">{% trans "Full name" %}</label>
+                <label for="id_shipping_name">{% trans "Full name" %}*</label>
               </div>
               <div class="md-form">
                 {{ form.shipping_street_address.errors }}
                 {{ form.shipping_street_address }}
-                <label for="id_shipping_street_address">{% trans "Street, house number" %}</label>
+                <label for="id_shipping_street_address">{% trans "Street, house number" %}*</label>
               </div>
               <div class="md-form">
                 {{ form.shipping_apartment_address.errors }}
@@ -45,14 +45,14 @@
                   <div class="md-form">
                     {{ form.shipping_zip.errors }}
                     {{ form.shipping_zip }}
-                    <label for="id_shipping_zip">{% trans "Zip code" %}</label>
+                    <label for="id_shipping_zip">{% trans "Zip code" %}*</label>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="md-form">
                     {{ form.shipping_city.errors }}
                     {{ form.shipping_city }}
-                    <label for="id_shipping_city">{% trans "City" %}</label>
+                    <label for="id_shipping_city">{% trans "City" %}*</label>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
@@ -74,19 +74,19 @@
               <div class="md-form">
                 {{ form.billing_name.errors }}
                 {{ form.billing_name }}
-                <label id="id_billing_name_label" for="id_billing_name">{% trans "Full name" %}</label>
+                <label id="id_billing_name_label" for="id_billing_name">{% trans "Full name" %}*</label>
               </div>
               <div class="md-form">
                 {{ form.billing_street_address.errors }}
                 {{ form.billing_street_address }}
-                <label id="id_billing_street_address_label" for="id_billing_street_address">{% trans "Street, house number" %}</label>
+                <label id="id_billing_street_address_label" for="id_billing_street_address">{% trans "Street, house number" %}*</label>
               </div>
               <div class="md-form">
                 {{ form.billing_apartment_address.errors }}
                 {{ form.billing_apartment_address }}
                 <label id="id_billing_apartment_address_label"
                        for="id_billing_apartment_address">
-                  {% trans "Apartment/company" %}
+                  {% trans "Apartment/company" %}*
                 </label>
               </div>
               <div class="row">
@@ -94,14 +94,14 @@
                   <div class="md-form">
                     {{ form.billing_zip.errors }}
                     {{ form.billing_zip }}
-                    <label id="id_billing_zip_label" for="id_billing_zip">{% trans "Zip code" %}</label>
+                    <label id="id_billing_zip_label" for="id_billing_zip">{% trans "Zip code" %}*</label>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">
                   <div class="md-form">
                     {{ form.billing_city.errors }}
                     {{ form.billing_city }}
-                    <label id="id_billing_city_label" for="id_billing_city">{% trans "City" %}</label>
+                    <label id="id_billing_city_label" for="id_billing_city">{% trans "City" %}*</label>
                   </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-4">

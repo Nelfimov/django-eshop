@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load embed_video_tags %}
 {% block head_title %}
-  {{ object.title }}
+  {{ object.title|safe }}
 {% endblock head_title %}
 {% block content %}
   <main class="mt-1 pt-1">
@@ -30,15 +30,15 @@
                   {% if object.discount_price|safe %}
                     <span class="mr-1">
                       <h4 class="font-weight-bold text-danger">
-                        <del>{{ object.get_price_no_discount }}€</del>
+                        <del>{{ object.price|safe }}€</del>
                       </h4>
                     </span>
                   {% endif %}
-                  <span class="font-weight-bold text-blue">{{ object.get_final_price|safe }}€</span>
+                  <span class="font-weight-bold text-blue">{{ object.get_price_no_delivery|safe }}€</span>
                 </strong>
               </h4>
             </p>
-            <p class="font-italic">{% translate "Including delivery cost" %}: {{ object.delivery_price|safe }}€</p>
+            <p class="font-italic">{% translate "Delivery cost" %}: {{ object.delivery_price|safe }}€</p>
             <p class="lead font-weight-bold">{% translate "Description" %}</p>
             <p>{{ object.description|safe }}</p>
             {% if object.stock != 0 %}

@@ -46,7 +46,7 @@ class PaypalView(View):
             order_items = order.orderitem_set.all()
             if not order.address:
                 messages.warning(self.request, _("You have no address for your order"))
-                return redirect("order:checkout")
+                return redirect("checkout:checkout")
             client_id = config("PAYPAL_CLIENT_ID")
             context = {
                 "client_id": client_id,
@@ -82,28 +82,18 @@ class PaypalView(View):
             messages.warning(self.request, _("You do not have anything in your cart"))
             return redirect("core:home")
         currency = "EUR"
-        # shipping_value = round(float(0), 2)
         items_in_order = []
         for i in order.orderitem_set.all().select_related("item"):
-            # shipping_value += round(float(i.item.delivery_price * i.quantity), 2)
             items_in_order.append(
                 {
                     "name": str(i.item.title),
                     "description": str(i.item.description),
                     "unit_amount": {
                         "currency_code": currency,
-                        # 'value': round(
-                        #     float(i.item.price - i.item.discount) / 1.19,
-                        #     2
-                        # )
-                        "value": round(float(i.item.price - i.item.discount), 2),
+                        "value": round(float(i.item.get_price_no_delivery), 2),
                     },
                     "tax": {
                         "currency_code": currency,
-                        # 'value': round(
-                        #     float(i.item.price - i.item.discount) * 19 / 119,
-                        #     2
-                        # ),
                         "value": "0",
                     },
                     "quantity": i.quantity,
@@ -139,11 +129,7 @@ class PaypalView(View):
                                     # Сумма только товаров без доставки и налогов
                                     # "value": round((amount - shipping_value), 2),
                                     "value": round(
-                                        (
-                                            float(order.get_total)
-                                            - float(order.get_delivery_total)
-                                        ),
-                                        2,
+                                        float(order.get_price_no_delivery), 2
                                     ),
                                 },
                                 "shipping": {
