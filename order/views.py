@@ -9,6 +9,8 @@ from .models import Order
 
 
 class OrderView(View):
+    """Cart summary"""
+
     def get(self, *args, **kwargs):
         try:
             order = (
@@ -32,8 +34,6 @@ class OrderView(View):
             context = {
                 "order": order,
                 "order_items": order.orderitem_set.all(),
-                "order_total": order.get_total,
-                "order_delivery": order.get_delivery_total,
             }
             return render(self.request, "cart_summary.html", context)
         except (IndexError, ObjectDoesNotExist, AttributeError):
@@ -42,6 +42,8 @@ class OrderView(View):
 
 
 class OrdersFinishedView(LoginRequiredMixin, ListView):
+    """Finished orders view"""
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.warning(self.request, _("You have to authorize for this view"))

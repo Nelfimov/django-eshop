@@ -40,10 +40,12 @@ class OrderItem(models.Model):
 
     @cached_property
     def get_total_item_price(self):
+        """Total amount for this order item"""
         return self.quantity * self.item.get_final_price
 
     @cached_property
     def get_saving(self):
+        """Total saving for this order item"""
         return self.quantity * self.item.discount
 
 
@@ -108,7 +110,7 @@ class Order(models.Model):
     @cached_property
     def get_delivery_total(self):
         """
-        Delivery cost is not simply added, but rather
+        Delivery cost is not simply added up, but rather
         the max of the order items is taken with additional 20%
         """
         order_items = OrderItem.objects.filter(order=self.id).select_related("item")
@@ -123,21 +125,23 @@ class Order(models.Model):
 
     @cached_property
     def get_total(self):
+        """Total order amount"""
         order_items = OrderItem.objects.filter(order=self.id).select_related("item")
         total = 0
         for item in order_items:
-            total += item.item.get_price_no_delivery
+            total += item.item.get_price_no_delivery * item.quantity
         total += self.get_delivery_total
         return total
 
     @cached_property
     def get_price_no_delivery(self):
+        """Order amount without delivery"""
         return self.get_total - self.get_delivery_total
 
 
 @receiver(models.signals.post_save, sender=Order)
 def hear_signal(sender, instance, **kwargs):  # pylint: disable=unused-argument
-    #  Send email when status changes
+    """Send email when status changes"""
     if kwargs.get("created"):
         return
 

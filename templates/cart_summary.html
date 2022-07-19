@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block head_title %}
-  {% translate "My Cart" %}
+  {% trans "My Cart" %}
 {% endblock head_title %}
 {% block content %}
   <main>
     <div class="container">
       <div class="table-responsive text-nowrap">
-        <h2 class="my-5 h2 text-center">{% translate "Cart Summary" %}</h2>
+        <h2 class="my-5 h2 text-center">{% trans "Cart Summary" %}</h2>
         <table class="table table-hover">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">{% translate "Item Title" %}</th>
-              <th scope="col">{% translate "Price" %}</th>
-              <th scope="col">{% translate "Quantity" %}</th>
-              <th scope="col">{% translate "Total Item Price" %}</th>
+              <th scope="col">{% trans "Item Title" %}</th>
+              <th scope="col">{% trans "Price" %}</th>
+              <th scope="col">{% trans "Quantity" %}</th>
+              <th scope="col">{% trans "Total Item Price" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -36,8 +36,8 @@
                 </td>
                 <td>
                   {{ order_item.get_total_item_price|safe }}€
-                  {% if order_item.item.discount_price|safe > 0 %}
-                    <span class="badge bg-primary">{% translate "Saving" %} {{ order_item.get_saving|safe }}€</span>
+                  {% if order_item.get_saving > 0 %}
+                    <span class="badge bg-primary">{% translate "Saving" %} {{ order_item.get_saving }}€</span>
                   {% endif %}
                   <a style="color: red;"
                      href="{% url 'order:remove-from-cart' order_item.item.slug %}">
@@ -55,39 +55,42 @@
                 </td>
               </tr>
             {% endfor %}
-            {% if order_total %}
-              <tr>
-                <td colspan="4">
-                  <b>{% translate "Cart Total" %}</b>
-                </td>
-                <td>
-                  <b>{{ order_total|safe }}€</b>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="4">
-                  <b>{% translate "Delivery total" %}</b>
-                </td>
-                <td>
-                  <b>{{ order_delivery|safe }}€</b>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="4">
-                  <b>{% translate "Items total" %}</b>
-                </td>
-                <td>
-                  <b>{{ order.get_price_no_delivery|safe }}€</b>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                  <a class="btn btn-danger float-right ml-2"
-                     href="{% url 'checkout:checkout' %}">{% translate "Proceed to checkout" %}</a>
-                  <a class="btn btn-primary float-right" href="{% url 'core:home' %}">{% translate "Continue shopping" %}</a>
-                </td>
-              </tr>
-            {% endif %}
+            <tr>
+              <td colspan="4">
+                <b>{% trans "Cart Total" %}</b>
+              </td>
+              <td>
+                <b>{{ order.get_total }}€</b>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="text-center">
+                <b>{% trans "Breakdown" %}:</b>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <b>{% trans "Delivery total" %}</b>
+              </td>
+              <td>
+                <b>{{ order.get_delivery_total|safe }}€</b>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <b>{% trans "Items total" %}</b>
+              </td>
+              <td>
+                <b>{{ order.get_price_no_delivery|safe }}€</b>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <a class="btn btn-danger float-right ml-2"
+                   href="{% url 'checkout:checkout' %}">{% translate "Proceed to checkout" %}</a>
+                <a class="btn btn-primary float-right" href="{% url 'core:home' %}">{% translate "Continue shopping" %}</a>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -127,7 +127,6 @@ class PaypalView(View):
                                 "item_total": {
                                     "currency_code": currency,
                                     # Сумма только товаров без доставки и налогов
-                                    # "value": round((amount - shipping_value), 2),
                                     "value": round(
                                         float(order.get_price_no_delivery), 2
                                     ),
@@ -140,9 +139,6 @@ class PaypalView(View):
                                 "tax_total": {
                                     "currency_code": currency,
                                     # Сумма только налогов
-                                    # "value": round(
-                                    #     (amount - shipping_value) * 19 / 119,
-                                    #     2)
                                     "value": "0",
                                 },
                             },
@@ -159,7 +155,6 @@ class PaypalView(View):
                                     order.address.shipping_apartment_address
                                 ),
                                 "admin_area_2": str(order.address.shipping_city),
-                                # "admin_area_1": ".",
                                 "postal_code": str(order.address.shipping_zip),
                                 "country_code": str(order.address.shipping_country),
                             },
@@ -185,7 +180,7 @@ class PaypalView(View):
 
 
 def capture(request, order_id):
-    """Capturing PayPal order for succesfull transfer of cash + sending email to admins and customer"""
+    """Capturing PayPal order for succesfull transfer of cash + send email to admins and customer"""
     if request.method == "POST":
         order = Order.objects.get(
             ordered=False,
